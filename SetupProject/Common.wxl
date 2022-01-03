@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+  <String Id="Company">JetCom</String>
+
+  <String Id="ProductNameFolder">Telemetric</String>
+
+  <String Id="ProductName_x86">Telemetric (32bit)</String>
+  <String Id="ProductName_x64">Telemetric</String>
+
+  <String Id="Description">This is Telemetric</String>
+  <String Id="Comments">Telemetric</String>
+  <String Id="Keywords">Telemetric</String>
+
+  <String Id="DowngradeErrorMessage">A newer version of Telemetric is already installed.</String>
+
+  <String Id="Language">1033</String>
+
+</WixLocalization>

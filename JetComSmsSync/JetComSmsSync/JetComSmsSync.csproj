@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>JetComSmsSync</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JetComSmsSync.Core\JetComSmsSync.Core.csproj" />
+    <ProjectReference Include="..\Modules\JetComSmsSync.Modules.Tekmetric\JetComSmsSync.Modules.Tekmetric.csproj" />
+    <ProjectReference Include="..\Services\JetComSmsSync.Services.Interfaces\JetComSmsSync.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\Services\JetComSmsSync.Services\JetComSmsSync.Services.csproj" />
+  </ItemGroup>
+</Project>

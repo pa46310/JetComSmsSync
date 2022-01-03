@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<?define JetComSmsSync_TargetDir=$(var.JetComSmsSync.TargetDir)?>
+	<Fragment>
+		<ComponentGroup Id="INSTALLFOLDER_files" Directory="INSTALLFOLDER">
+			<Component Id="MaterialDesignThemes.Wpf.dll" Guid="86b2b7ce-0fd2-4b32-b24b-406b8dddb1a3">
+				<File Id="MaterialDesignThemes.Wpf.dll" Name="MaterialDesignThemes.Wpf.dll" Source="$(var.JetComSmsSync_TargetDir)MaterialDesignThemes.Wpf.dll" />
+			</Component>
+			<Component Id="MaterialDesignExtensions.dll" Guid="f9483274-aee6-41a4-821e-ef7fa480886a">
+				<File Id="MaterialDesignExtensions.dll" Name="MaterialDesignExtensions.dll" Source="$(var.JetComSmsSync_TargetDir)MaterialDesignExtensions.dll" />
+			</Component>
+			<Component Id="Prism.Wpf.dll" Guid="f6f27c2d-1f07-4176-8066-b028c91c7e3b">
+				<File Id="Prism.Wpf.dll" Name="Prism.Wpf.dll" Source="$(var.JetComSmsSync_TargetDir)Prism.Wpf.dll" />
+			</Component>
+			<Component Id="Prism.DryIoc.Wpf.dll" Guid="8068afa2-96b7-4849-99ec-3ee6770fb47d">
+				<File Id="Prism.DryIoc.Wpf.dll" Name="Prism.DryIoc.Wpf.dll" Source="$(var.JetComSmsSync_TargetDir)Prism.DryIoc.Wpf.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.Core.dll" Guid="2ce37890-83f2-498a-a43d-d5e658d0cd78">
+				<File Id="JetComSmsSync.Core.dll" Name="JetComSmsSync.Core.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Core.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.deps.json" Guid="{D3C331D7-C573-4A94-B8E7-E395C942750A}">
+				<File Id="JetComSmsSync.deps.json" Name="JetComSmsSync.deps.json" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.deps.json" />
+			</Component>
+			<Component Id="JetComSmsSync.dll" Guid="5c315dac-b0d1-49e9-9c62-ef68f813f3bf">
+				<File Id="JetComSmsSync.dll" Name="JetComSmsSync.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.exe" Guid="{D7036216-9CD5-4059-8DF3-B2751BF4A89F}">
+				<File Id="JetComSmsSync.exe" Name="JetComSmsSync.exe" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.exe" />
+			</Component>
+			<Component Id="System.Data.SqlClient.dll" Guid="91e20633-35ad-472c-8f82-3d3637f899ac">
+				<File Id="System.Data.SqlClient.dll" Name="System.Data.SqlClient.dll" Source="$(var.JetComSmsSync_TargetDir)System.Data.SqlClient.dll" />
+			</Component>
+			<Component Id="Dapper.dll" Guid="96c61fd5-278a-404e-9d8b-80deb2ba3e59">
+				<File Id="Dapper.dll" Name="Dapper.dll" Source="$(var.JetComSmsSync_TargetDir)Dapper.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.runtimeconfig.json" Guid="97649053-cbd0-4380-b3a2-7f47b08993be">
+				<File Id="JetComSmsSync.runtimeconfig.json" Name="JetComSmsSync.runtimeconfig.json" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.runtimeconfig.json" />
+			</Component>
+			<Component Id="MaterialDesignColors.dll" Guid="7e085c8f-d801-4615-86b3-7b1df35a0276">
+				<File Id="MaterialDesignColors.dll" Name="MaterialDesignColors.dll" Source="$(var.JetComSmsSync_TargetDir)MaterialDesignColors.dll" />
+			</Component>
+			<Component Id="Microsoft.Xaml.Behaviors.dll" Guid="5c5c9352-4684-472d-878f-d142e55701e4">
+				<File Id="Microsoft.Xaml.Behaviors.dll" Name="Microsoft.Xaml.Behaviors.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Xaml.Behaviors.dll" />
+			</Component>
+			<Component Id="DryIoc.dll" Guid="e50cf433-29b6-44b7-832c-85bf8c1cc8f4">
+				<File Id="DryIoc.dll" Name="DryIoc.dll" Source="$(var.JetComSmsSync_TargetDir)DryIoc.dll" />
+			</Component>
+			<Component Id="Newtonsoft.Json.dll" Guid="8aaa853e-1442-458f-899d-f52a9a55fa80">
+				<File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.JetComSmsSync_TargetDir)Newtonsoft.Json.dll" />
+			</Component>
+			<Component Id="RestSharp.Serializers.NewtonsoftJson.dll" Guid="51b7e4ac-c9db-4c29-b10c-bf9ce2e80b0a">
+				<File Id="RestSharp.Serializers.NewtonsoftJson.dll" Name="RestSharp.Serializers.NewtonsoftJson.dll" Source="$(var.JetComSmsSync_TargetDir)RestSharp.Serializers.NewtonsoftJson.dll" />
+			</Component>
+			<Component Id="Serilog.dll" Guid="1a7ba195-2bdd-4bd4-abfb-b472f412b02d">
+				<File Id="Serilog.dll" Name="Serilog.dll" Source="$(var.JetComSmsSync_TargetDir)Serilog.dll" />
+			</Component>
+			<Component Id="RestSharp.dll" Guid="82a16a5a-241c-4210-b0e0-14d71a5088ca">
+				<File Id="RestSharp.dll" Name="RestSharp.dll" Source="$(var.JetComSmsSync_TargetDir)RestSharp.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.Modules.Tekmetric.dll" Guid="f9356697-8aa3-4436-a74f-47b2e25c64c2">
+				<File Id="JetComSmsSync.Modules.Tekmetric.dll" Name="JetComSmsSync.Modules.Tekmetric.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.Tekmetric.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.Services.dll" Guid="da630ba5-7528-40e6-97af-a96e3b57e7fe">
+				<File Id="JetComSmsSync.Services.dll" Name="JetComSmsSync.Services.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Services.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.Services.Interfaces.dll" Guid="241d1b0e-595e-4489-970c-cc47ff882536">
+				<File Id="JetComSmsSync.Services.Interfaces.dll" Name="JetComSmsSync.Services.Interfaces.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Services.Interfaces.dll" />
+			</Component>
+			<Component Id="Prism.dll" Guid="5ae33b4f-b9b8-4398-9a2a-b30629b53210">
+				<File Id="Prism.dll" Name="Prism.dll" Source="$(var.JetComSmsSync_TargetDir)Prism.dll" />
+			</Component>
+			<Component Id="Serilog.Sinks.File.dll" Guid="991c61df-fcd4-44c4-816d-57d2f789e867">
+				<File Id="Serilog.Sinks.File.dll" Name="Serilog.Sinks.File.dll" Source="$(var.JetComSmsSync_TargetDir)Serilog.Sinks.File.dll" />
+			</Component>
+			<Component Id="Serilog.Formatting.Compact.dll" Guid="b17a911b-9fd4-461d-be3d-90ff22ff8c2d">
+				<File Id="Serilog.Formatting.Compact.dll" Name="Serilog.Formatting.Compact.dll" Source="$(var.JetComSmsSync_TargetDir)Serilog.Formatting.Compact.dll" />
+			</Component>
+			<Component Id="Serilog.Sinks.PeriodicBatching.dll" Guid="96319572-e3f8-4532-8cbf-2f6b3b557010">
+				<File Id="Serilog.Sinks.PeriodicBatching.dll" Name="Serilog.Sinks.PeriodicBatching.dll" Source="$(var.JetComSmsSync_TargetDir)Serilog.Sinks.PeriodicBatching.dll" />
+			</Component>
+			<Component Id="Serilog.Enrichers.Environment.dll" Guid="a464eda4-128f-4911-b7a8-6824eac8541c">
+				<File Id="Serilog.Enrichers.Environment.dll" Name="Serilog.Enrichers.Environment.dll" Source="$(var.JetComSmsSync_TargetDir)Serilog.Enrichers.Environment.dll" />
+			</Component>
+			<Component Id="Serilog.Sinks.Seq.dll" Guid="ba8462f5-5df5-4c07-9e3b-57cb642e5b29">
+				<File Id="Serilog.Sinks.Seq.dll" Name="Serilog.Sinks.Seq.dll" Source="$(var.JetComSmsSync_TargetDir)Serilog.Sinks.Seq.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+<Fragment>
+		<ComponentGroup Id="fr_files" Directory="fr">
+			<Component Id="fr_MaterialDesignExtensions.resources.dll" Guid="ac093422-2aae-4379-b731-ce0d1d2bf573">
+				<File Id="fr_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)fr\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	
+
+	<Fragment>
+		<ComponentGroup Id="pt_BR_files" Directory="pt_BR">
+			<Component Id="pt_BR_MaterialDesignExtensions.resources.dll" Guid="e6ca1e04-31f5-4401-a050-b97d034755c3">
+				<File Id="pt_BR_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)pt-BR\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="de_files" Directory="de">
+			<Component Id="de_MaterialDesignExtensions.resources.dll" Guid="a11ebcc8-303f-4a18-9155-ea442c8140ce">
+				<File Id="de_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)de\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="cs_CZ_files" Directory="cs_CZ">
+			<Component Id="cs_CZ_MaterialDesignExtensions.resources.dll" Guid="10b0d1f8-fee8-4b69-a8b5-2c299e579219">
+				<File Id="cs_CZ_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)cs-CZ\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="cs_files" Directory="cs">
+			<Component Id="cs_MaterialDesignExtensions.resources.dll" Guid="81e4c786-478d-44ca-9acd-3355bbb87e46">
+				<File Id="cs_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)cs\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ar_DZ_files" Directory="ar_DZ">
+			<Component Id="ar_DZ_MaterialDesignExtensions.resources.dll" Guid="4a03eb42-fedf-46b3-a522-3bc5c8104ab1">
+				<File Id="ar_DZ_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)ar-DZ\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="Ru_files" Directory="Ru">
+			<Component Id="Ru_MaterialDesignExtensions.resources.dll" Guid="b2dc07b1-6e1a-4041-aef8-1102bea430f8">
+				<File Id="Ru_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)Ru\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ru_ru_files" Directory="ru_ru">
+			<Component Id="ru_ru_MaterialDesignExtensions.resources.dll" Guid="1d92077e-2d30-429f-82cf-2047de9b8cd5">
+				<File Id="ru_ru_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)ru-ru\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="uz_Latn_UZ_files" Directory="uz_Latn_UZ">
+			<Component Id="uz_Latn_UZ_MaterialDesignExtensions.resources.dll" Guid="ef855a62-239c-423c-9e76-87ef7eef04f4">
+				<File Id="uz_Latn_UZ_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)uz-Latn-UZ\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="fr_FR_files" Directory="fr_FR">
+			<Component Id="fr_FR_MaterialDesignExtensions.resources.dll" Guid="686705f6-ba97-49d6-944a-36bfa1e1ec91">
+				<File Id="fr_FR_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)fr-FR\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="pt_files" Directory="pt">
+			<Component Id="pt_MaterialDesignExtensions.resources.dll" Guid="f7e9b40b-9910-4731-bf73-58ae34801a57">
+				<File Id="pt_MaterialDesignExtensions.resources.dll" Name="MaterialDesignExtensions.resources.dll" Source="$(var.JetComSmsSync_TargetDir)pt\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="unix_sqlclient_files" Directory="unix_netcoreapp2.1">
+			<Component Id="unix_sqlclient_System.Data.SqlClient.dll" Guid="{955C3F8F-4B10-4FF4-9255-4BF5FAA53604}">
+				<File Id="unix_sqlclient_System.Data.SqlClient.dll" Name="System.Data.SqlClient.dll" Source="$(var.JetComSmsSync_TargetDir)runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="win_sqlclient_files" Directory="win_netcoreapp2.1">
+			<Component Id="win_sqlclient_System.Data.SqlClient.dll" Guid="{4A70A028-ACB2-4DD4-B27A-E7DC8643413F}">
+				<File Id="win_sqlclient_System.Data.SqlClient.dll" Name="System.Data.SqlClient.dll" Source="$(var.JetComSmsSync_TargetDir)runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="win_arm64_native_files" Directory="win_arm64_native">
+			<Component Id="win_arm64_native_sni.dll" Guid="{4EB02A6A-EA57-44D5-A5C5-D8C8A03359AB}">
+				<File Id="win_arm64_native_sni.dll" Name="sni.dll" Source="$(var.JetComSmsSync_TargetDir)runtimes\win-arm64\native\sni.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="win_x64_native_files" Directory="win_x64_native">
+			<Component Id="win_x64_native_sni.dll" Guid="{33CC4452-8C89-4E8F-8FA6-AF28B95E1DCA}">
+				<File Id="win_x64_native_sni.dll" Name="sni.dll" Source="$(var.JetComSmsSync_TargetDir)runtimes\win-x64\native\sni.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="win_x86_native_files" Directory="win_x86_native">
+			<Component Id="win_x86_native_sni.dll" Guid="{E11E960F-27FD-4581-B40F-247ECE471AE2}">
+				<File Id="win_x86_native_sni.dll" Name="sni.dll" Source="$(var.JetComSmsSync_TargetDir)runtimes\win-x86\native\sni.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
