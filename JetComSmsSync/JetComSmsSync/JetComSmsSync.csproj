@@ -6,6 +6,8 @@
     <AssemblyName>JetComSmsSync</AssemblyName>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />

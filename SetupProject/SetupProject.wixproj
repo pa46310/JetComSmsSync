@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>7309d3fc-b912-48ac-8e00-5772dd8d798c</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Telemetric</OutputName>
+    <OutputName>Tekmetric</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">

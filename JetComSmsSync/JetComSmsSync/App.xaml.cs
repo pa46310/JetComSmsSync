@@ -31,6 +31,7 @@ namespace JetComSmsSync
         public const string JetComSeqApiKey = "g10Imh0Coi9bjXLvF9XA";
         protected override void OnStartup(StartupEventArgs e)
         {
+            Core.JetComLog.Error("test", "test", "", false);
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.FromLogContext()

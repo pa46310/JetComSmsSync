@@ -14,7 +14,7 @@ namespace JetComSmsSync.Services
         private readonly string _cacheDir;
         public CacheService()
         {
-            _cacheDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "JetCom", "Telemetric", "Cache");
+            _cacheDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "JetCom", "Tekmetric", "Cache");
             if (!Directory.Exists(_cacheDir))
             {
                 Directory.CreateDirectory(_cacheDir);

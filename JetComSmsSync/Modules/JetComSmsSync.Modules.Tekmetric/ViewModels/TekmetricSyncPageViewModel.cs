@@ -1,4 +1,5 @@
-﻿using JetComSmsSync.Modules.Tekmetric.Models;
+﻿using JetComSmsSync.Core;
+using JetComSmsSync.Modules.Tekmetric.Models;
 using JetComSmsSync.Services.Interfaces;
 
 using Prism.Commands;
@@ -22,6 +23,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
         public DateTime? PreviousDate { get; set; }
         private ILogger Log { get; } = Serilog.Log.ForContext<TekmetricSyncPageViewModel>();
         private TekmetricDatabaseClient Database { get; }
+        private string ApplicationName = "Tekmetric";
 
         public RecurrentModel[] Items { get; } = new RecurrentModel[]
         {
@@ -252,16 +254,18 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                     var uniqueJobs = job.Content.Except(existingJobs, Comparers.Job).ToList();
                     var result = Database.InsertJobs(uniqueJobs);
                     Log.Debug("Jobs. Unique: {0}, Inserted: {1}", uniqueJobs.Count, result);
+                    JetComLog.Error($"{result} jobs inserted", ApplicationName, account.BigID, IsAutoSend);
 
                     // Parts
                     var uniqueParts = job.Content.SelectMany(x => x.Parts).Except(existingParts, Comparers.Part).ToList();
                     result = Database.InsertParts(uniqueParts);
                     Log.Debug("Parts. Unique: {0}, Inserted: {1}", uniqueParts.Count, result);
+                    JetComLog.Error($"{result} parts inserted", ApplicationName, account.BigID, IsAutoSend);
 
                     // Labors
                     var uniqueLabors = job.Content.SelectMany(x => x.Labor).Except(existingLabors, Comparers.Labor).ToList();
                     result = Database.InsertLabors(uniqueLabors);
-                    Log.Debug("Labors. Unique: {0}, Inserted: {1}", uniqueLabors.Count, result);
+                    JetComLog.Error($"{result} labors inserted", ApplicationName, account.BigID, IsAutoSend);
                 }
             }
             catch (Exception ex)
@@ -287,6 +291,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                     var uniqueRepairOrders = repairOrder.Content.Except(existingRepairOrders, Comparers.RepairOrder).ToList();
                     var result = Database.InsertRepairOrder(uniqueRepairOrders);
                     Log.Debug("Repair orders. Unique: {0}, Inserted: {1}", uniqueRepairOrders.Count, result);
+                    JetComLog.Error($"{result} repair orders inserted", ApplicationName, account.BigID, IsAutoSend);
                 }
             }
             catch (Exception ex)
@@ -312,6 +317,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                     var uniqueAppointment = appointment.Content.Except(existingAppointments, Comparers.Appointment).ToList();
                     var result = Database.InsertAppointments(uniqueAppointment);
                     Log.Debug("Appointments. Unique: {0}, Inserted: {1}", uniqueAppointment.Count, result);
+                    JetComLog.Error($"{result} appointments inserted", ApplicationName, account.BigID, IsAutoSend);
                 }
             }
             catch (Exception ex)
@@ -337,6 +343,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                     var uniqueVehicles = vehicle.Content.Except(existingVehicles, Comparers.Vehicle).ToList();
                     var result = Database.InsertVehicles(uniqueVehicles);
                     Log.Debug("Vehicles. Unique: {0}, Inserted: {1}", uniqueVehicles.Count, result);
+                    JetComLog.Error($"{result} vehicle inserted", ApplicationName, account.BigID, IsAutoSend);
                 }
             }
             catch (Exception ex)
@@ -375,19 +382,23 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                     var uniqueCustomers = customer.Content.Except(existingCustomers, Comparers.Customer).ToList();
                     result = Database.InsertCustomer(uniqueCustomers);
                     Log.Debug("Customers. Unique: {0}, Inserted: {1}", uniqueCustomers.Count, result);
+                    JetComLog.Error($"{result} customers inserted", ApplicationName, account.BigID, IsAutoSend);
                     // Phone Numbers
                     var uniquePhones = customer.Content.SelectMany(x => x.Phone).Except(existingPhones, Comparers.Phone).ToList();
                     result = Database.InsertPhoneNumber(uniquePhones);
                     Log.Debug("Phones. Unique: {0}, Inserted: {1}", uniquePhones.Count, result);
+                    JetComLog.Error($"{result} phones inserted", ApplicationName, account.BigID, IsAutoSend);
                     // Customer Types
                     var uniqueCustomerTypes = customer.Content.Select(x => x.CustomerType)
                         .Except(existingCustomerTypes, Comparers.CustomerType).ToList();
                     result = Database.InsertCustomerTypes(uniqueCustomerTypes);
                     Log.Debug("Customer Types. Unique: {0}, Inserted: {1}", uniqueCustomerTypes.Count, result);
+                    JetComLog.Error($"{result} customer types inserted", ApplicationName, account.BigID, IsAutoSend);
                     // Addresses
                     var uniqueAddress = customer.Content.Select(x => x.Address).Except(existingAddresses, Comparers.Address).ToList();
                     result = Database.InsertAddress(uniqueAddress);
                     Log.Debug("Addresses. Unique: {0}, Inserted: {1}", uniqueAddress.Count, result);
+                    JetComLog.Error($"{result} addresses inserted", ApplicationName, account.BigID, IsAutoSend);
                 }
             }
             catch (Exception ex)
