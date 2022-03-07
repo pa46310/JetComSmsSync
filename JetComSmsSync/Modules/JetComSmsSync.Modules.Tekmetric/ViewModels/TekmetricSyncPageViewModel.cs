@@ -27,10 +27,12 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
 
         public RecurrentModel[] Items { get; } = new RecurrentModel[]
         {
-            new RecurrentModel("5 seconds", 5_000),
-            new RecurrentModel("1 minute", 60_000),
-            new RecurrentModel("1 hour", 3600_000),
+            new RecurrentModel("1 day", 86400_000),
+            new RecurrentModel("12 hour", 43200_000),
+            new RecurrentModel("6 hour", 21600_000),
             new RecurrentModel("2 hour", 7200_000),
+            new RecurrentModel("1 hour", 3600_000),
+            new RecurrentModel("1 minute", 60_000),
             new RecurrentModel("Continuos", 0),
         };
 
@@ -112,12 +114,14 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             set { SetProperty(ref _accounts, value); }
         }
 
-        private DateTime _startDate = DateTime.Today.AddDays(-1);
+        private DateTime _startDate = DateTime.UtcNow.Date.AddDays(-1);
         public DateTime StartDate
         {
             get { return _startDate; }
             set { SetProperty(ref _startDate, value); }
         }
+
+        public string StartDateText => StartDate.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         private bool _isAllSelected;
         public bool IsAllSelected
@@ -141,6 +145,9 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
         {
             Database = database;
             _cache = cache;
+
+            SelectedRecurrence = Items.FirstOrDefault();
+            RefreshCommand.Execute();
         }
 
         private DelegateCommand _refreshCommand;
@@ -417,6 +424,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             {
                 CanCancel = false;
                 _cts.Cancel();
+                IsAutoSend = false;
             }
             catch (Exception ex)
             {
@@ -430,22 +438,26 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             {
                 if (IsAutoSend)
                 {
+                    if (SelectedRecurrence is null)
+                    {
+                        IsAutoSend = false;
+                        return;
+                    }
+
                     var interval = SelectedRecurrence.Millisecond;
-                    if (interval == 0)
+                    var breathingTime = 2_000;
+                    if (interval < breathingTime)
                     {
-                        // now
-                        AutoSend_TimerElapsed(null, null);
+                        interval = breathingTime;
                     }
-                    else
+
+                    _autoSendTimer = new System.Timers.Timer(interval)
                     {
-                        _autoSendTimer = new System.Timers.Timer(interval)
-                        {
-                            AutoReset = false,
-                        };
-                        _autoSendTimer.Elapsed += AutoSend_TimerElapsed;
-                        Log.Debug("Next send will occur at {0}", DateTime.Now.AddMilliseconds(interval));
-                        _autoSendTimer.Start();
-                    }
+                        AutoReset = false,
+                    };
+                    _autoSendTimer.Elapsed += AutoSend_TimerElapsed;
+                    Log.Debug("Next send will occur at {0}", DateTime.Now.AddMilliseconds(interval));
+                    _autoSendTimer.Start();
                 }
                 else
                 {
@@ -466,7 +478,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             {
                 // execute send now
                 var last = PreviousDate ?? StartDate;
-                PreviousDate = DateTime.Now;
+                PreviousDate = DateTime.UtcNow;
                 IsBusy = true;
                 using (_cts = new CancellationTokenSource())
                 {

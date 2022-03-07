@@ -16,18 +16,8 @@ namespace JetComSmsSync
     /// </summary>
     public partial class App
     {
-        public static string SeqUrl
-        {
-            get
-            {
-                var isInternal = System.Environment.GetEnvironmentVariable("JetComSeqDevelopment", System.EnvironmentVariableTarget.Machine);
+        public static string SeqUrl => "https://logs.valueaddedonline.com";
 
-                if (string.Equals(isInternal, "1"))
-                    return "http://w26:5341/";
-
-                return "http://167.114.192.141:5341/";
-            }
-        }
         public const string JetComSeqApiKey = "g10Imh0Coi9bjXLvF9XA";
         protected override void OnStartup(StartupEventArgs e)
         {

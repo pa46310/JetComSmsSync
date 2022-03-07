@@ -17,8 +17,9 @@
         <ToolBar>
             <Button Content="{md:PackIcon Kind=Refresh}" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding RefreshCommand}"/>
-            <DatePicker SelectedDate="{Binding StartDate}" Width="96"
-                        av:SelectedDate="12/24/1996"
+            <DatePicker SelectedDate="{Binding StartDate}" Width="auto"
+                        av:SelectedDate="12/24/1996" 
+                        ToolTip="{Binding StartDateText}"
                         x:Name="dpStartDate"/>
             <Button Content="Send" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding SendCommand}"
