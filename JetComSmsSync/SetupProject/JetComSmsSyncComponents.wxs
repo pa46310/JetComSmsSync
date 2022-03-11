@@ -84,6 +84,12 @@
 			<Component Id="Serilog.Sinks.Seq.dll" Guid="ba8462f5-5df5-4c07-9e3b-57cb642e5b29">
 				<File Id="Serilog.Sinks.Seq.dll" Name="Serilog.Sinks.Seq.dll" Source="$(var.JetComSmsSync_TargetDir)Serilog.Sinks.Seq.dll" />
 			</Component>
+			<Component Id="JetComSmsSync.Modules.CDK.dll" Guid="b5c53a44-5401-4782-8a1e-8dc26ae1c5e5">
+			  <File Id="JetComSmsSync.Modules.CDK.dll" Name="JetComSmsSync.Modules.CDK.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.CDK.dll" />
+			</Component>
+			<Component Id="HtmlAgilityPack.dll" Guid="7b5e2049-abee-4a09-925d-701e2c94de4a">
+			  <File Id="HtmlAgilityPack.dll" Name="HtmlAgilityPack.dll" Source="$(var.JetComSmsSync_TargetDir)HtmlAgilityPack.dll" />
+			</Component>
 		</ComponentGroup>
 	</Fragment>
 <Fragment>

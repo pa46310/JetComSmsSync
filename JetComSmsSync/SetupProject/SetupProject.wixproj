@@ -57,7 +57,7 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JetComSmsSync\JetComSmsSync\JetComSmsSync.csproj">
+    <ProjectReference Include="..\JetComSmsSync\JetComSmsSync.csproj">
       <Name>JetComSmsSync</Name>
       <Project>{f3cd1508-7568-488f-a0c4-aca16bf057ff}</Project>
       <Private>True</Private>

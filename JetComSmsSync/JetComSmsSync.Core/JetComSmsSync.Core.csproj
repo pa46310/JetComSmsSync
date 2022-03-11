@@ -4,6 +4,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>JetComSmsSync.Core</AssemblyName>
     <Platforms>AnyCPU;x64</Platforms>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
