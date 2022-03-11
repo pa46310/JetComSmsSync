@@ -11,9 +11,19 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+                    xmlns:tekmetric="clr-namespace:JetComSmsSync.Modules.Tekmetric.Views;assembly=JetComSmsSync.Modules.Tekmetric"
+                    xmlns:cdk="clr-namespace:JetComSmsSync.Modules.CDK.Views;assembly=JetComSmsSync.Modules.CDK"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+        <!--<ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />-->
+        <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}">
+            <TabItem Header="Tekmetric">
+                <tekmetric:TekmetricSyncPage />
+            </TabItem>
+            <TabItem Header="CDK">
+                <cdk:CdkSyncPage />
+            </TabItem>
+        </TabControl>
     </Grid>
 </mde:MaterialWindow>

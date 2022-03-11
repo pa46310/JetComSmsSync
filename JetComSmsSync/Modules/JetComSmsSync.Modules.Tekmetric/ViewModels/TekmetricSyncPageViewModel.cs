@@ -1,4 +1,5 @@
 ﻿using JetComSmsSync.Core;
+using JetComSmsSync.Core.Models;
 using JetComSmsSync.Modules.Tekmetric.Models;
 using JetComSmsSync.Services.Interfaces;
 
@@ -25,19 +26,10 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
         private TekmetricDatabaseClient Database { get; }
         private string ApplicationName = "Tekmetric";
 
-        public RecurrentModel[] Items { get; } = new RecurrentModel[]
-        {
-            new RecurrentModel("1 day", 86400_000),
-            new RecurrentModel("12 hour", 43200_000),
-            new RecurrentModel("6 hour", 21600_000),
-            new RecurrentModel("2 hour", 7200_000),
-            new RecurrentModel("1 hour", 3600_000),
-            new RecurrentModel("1 minute", 60_000),
-            new RecurrentModel("Continuos", 0),
-        };
+        public RecurrenceModel[] Items { get; } = RecurrenceModel.Default;
 
-        private RecurrentModel _selectedRecurrence;
-        public RecurrentModel SelectedRecurrence
+        private RecurrenceModel _selectedRecurrence;
+        public RecurrenceModel SelectedRecurrence
         {
             get { return _selectedRecurrence; }
             set { SetProperty(ref _selectedRecurrence, value); }
@@ -517,18 +509,6 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             {
                 Log.LogAndShowError(ex, "Failed to clear cache");
             }
-        }
-    }
-
-    public class RecurrentModel
-    {
-        public string DisplayName { get; set; }
-        public int Millisecond { get; set; }
-
-        public RecurrentModel(string displayName, int millisecond)
-        {
-            DisplayName = displayName;
-            Millisecond = millisecond;
         }
     }
 }

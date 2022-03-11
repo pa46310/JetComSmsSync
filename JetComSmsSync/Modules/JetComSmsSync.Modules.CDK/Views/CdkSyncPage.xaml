@@ -1,12 +1,9 @@
-﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl x:Class="JetComSmsSync.Modules.CDK.Views.CdkSyncPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:prism="http://prismlibrary.com/"             
              xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" 
-             xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.Tekmetric.ViewModels" 
-             av:DataContext="{av:DesignInstance Type=viewmodels:TekmetricSyncPageViewModel}"
-             x:Class="JetComSmsSync.Modules.Tekmetric.Views.TekmetricSyncPage"             
-             prism:ViewModelLocator.AutoWireViewModel="True" av:DesignWidth="694.469">
+             xmlns:prism="http://prismlibrary.com/" xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.CDK.ViewModels" av:DataContext="{av:DesignInstance Type=viewmodels:CdkSyncPageViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True" av:DesignHeight="334.43">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -21,10 +18,10 @@
                         av:SelectedDate="12/24/1996" 
                         ToolTip="{Binding StartDateText}"
                         x:Name="dpStartDate"/>
-            <Button Content="Send" Style="{StaticResource MaterialDesignFlatButton}"
+            <Button Content="Delta" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding SendCommand}"
                     CommandParameter="{Binding ElementName=dpStartDate, Path=SelectedDate}"/>
-            <Button Content="Send all" Style="{StaticResource MaterialDesignFlatButton}"
+            <Button Content="Bulk" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding SendCommand}"/>
             <CheckBox x:Name="cbAutoSend" Content="Auto Send" IsChecked="{Binding IsAutoSend}" />
             <ComboBox ItemsSource="{Binding Items}" 
@@ -44,11 +41,11 @@
                         <CheckBox IsChecked="{Binding  DataContext.IsAllSelected, Mode=TwoWay, ElementName=dg}"/>
                     </DataGridCheckBoxColumn.Header>
                 </DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Shop ID" Binding="{Binding ShopID}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Account Full Name" Binding="{Binding AccountFullName}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Big ID" Binding="{Binding BigID}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Environment" Binding="{Binding Environment}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Access Token" Binding="{Binding AccessToken}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Dealer ID" Binding="{Binding DealerId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Password" Binding="{Binding Password}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="URL" Binding="{Binding BaseUrl}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 

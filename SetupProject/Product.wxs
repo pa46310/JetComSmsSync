@@ -6,72 +6,73 @@
   <!--<?define BuildVersion="1.0.0" ?>-->
 
   <!-- Fixed upgrade Id -->
+	<!--Tekmetric-->
   <?define UpgradeCode = "{E7FD2B5F-430F-4A9E-90A6-3B87147C9B46}" ?>
 
   <!-- Define main product -->
   <Product Id="$(var.ProductCode)" Name="!(loc.ProductName_$(var.Platform))" Language="!(loc.Language)" Version="!(bind.FileVersion.JetComSmsSync.exe)" Manufacturer="!(loc.Company)" UpgradeCode="$(var.UpgradeCode)">
 
-    <!-- Provide package details -->
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.Platform)" Manufacturer="!(loc.Company)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" Comments="!(loc.Comments)" Languages="!(loc.Language)" />
+	<!-- Provide package details -->
+	<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.Platform)" Manufacturer="!(loc.Company)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" Comments="!(loc.Comments)" Languages="!(loc.Language)" />
 
-    <!-- Downgrade error message -->
-    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
+	<!-- Downgrade error message -->
+	<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
 
-    <!-- Include .cab file into .msi file -->
-    <MediaTemplate EmbedCab="yes" />
+	<!-- Include .cab file into .msi file -->
+	<MediaTemplate EmbedCab="yes" />
 
-    <!-- Define main app icon -->
-    <Icon Id="icon.ico" SourceFile="app.ico" />
+	<!-- Define main app icon -->
+	<Icon Id="icon.ico" SourceFile="app.ico" />
 
-    <!-- Use the icon.ico icon for this installer (shows up in Add/Remove programs) -->
-    <Property Id="ARPPRODUCTICON">icon.ico</Property>
-    <!-- Help/Support website (shows in the Add/Remove programs) -->
-    <Property Id="ARPURLINFOABOUT">http://www.valueaddedonline.com</Property>
+	<!-- Use the icon.ico icon for this installer (shows up in Add/Remove programs) -->
+	<Property Id="ARPPRODUCTICON">icon.ico</Property>
+	<!-- Help/Support website (shows in the Add/Remove programs) -->
+	<Property Id="ARPURLINFOABOUT">http://www.valueaddedonline.com</Property>
 
-    <!-- Create a UI for the installer -->
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-    <UI>
-      <UIRef Id="WixUI_InstallDir" />
-      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
-    </UI>
-    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
-    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch !(loc.ProductName_$(var.Platform))" />
+	<!-- Create a UI for the installer -->
+	<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+	<UI>
+	  <UIRef Id="WixUI_InstallDir" />
+	  <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+	</UI>
+	<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+	<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch !(loc.ProductName_$(var.Platform))" />
 
-    <Property Id="WixShellExecTarget" Value="[INSTALLFOLDER]JetComSmsSync.exe" />
-    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+	<Property Id="WixShellExecTarget" Value="[INSTALLFOLDER]JetComSmsSync.exe" />
+	<CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
 
-    <!-- Change the installer UI background images -->
-    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\License.rtf" />
-    <!--<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp" />-->
-    <!--<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp" />-->
+	<!-- Change the installer UI background images -->
+	<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\License.rtf" />
+	<!--<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp" />-->
+	<!--<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp" />-->
 
-    <!-- Define components, shortcuts, files etc... for installer -->
-    <Feature Id="ProductFeature" Title="JetComSmsSync" Level="1">
-      <ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="INSTALLFOLDER_files" />
-      <ComponentGroupRef Id="fr_files" />
-      <ComponentGroupRef Id="pt_BR_files" />
-      <ComponentGroupRef Id="de_files" />
-      <ComponentGroupRef Id="cs_CZ_files" />
-      <ComponentGroupRef Id="cs_files" />
-      <ComponentGroupRef Id="ar_DZ_files" />
-      <ComponentGroupRef Id="Ru_files" />
-      <ComponentGroupRef Id="ru_ru_files" />
-      <ComponentGroupRef Id="uz_Latn_UZ_files" />
-      <ComponentGroupRef Id="fr_FR_files" />
-      <ComponentGroupRef Id="pt_files" />
-      <ComponentGroupRef Id="unix_sqlclient_files" />
-      <ComponentGroupRef Id="win_sqlclient_files" />
-      <ComponentGroupRef Id="win_arm64_native_files" />
-      <ComponentGroupRef Id="win_x64_native_files" />
-      <ComponentGroupRef Id="win_x86_native_files" />
-    </Feature>
+	<!-- Define components, shortcuts, files etc... for installer -->
+	<Feature Id="ProductFeature" Title="JetComSmsSync" Level="1">
+	  <ComponentGroupRef Id="ProductComponents" />
+	  <ComponentGroupRef Id="INSTALLFOLDER_files" />
+	  <ComponentGroupRef Id="fr_files" />
+	  <ComponentGroupRef Id="pt_BR_files" />
+	  <ComponentGroupRef Id="de_files" />
+	  <ComponentGroupRef Id="cs_CZ_files" />
+	  <ComponentGroupRef Id="cs_files" />
+	  <ComponentGroupRef Id="ar_DZ_files" />
+	  <ComponentGroupRef Id="Ru_files" />
+	  <ComponentGroupRef Id="ru_ru_files" />
+	  <ComponentGroupRef Id="uz_Latn_UZ_files" />
+	  <ComponentGroupRef Id="fr_FR_files" />
+	  <ComponentGroupRef Id="pt_files" />
+	  <ComponentGroupRef Id="unix_sqlclient_files" />
+	  <ComponentGroupRef Id="win_sqlclient_files" />
+	  <ComponentGroupRef Id="win_arm64_native_files" />
+	  <ComponentGroupRef Id="win_x64_native_files" />
+	  <ComponentGroupRef Id="win_x86_native_files" />
+	</Feature>
 
-    <UI>
-      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="5">1</Publish>
+	<UI>
+	  <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="5">1</Publish>
 
-      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="5">1</Publish>
-    </UI>
+	  <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="5">1</Publish>
+	</UI>
   </Product>
 
 </Wix>

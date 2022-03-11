@@ -48,7 +48,12 @@ namespace JetComSmsSync
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
+#if CDK
+
+            moduleCatalog.AddModule<Modules.CDK.CDKModule>();
+#elif Tekmetric
             moduleCatalog.AddModule<Modules.Tekmetric.TekmetricModule>();
+#endif
         }
     }
 }

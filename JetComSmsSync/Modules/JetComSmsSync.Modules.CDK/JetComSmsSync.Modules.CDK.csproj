@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>JetComSmsSync.Modules.CDK</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\JetComSmsSync.Core\JetComSmsSync.Core.csproj" />
+    <ProjectReference Include="..\..\Services\JetComSmsSync.Services.Interfaces\JetComSmsSync.Services.Interfaces.csproj" />
+  </ItemGroup>
+</Project>

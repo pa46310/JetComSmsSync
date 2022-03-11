@@ -12,6 +12,8 @@ namespace JetComSmsSync.Core.Utils
                 CookieContainer = new System.Net.CookieContainer(),
                 RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
             };
+            output.Timeout = int.MaxValue;
+            output.ReadWriteTimeout = int.MaxValue;
             output.UseNewtonsoftJson();
             return output;
         }
