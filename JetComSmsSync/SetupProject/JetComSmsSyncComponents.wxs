@@ -90,6 +90,9 @@
 			<Component Id="HtmlAgilityPack.dll" Guid="7b5e2049-abee-4a09-925d-701e2c94de4a">
 			  <File Id="HtmlAgilityPack.dll" Name="HtmlAgilityPack.dll" Source="$(var.JetComSmsSync_TargetDir)HtmlAgilityPack.dll" />
 			</Component>
+			<Component Id="JetComSMSSync.Modules.ShopWare.dll" Guid="a11cdf83-53ca-41a6-a73d-96d7d59ca1af">
+			  <File Id="JetComSMSSync.Modules.ShopWare.dll" Name="JetComSMSSync.Modules.ShopWare.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSMSSync.Modules.ShopWare.dll" />
+			</Component>
 		</ComponentGroup>
 	</Fragment>
 <Fragment>
