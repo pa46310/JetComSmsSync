@@ -241,7 +241,7 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
 
                 Message = $"{message} Loading local data";
                 var isBulk = true;
-                var start = DateTime.Now.AddYears(-1);
+                var start = startDate.HasValue ? startDate.Value : DateTime.Now.AddYears(-1);
                 var end = DateTime.Now;
                 var local = isBulk ? client.GetServiceRepairOrderHistory(start, end) : client.GetServiceRepairOrderClosed(start, end);
                 _cts.Token.ThrowIfCancellationRequested();
@@ -382,16 +382,17 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
             try
             {
                 // execute send now
-                var last = PreviousDate ?? StartDate;
-                PreviousDate = DateTime.UtcNow;
+                var start = StartDate;
+                var end = DateTime.UtcNow;
                 IsBusy = true;
                 using (_cts = new CancellationTokenSource())
                 {
                     CanCancel = true;
-                    SendSync(last);
+                    SendSync(start);
                     CanCancel = false;
                 }
                 IsBusy = false;
+                StartDate = end;
                 UpdateAutoSend();
             }
             catch (Exception ex)
