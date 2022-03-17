@@ -28,7 +28,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProject", "JetComSmsSync\SetupProject\SetupProject.wixproj", "{7309D3FC-B912-48AC-8E00-5772DD8D798C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetComSMSSync.Modules.ShopWare", "JetComSmsSync\Modules\JetComSMSSync.Modules.ShopWare\JetComSMSSync.Modules.ShopWare.csproj", "{681CD0BE-7324-47A5-8417-40F0440D264C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSMSSync.Modules.ShopWare", "JetComSmsSync\Modules\JetComSMSSync.Modules.ShopWare\JetComSMSSync.Modules.ShopWare.csproj", "{681CD0BE-7324-47A5-8417-40F0440D264C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetComSmsSync.Modules.Shop4D", "JetComSmsSync\Modules\JetComSmsSync.Modules.Shop4D\JetComSmsSync.Modules.Shop4D.csproj", "{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -134,6 +136,18 @@ Global
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.Release|x64.Build.0 = Release|Any CPU
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.Release|x86.ActiveCfg = Release|Any CPU
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.Release|x86.Build.0 = Release|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Debug|x64.Build.0 = Debug|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Debug|x86.Build.0 = Debug|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Release|x64.ActiveCfg = Release|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Release|x64.Build.0 = Release|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Release|x86.ActiveCfg = Release|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +159,7 @@ Global
 		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A} = {09AC91F0-1EB6-46AD-9041-F297FBC5BAC0}
 		{7309D3FC-B912-48AC-8E00-5772DD8D798C} = {E8671C87-21F9-4ED6-9C78-E2A02DBDB9E1}
 		{681CD0BE-7324-47A5-8417-40F0440D264C} = {09AC91F0-1EB6-46AD-9041-F297FBC5BAC0}
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B} = {09AC91F0-1EB6-46AD-9041-F297FBC5BAC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9FD40336-6A60-4E5A-A084-94F55B3262C6}

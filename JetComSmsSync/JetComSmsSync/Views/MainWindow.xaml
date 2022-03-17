@@ -13,6 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
                     xmlns:tekmetric="clr-namespace:JetComSmsSync.Modules.Tekmetric.Views;assembly=JetComSmsSync.Modules.Tekmetric"
                     xmlns:cdk="clr-namespace:JetComSmsSync.Modules.CDK.Views;assembly=JetComSmsSync.Modules.CDK"
+                    xmlns:shop4d="clr-namespace:JetComSmsSync.Modules.Shop4D.Views;assembly=JetComSmsSync.Modules.Shop4D"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
@@ -23,6 +24,9 @@
             </TabItem>
             <TabItem Header="CDK">
                 <cdk:CdkSyncPage />
+            </TabItem>
+            <TabItem Header="Shop4D" IsSelected="True">
+                <shop4d:Shop4DSyncPage />
             </TabItem>
         </TabControl>
     </Grid>

@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="JetComSmsSync.Modules.CDK.Views.CdkSyncPage"
+﻿<UserControl x:Class="JetComSmsSync.Modules.Shop4D.Views.Shop4DSyncPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
-             xmlns:prism="http://prismlibrary.com/" xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.CDK.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CdkSyncPageViewModel}"
-             prism:ViewModelLocator.AutoWireViewModel="True" d:DesignHeight="334.43"
+             xmlns:prism="http://prismlibrary.com/" xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.Shop4D.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:Shop4DSyncPageViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True" d:DesignHeight="328.391"
              Background="{StaticResource MaterialDesignPaper}">
     <Grid>
         <Grid.RowDefinitions>
@@ -42,11 +43,11 @@
                         <CheckBox IsChecked="{Binding  DataContext.IsAllSelected, Mode=TwoWay, ElementName=dg}"/>
                     </DataGridCheckBoxColumn.Header>
                 </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="Company ID" Binding="{Binding CompanyId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Account Name" Binding="{Binding AccountFullName}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Big ID" Binding="{Binding BigID}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Dealer ID" Binding="{Binding DealerId}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Password" Binding="{Binding Password}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="URL" Binding="{Binding BaseUrl}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 

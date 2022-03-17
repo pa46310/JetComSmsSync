@@ -93,6 +93,9 @@
 			<Component Id="JetComSMSSync.Modules.ShopWare.dll" Guid="a11cdf83-53ca-41a6-a73d-96d7d59ca1af">
 			  <File Id="JetComSMSSync.Modules.ShopWare.dll" Name="JetComSMSSync.Modules.ShopWare.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSMSSync.Modules.ShopWare.dll" />
 			</Component>
+			<Component Id="JetComSmsSync.Modules.Shop4D.dll" Guid="e40f2baf-5661-4043-8d79-80d21d18b5de">
+			  <File Id="JetComSmsSync.Modules.Shop4D.dll" Name="JetComSmsSync.Modules.Shop4D.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.Shop4D.dll" />
+			</Component>
 		</ComponentGroup>
 	</Fragment>
 <Fragment>
