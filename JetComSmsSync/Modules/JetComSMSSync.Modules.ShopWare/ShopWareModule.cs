@@ -1,4 +1,5 @@
-﻿using JetComSMSSync.Modules.ShopWare.Views;
+﻿using JetComSMSSync.Modules.ShopWare.ViewModels;
+using JetComSMSSync.Modules.ShopWare.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -14,7 +15,7 @@ namespace JetComSMSSync.Modules.ShopWare
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterForNavigation<ShopWareSyncPage, ShopWareSyncPageViewModel>();
         }
     }
 }

@@ -30,7 +30,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProject", "JetComSmsSy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSMSSync.Modules.ShopWare", "JetComSmsSync\Modules\JetComSMSSync.Modules.ShopWare\JetComSMSSync.Modules.ShopWare.csproj", "{681CD0BE-7324-47A5-8417-40F0440D264C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetComSmsSync.Modules.Shop4D", "JetComSmsSync\Modules\JetComSmsSync.Modules.Shop4D\JetComSmsSync.Modules.Shop4D.csproj", "{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSmsSync.Modules.Shop4D", "JetComSmsSync\Modules\JetComSmsSync.Modules.Shop4D\JetComSmsSync.Modules.Shop4D.csproj", "{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
