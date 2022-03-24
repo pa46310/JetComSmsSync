@@ -17,6 +17,8 @@
         <ToolBar>
             <Button Content="{md:PackIcon Kind=Refresh}" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding RefreshCommand}"/>
+            <TextBox md:HintAssist.Hint="Look back" Text="{Binding LookBackDays}" Width="96" d:Text="10" md:HintAssist.IsFloating="True"
+                     ToolTip="Number of pages to look for new data. Each page contains 100 result. Use 0 to read all pages"/>
             <Button Content="Send" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding SendCommand}"/>
             <CheckBox x:Name="cbAutoSend" Content="Auto Send" IsChecked="{Binding IsAutoSend}" />

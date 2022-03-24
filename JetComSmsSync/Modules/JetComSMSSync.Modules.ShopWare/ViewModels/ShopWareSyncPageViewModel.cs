@@ -17,6 +17,13 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
     {
         private readonly DatabaseClient _database;
 
+        private int _lookBackDays = 10;
+        public int LookBackDays
+        {
+            get { return _lookBackDays; }
+            set { SetProperty(ref _lookBackDays, value); }
+        }
+
         public ShopWareSyncPageViewModel(DatabaseClient database)
         {
             _database = database;
@@ -51,40 +58,27 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 using var context2 = LogContext.PushProperty("BigID", account.BigID);
                 ct.ThrowIfCancellationRequested();
                 var client = new ServiceClient(account);
-
-                //var accountPrefix = $"[{current}/{total}] ";
-                //Message = accountPrefix + "Getting data for compare";
-                //var uniquePastRecommendations = _database.GetPastRecommendationsForCompare(account.BigID);
-                //var uniquePayments = _database.GetPaymentsForCompare(account.BigID);
-                //var uniqueRepairOrders = _database.GetRepairOrdersForCompare(account.BigID);
-                //var uniqueServiceHaxmats = _database.GetServiceHazmatsForCompare(account.BigID);
-                //var uniqueServiceInspections = _database.GetServiceInspectionsForCompare(account.BigID);
-                //var uniqueServiceLabors = _database.GetServiceLaborsForCompare(account.BigID);
-                //var uniqueServiceParts = _database.GetServicePartForCompare(account.BigID);
-                //var uniqueServices = _database.GetServiceForCompare(account.BigID);
-                //var uniqueServiceSublet = _database.GetServiceSubletForCompare(account.BigID);
-                //var uniqueVehicles = _database.GetVehicleForCompare(account.BigID);
                 string prefix;
 
-                //prefix = $"[{current}/{total}] [Customer]";
-                //SendCustomerData(client, account, prefix, ct);
-                //ct.ThrowIfCancellationRequested();
+                prefix = $"[{current}/{total}] [Customer]";
+                SendCustomerData(client, account, prefix, ct);
+                ct.ThrowIfCancellationRequested();
 
-                //prefix = $"[{current}/{total}] [PastRecommendation]";
-                //SendPastRecomendationData(client, account, prefix, ct);
-                //ct.ThrowIfCancellationRequested();
+                prefix = $"[{current}/{total}] [PastRecommendation]";
+                SendPastRecomendationData(client, account, prefix, ct);
+                ct.ThrowIfCancellationRequested();
 
-                //prefix = $"[{current}/{total}] [Payment]";
-                //SendPaymentsData(client, account, prefix, ct);
-                //ct.ThrowIfCancellationRequested();
+                prefix = $"[{current}/{total}] [Payment]";
+                SendPaymentsData(client, account, prefix, ct);
+                ct.ThrowIfCancellationRequested();
 
                 prefix = $"[{current}/{total}] [RepairOrder]";
                 SendRepairOrderData(client, account, prefix, ct);
                 ct.ThrowIfCancellationRequested();
 
-                //prefix = $"[{current}/{total}] [Vehicle]";
-                //SendVehicleData(client, account, prefix, ct);
-                //ct.ThrowIfCancellationRequested();
+                prefix = $"[{current}/{total}] [Vehicle]";
+                SendVehicleData(client, account, prefix, ct);
+                ct.ThrowIfCancellationRequested();
             }
         }
 
@@ -98,7 +92,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 var inserted = 0;
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetVehicles())
+                foreach (var item in client.GetVehicles(1, LookBackDays))
                 {
                     var unique = item.Results.Except(compare, Comparers.Vehicle).ToList();
                     compare.AddRange(unique);
@@ -136,7 +130,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 ct.ThrowIfCancellationRequested();
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetRepairOrders())
+                foreach (var item in client.GetRepairOrders(1, LookBackDays))
                 {
                     // repair order
                     var repairOrders = item.Results.Select(x => x.ToRepairOrder(account.BigID));
@@ -201,7 +195,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 var inserted = 0;
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetPayments())
+                foreach (var item in client.GetPayments(1, LookBackDays))
                 {
                     var unique = item.Results.Except(compare, Comparers.Payment).ToList();
                     compare.AddRange(unique);
@@ -228,7 +222,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 var inserted = 0;
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetPastRecomendations())
+                foreach (var item in client.GetPastRecomendations(1, LookBackDays))
                 {
                     var unique = item.Results.Except(compare, Comparers.PastRecomendation).ToList();
                     compare.AddRange(unique);
@@ -255,7 +249,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 var inserted = 0;
 
                 Message = prefix + " Getting data...";
-                foreach (var customers in client.GetCustomers())
+                foreach (var customers in client.GetCustomers(1, LookBackDays))
                 {
                     var unique = customers.Results.Except(uniqueCustomers, Comparers.Customer).ToList();
                     uniqueCustomers.AddRange(unique);

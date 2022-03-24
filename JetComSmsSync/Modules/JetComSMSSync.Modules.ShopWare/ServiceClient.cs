@@ -29,7 +29,7 @@ namespace JetComSMSSync.Modules.ShopWare
             var response = Client.Get(request);
         }
 
-        public IEnumerable<PageableResponse<CustomerModel>> GetCustomers(int page = 1)
+        public IEnumerable<PageableResponse<CustomerModel>> GetCustomers(int page = 1, int lookBackDays = 0)
         {
             do
             {
@@ -59,10 +59,14 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
+                if (lookBackDays > 0 && page > lookBackDays)
+                {
+                    yield break;
+                }
 
             } while (true);
         }
-        public IEnumerable<PageableResponse<PastRecomendationModel>> GetPastRecomendations(int page = 1)
+        public IEnumerable<PageableResponse<PastRecomendationModel>> GetPastRecomendations(int page = 1, int lookBackDays = 0)
         {
             do
             {
@@ -91,10 +95,14 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
+                if (lookBackDays > 0 && page > lookBackDays)
+                {
+                    yield break;
+                }
 
             } while (true);
         }
-        public IEnumerable<PageableResponse<PaymentModel>> GetPayments(int page = 1)
+        public IEnumerable<PageableResponse<PaymentModel>> GetPayments(int page = 1, int lookBackDays = 0)
         {
             do
             {
@@ -124,11 +132,15 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
+                if (lookBackDays > 0 && page > lookBackDays)
+                {
+                    yield break;
+                }
 
             } while (true);
         }
 
-        public IEnumerable<PageableResponse<RepairOrderResponse>> GetRepairOrders(int page = 1)
+        public IEnumerable<PageableResponse<RepairOrderResponse>> GetRepairOrders(int page = 1, int lookBackDays = 0)
         {
             Log.Debug("Getting repair orders");
             do
@@ -152,9 +164,20 @@ namespace JetComSMSSync.Modules.ShopWare
 
                 yield return response.Data;
 
+                if (response.Data.Current_Page >= response.Data.Total_Pages)
+                {
+                    break;
+                }
+
+                page++;
+                if (lookBackDays > 0 && page > lookBackDays)
+                {
+                    yield break;
+                }
+
             } while (true);
         }
-        public IEnumerable<PageableResponse<VehicleModel>> GetVehicles(int page = 1)
+        public IEnumerable<PageableResponse<VehicleModel>> GetVehicles(int page = 1, int lookBackDays = 0)
         {
             do
             {
@@ -184,6 +207,10 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
+                if (lookBackDays > 0 && page > lookBackDays)
+                {
+                    yield break;
+                }
 
             } while (true);
         }
