@@ -2,11 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:prism="http://prismlibrary.com/"             
-             xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
              xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.Tekmetric.ViewModels" 
-             av:DataContext="{av:DesignInstance Type=viewmodels:TekmetricSyncPageViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:TekmetricSyncPageViewModel}"
              x:Class="JetComSmsSync.Modules.Tekmetric.Views.TekmetricSyncPage"             
-             prism:ViewModelLocator.AutoWireViewModel="True" av:DesignWidth="694.469">
+             prism:ViewModelLocator.AutoWireViewModel="True" d:DesignWidth="694.469" d:DesignHeight="226.403"
+             d:Background="{StaticResource MaterialDesignPaper}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,7 +19,7 @@
             <Button Content="{md:PackIcon Kind=Refresh}" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding RefreshCommand}"/>
             <DatePicker SelectedDate="{Binding StartDate}" Width="auto"
-                        av:SelectedDate="12/24/1996" 
+                        d:SelectedDate="12/24/1996" 
                         ToolTip="{Binding StartDateText}"
                         x:Name="dpStartDate"/>
             <Button Content="Send" Style="{StaticResource MaterialDesignFlatButton}"
@@ -53,8 +54,8 @@
         </DataGrid>
 
         <md:Snackbar Grid.Row="2" IsActive="{Binding IsBusy}" 
-                     av:IsActive="True">
-            <md:SnackbarMessage Content="{Binding Message}" av:Content="Loading..."
+                     d:IsActive="True">
+            <md:SnackbarMessage Content="{Binding Message}" d:Content="Loading..."
                                 ActionContent="CANCEL"
                                 ActionCommand="{Binding CancelCommand}"/>
         </md:Snackbar>

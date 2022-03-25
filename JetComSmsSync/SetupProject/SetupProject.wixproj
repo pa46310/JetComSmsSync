@@ -78,6 +78,6 @@
 	    </GetAssemblyIdentity>
 	    <!-- Rename and move final MSI -->
 	    <!--<Exec Command="if not exist Installs mkdir Installs" />-->
-	    <Exec Command="move $(TargetPath) $(TargetDir)JetComSmsSync-v%(AssemblyVersion.Version).msi" />
+	    <Exec Command="move $(TargetPath) $(TargetDir)ApiSmsSync-v%(AssemblyVersion.Version).msi" />
     </Target>
 </Project>

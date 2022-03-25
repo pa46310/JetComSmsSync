@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        xmlns:mde="https://spiegelp.github.io/MaterialDesignExtensions/winfx/xaml"
+        xmlns:mde="https://spiegelp.github.io/MaterialDesignExtensions/winfx/xaml"                    
         xmlns:core="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core"
         Title="{Binding Title}" Height="600" Width="800" 
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -11,15 +11,55 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+                    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d"
                     xmlns:tekmetric="clr-namespace:JetComSmsSync.Modules.Tekmetric.Views;assembly=JetComSmsSync.Modules.Tekmetric"
                     xmlns:cdk="clr-namespace:JetComSmsSync.Modules.CDK.Views;assembly=JetComSmsSync.Modules.CDK"
                     xmlns:shop4d="clr-namespace:JetComSmsSync.Modules.Shop4D.Views;assembly=JetComSmsSync.Modules.Shop4D"
-                    xmlns:shopware="clr-namespace:JetComSMSSync.Modules.ShopWare.Views;assembly=JetComSMSSync.Modules.ShopWare"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+                    xmlns:shopware="clr-namespace:JetComSMSSync.Modules.ShopWare.Views;assembly=JetComSMSSync.Modules.ShopWare" xmlns:viewmodels="clr-namespace:JetComSmsSync.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+                    Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+                    md:ThemeAssist.Theme="{Binding Theme}">
+    <mde:MaterialWindow.TitleTemplate>
+        <DataTemplate>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource WindowTitleTextBlockStyle}" Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}" Margin="8,0,0,0" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch">
+                    <Button Style="{StaticResource WindowButtonStyle}" Command="{Binding DataContext.ToggleModeCommand, RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}" ToolTip="Toggle Light/Dark mode">
+                        <md:PackIcon Style="{StaticResource WindowButtonIconStyle}" Kind="ThemeLightDark" />
+                    </Button>
+                    <Border Width="1" VerticalAlignment="Stretch" SnapsToDevicePixels="True" Margin="8,4,8,4"
+                            Background="{Binding Path=BorderForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </mde:MaterialWindow.TitleTemplate>
     <Grid>
-        <!--<ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />-->
-        <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}">
+        <Grid.Resources>
+            <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+                <Setter Property="BorderBrush" Value="{StaticResource PrimaryHueMidBrush}" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Content="Tekmetric" Command="{Binding NavigateCommand}" CommandParameter="TekmetricSyncPage" IsChecked="True"/>
+                <RadioButton Content="CDK" Command="{Binding NavigateCommand}" CommandParameter="CdkSyncPage" />
+                <RadioButton Content="Shop4D" Command="{Binding NavigateCommand}" CommandParameter="Shop4DSyncPage" />
+                <RadioButton Content="ShopWare" Command="{Binding NavigateCommand}" CommandParameter="ShopWareSyncPage" />
+            </StackPanel>
+        </ScrollViewer>        
+        
+        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+        <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Visibility="Collapsed">
             <TabItem Header="Tekmetric">
                 <tekmetric:TekmetricSyncPage />
             </TabItem>

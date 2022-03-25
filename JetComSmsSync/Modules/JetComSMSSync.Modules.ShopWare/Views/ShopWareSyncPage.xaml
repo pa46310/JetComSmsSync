@@ -6,7 +6,8 @@
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:viewmodels="clr-namespace:JetComSMSSync.Modules.ShopWare.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ShopWareSyncPageViewModel}" mc:Ignorable="d" 
-             Background="{StaticResource MaterialDesignBackground}" d:DesignHeight="397.391" d:DesignWidth="808.97">
+             d:DesignHeight="397.391" d:DesignWidth="808.97"
+             d:Background="{StaticResource MaterialDesignPaper}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

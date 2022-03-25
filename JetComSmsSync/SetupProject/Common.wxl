@@ -3,16 +3,16 @@
 
   <String Id="Company">JetCom</String>
 
-  <String Id="ProductNameFolder">JetComSMSSync</String>
+  <String Id="ProductNameFolder">ApiSmsSync</String>
 
-  <String Id="ProductName_x86">SMS Sync (32bit)</String>
-  <String Id="ProductName_x64">SMS Sync</String>
+  <String Id="ProductName_x86">API SMS Sync (32bit)</String>
+  <String Id="ProductName_x64">API SMS Sync</String>
 
-  <String Id="Description">This is Tekmetric</String>
-  <String Id="Comments">Tekmetric</String>
-  <String Id="Keywords">Tekmetric</String>
+  <String Id="Description">This is api sms sync</String>
+  <String Id="Comments">ApiSmsSync</String>
+  <String Id="Keywords">ApiSmsSync</String>
 
-  <String Id="DowngradeErrorMessage">A newer version of JetComSMSSync is already installed.</String>
+  <String Id="DowngradeErrorMessage">A newer version of ApiSmsSync is already installed.</String>
 
   <String Id="Language">1033</String>
 

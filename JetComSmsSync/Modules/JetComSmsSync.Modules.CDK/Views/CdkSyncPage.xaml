@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
              xmlns:prism="http://prismlibrary.com/" xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.CDK.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CdkSyncPageViewModel}"
              prism:ViewModelLocator.AutoWireViewModel="True" d:DesignHeight="334.43"
-             Background="{StaticResource MaterialDesignPaper}">
+             d:Background="{StaticResource MaterialDesignPaper}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
