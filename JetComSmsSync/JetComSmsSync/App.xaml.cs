@@ -51,6 +51,7 @@ namespace JetComSmsSync
             moduleCatalog.AddModule<Modules.CDK.CDKModule>();
             moduleCatalog.AddModule<Modules.Tekmetric.TekmetricModule>();
             moduleCatalog.AddModule<Modules.Shop4D.Shop4DModule>();
+            moduleCatalog.AddModule<Modules.TireMasterView.TireMasterViewModule>();
             moduleCatalog.AddModule<JetComSMSSync.Modules.ShopWare.ShopWareModule>();
         }
     }

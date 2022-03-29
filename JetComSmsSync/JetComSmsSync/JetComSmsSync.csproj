@@ -26,6 +26,7 @@
 		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Shop4D\JetComSmsSync.Modules.Shop4D.csproj" />
 		<ProjectReference Include="..\Modules\JetComSMSSync.Modules.ShopWare\JetComSMSSync.Modules.ShopWare.csproj" />
 		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Tekmetric\JetComSmsSync.Modules.Tekmetric.csproj" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.TireMasterView\JetComSmsSync.Modules.TireMasterView.csproj" />
 		<ProjectReference Include="..\Services\JetComSmsSync.Services.Interfaces\JetComSmsSync.Services.Interfaces.csproj" />
 		<ProjectReference Include="..\Services\JetComSmsSync.Services\JetComSmsSync.Services.csproj" />
 	</ItemGroup>
