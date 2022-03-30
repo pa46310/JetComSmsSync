@@ -224,7 +224,7 @@ namespace JetComSmsSync.Modules.Shop4D.ViewModels
                 var uniqueRepairOrders = Database.GetRepairOrderForCompare(account.BigID);
                 var uniqueVehicles = Database.GetVehicleForCompare(account.BigID);
 
-                foreach (var range in DateUtils.GetRange(start, end, 1))
+                foreach (var range in DateUtils.GetRangeByMonth(start, end, 1))
                 {
                     var prefix = $"{accountPrefix}[{range.Item1.ToShortDateString()}-{range.Item1.ToShortDateString()}] ";
 

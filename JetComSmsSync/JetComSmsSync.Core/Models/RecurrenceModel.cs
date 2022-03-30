@@ -1,6 +1,6 @@
 ﻿namespace JetComSmsSync.Core.Models
 {
-    public class RecurrenceModel
+    public partial class RecurrenceModel
     {
         public static RecurrenceModel[] Default { get; } = new[]
         {

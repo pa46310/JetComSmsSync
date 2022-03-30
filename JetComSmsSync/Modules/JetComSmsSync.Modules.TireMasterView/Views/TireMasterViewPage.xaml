@@ -19,9 +19,12 @@
                     Command="{Binding RefreshCommand}"/>
             <DatePicker SelectedDate="{Binding StartDate}" Width="auto"
                         d:SelectedDate="12/24/1996" 
-                        x:Name="dpStartDate"/>
+                        x:Name="dpStartDate"
+                        md:HintAssist.Hint="Start Date" md:HintAssist.IsFloating="True"/>
+            <TextBox Text="{Binding Limit}" Width="96" d:Text="100" md:HintAssist.Hint="Limit" md:HintAssist.IsFloating="True"/>
             <Button Content="Send" Style="{StaticResource MaterialDesignFlatButton}"
-                    Command="{Binding SendCommand}"/>
+                    Command="{Binding SendCommand}"
+                    CommandParameter="{Binding StartDate}"/>
             <CheckBox x:Name="cbAutoSend" Content="Auto Send" IsChecked="{Binding IsAutoSend}" />
             <ComboBox ItemsSource="{Binding Items}" 
                       md:HintAssist.Hint="Recurrence"
@@ -38,9 +41,13 @@
                         <CheckBox IsChecked="{Binding  DataContext.IsAllSelected, Mode=TwoWay, ElementName=dg}"/>
                     </DataGridCheckBoxColumn.Header>
                 </DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Server" Binding="{Binding Server}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Password" Binding="{Binding Password}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="BigId" Binding="{Binding BigId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="LocationId" Binding="{Binding LocationId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="AccountId" Binding="{Binding AccountId}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 

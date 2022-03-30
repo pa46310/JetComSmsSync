@@ -34,5 +34,7 @@ namespace JetComSmsSync.Modules.TireMasterView.Models
         public string ST { get; set; }
         public string Zip { get; set; }
 
+        public string BigId { get; set; }
+
     }
 }
