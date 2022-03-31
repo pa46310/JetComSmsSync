@@ -82,29 +82,36 @@ namespace JetComSmsSync.Modules.TireMasterView.ViewModels
                 var limit = Limit;
                 foreach (var range in DateUtils.GetRangeByDay(start, end))
                 {
-                    Message = $"[{current}/{total}] [{offset}-{offset + limit}/{count}] Getting local data";
-                    var local = service.GetItems(range.Item1, offset, limit);
+                    do
+                    {
+                        var offsetEnd = Math.Min(count, offset + limit);
+                        Message = $"[{current}/{total}] [{offset}-{offsetEnd}/{count}] Getting local data";
+                        var local = service.GetItems(range.Item1, offset, limit);
 
-                    Message = $"[{current}/{total}] [{offset}-{offset + limit}/{count}] Comparing local and live data";
-                    // compare data
-                    var uniqueCustomer = local.Data.Except(customerForCompare, Comparers.Customer).ToList();
-                    customerForCompare.AddRange(uniqueCustomer);
+                        Message = $"[{current}/{total}] [{offset}-{offsetEnd}/{count}] Comparing local and live data";
+                        // compare data
+                        var uniqueCustomer = local.Data.Except(customerForCompare, Comparers.Customer).ToList();
+                        customerForCompare.AddRange(uniqueCustomer);
 
-                    var uniqueVehicles = local.Data.Except(vehicleForCompare, Comparers.Vehicle).ToList();
-                    vehicleForCompare.AddRange(uniqueVehicles);
+                        var uniqueVehicles = local.Data.Except(vehicleForCompare, Comparers.Vehicle).ToList();
+                        vehicleForCompare.AddRange(uniqueVehicles);
 
-                    var uniqueRo = local.Data.Except(roForCompare, Comparers.RepairOrder).ToList();
-                    roForCompare.AddRange(uniqueRo);
+                        var uniqueRo = local.Data.Except(roForCompare, Comparers.RepairOrder).ToList();
+                        roForCompare.AddRange(uniqueRo);
 
-                    var uniqueItems = local.Data.Except(lineItemsForCompare, Comparers.LineItem).ToList();
-                    lineItemsForCompare.AddRange(uniqueItems);
+                        var uniqueItems = local.Data.Except(lineItemsForCompare, Comparers.LineItem).ToList();
+                        lineItemsForCompare.AddRange(uniqueItems);
 
-                    // upload unique data
-                    Message = $"[{current}/{total}] [{offset}-{offset + limit}/{count}] Inserting unique data";
-                    inserted = _database.InsertCustomer(uniqueCustomer);
-                    inserted = _database.InsertVehicles(uniqueVehicles);
-                    inserted = _database.InsertRepairOrders(uniqueRo);
-                    inserted = _database.InsertLineItems(uniqueItems);
+                        // upload unique data
+                        Message = $"[{current}/{total}] [{offset}-{offset + limit}/{count}] Inserting unique data";
+                        inserted = _database.InsertCustomer(uniqueCustomer);
+                        inserted = _database.InsertVehicles(uniqueVehicles);
+                        inserted = _database.InsertRepairOrders(uniqueRo);
+                        inserted = _database.InsertLineItems(uniqueItems);
+
+                        offset += limit;
+
+                    } while (offset < count);
                 }
 
             }
