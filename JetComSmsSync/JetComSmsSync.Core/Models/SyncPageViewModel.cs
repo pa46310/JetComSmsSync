@@ -16,7 +16,7 @@ namespace JetComSmsSync.Core.Models
         private System.Timers.Timer _autoSendTimer;
         private CancellationTokenSource _cts;
         public DateTime? PreviousDate { get; set; }
-        private ILogger Log { get; } = Serilog.Log.ForContext<SyncPageViewModel<T>>();
+        protected virtual ILogger Log { get; } = Serilog.Log.ForContext<SyncPageViewModel<T>>();
         public RecurrenceModel[] Items { get; } = RecurrenceModel.Default;
 
         private RecurrenceModel _selectedRecurrence;

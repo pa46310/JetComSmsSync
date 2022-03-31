@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="JetComSmsSync.Modules.TireMasterView.Views.TireMasterViewPage"
+﻿<UserControl x:Class="JetComSmsSync.Modules.Protractor.Views.ProtractorSyncPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.Protractor.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ProtractorSyncPageViewModel}"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
-             xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.TireMasterView.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:TireMasterViewPageViewModel}" 
              d:DesignHeight="397.391" d:DesignWidth="808.97"
              d:Background="{StaticResource MaterialDesignPaper}">
     <Grid>
@@ -43,12 +43,8 @@
                     </DataGridCheckBoxColumn.Header>
                 </DataGridCheckBoxColumn>
                 <DataGridTextColumn Header="BigId" Binding="{Binding BigId}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="LocationId" Binding="{Binding LocationId}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="City" Binding="{Binding City}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="AccountId" Binding="{Binding AccountId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Connection Id" Binding="{Binding ConnectionId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Api Key" Binding="{Binding ApiKey}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 

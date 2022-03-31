@@ -16,6 +16,9 @@
 	  <None Remove="app.ico" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 		<PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
 		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
 		<PackageReference Include="Serilog.Sinks.Seq" Version="5.1.0" />
@@ -23,6 +26,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\JetComSmsSync.Core\JetComSmsSync.Core.csproj" />
 		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.CDK\JetComSmsSync.Modules.CDK.csproj" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Protractor\JetComSmsSync.Modules.Protractor.csproj" />
 		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Shop4D\JetComSmsSync.Modules.Shop4D.csproj" />
 		<ProjectReference Include="..\Modules\JetComSMSSync.Modules.ShopWare\JetComSMSSync.Modules.ShopWare.csproj" />
 		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Tekmetric\JetComSmsSync.Modules.Tekmetric.csproj" />
@@ -34,5 +38,10 @@
 	  <Resource Include="app.ico">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

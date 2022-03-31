@@ -56,6 +56,7 @@
                 <RadioButton Content="Shop4D" Command="{Binding NavigateCommand}" CommandParameter="Shop4DSyncPage" />
                 <RadioButton Content="ShopWare" Command="{Binding NavigateCommand}" CommandParameter="ShopWareSyncPage" />
                 <RadioButton Content="TireMasterView" Command="{Binding NavigateCommand}" CommandParameter="TireMasterViewPage" />
+                <RadioButton Content="Protractor" Command="{Binding NavigateCommand}" CommandParameter="ProtractorSyncPage" />
             </StackPanel>
         </ScrollViewer>        
         

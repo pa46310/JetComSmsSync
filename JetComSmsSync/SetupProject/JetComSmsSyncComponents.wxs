@@ -3,6 +3,9 @@
 	<?define JetComSmsSync_TargetDir=$(var.JetComSmsSync.TargetDir)?>
 	<Fragment>
 		<ComponentGroup Id="INSTALLFOLDER_files" Directory="INSTALLFOLDER">
+			<Component Id="appsettings.json" Guid="{685263E8-BD3E-4841-B28D-3031043F57C3}">
+				<File Id="appsettings.json" Name="appsettings.json" Source="$(var.JetComSmsSync_TargetDir)appsettings.json" />
+			</Component>
 			<Component Id="MaterialDesignThemes.Wpf.dll" Guid="86b2b7ce-0fd2-4b32-b24b-406b8dddb1a3">
 				<File Id="MaterialDesignThemes.Wpf.dll" Name="MaterialDesignThemes.Wpf.dll" Source="$(var.JetComSmsSync_TargetDir)MaterialDesignThemes.Wpf.dll" />
 			</Component>
@@ -96,8 +99,41 @@
 			<Component Id="JetComSmsSync.Modules.Shop4D.dll" Guid="e40f2baf-5661-4043-8d79-80d21d18b5de">
 			  <File Id="JetComSmsSync.Modules.Shop4D.dll" Name="JetComSmsSync.Modules.Shop4D.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.Shop4D.dll" />
 			</Component>
-			<Component Id="JetComSmsSync.Modules.TireMasterView.dll" Guid="03abfd19-6f97-4850-ae3a-589379ebcb7e">
+			<Component Id="Microsoft.Extensions.Configuration.dll" Guid="ee041ab7-ca96-45d1-8826-f62825dd071d">
+			  <File Id="Microsoft.Extensions.Configuration.dll" Name="Microsoft.Extensions.Configuration.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.Configuration.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Configuration.Json.dll" Guid="bdd1f369-c808-49e0-981c-40f8c882dc64">
+			  <File Id="Microsoft.Extensions.Configuration.Json.dll" Name="Microsoft.Extensions.Configuration.Json.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.Configuration.Json.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Configuration.FileExtensions.dll" Guid="64928dce-551a-4859-a8ee-9af6406018a7">
+			  <File Id="Microsoft.Extensions.Configuration.FileExtensions.dll" Name="Microsoft.Extensions.Configuration.FileExtensions.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.Configuration.FileExtensions.dll" />
+			</Component>
+			<Component Id="JetComSmsSync.Modules.TireMasterView.dll" Guid="585457bc-af5c-418e-9a6c-b4f6e2925669">
 			  <File Id="JetComSmsSync.Modules.TireMasterView.dll" Name="JetComSmsSync.Modules.TireMasterView.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.TireMasterView.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Configuration.Abstractions.dll" Guid="52ac197b-5e82-4d10-b93f-0aafb8cfbe82">
+			  <File Id="Microsoft.Extensions.Configuration.Abstractions.dll" Name="Microsoft.Extensions.Configuration.Abstractions.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
+			</Component>
+			<Component Id="System.Runtime.CompilerServices.Unsafe.dll" Guid="87074a67-a5a7-4f78-bbff-e846b967e143">
+			  <File Id="System.Runtime.CompilerServices.Unsafe.dll" Name="System.Runtime.CompilerServices.Unsafe.dll" Source="$(var.JetComSmsSync_TargetDir)System.Runtime.CompilerServices.Unsafe.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.Primitives.dll" Guid="dc6ab656-fe81-4d61-944c-97367872883c">
+			  <File Id="Microsoft.Extensions.Primitives.dll" Name="Microsoft.Extensions.Primitives.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.Primitives.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.FileProviders.Physical.dll" Guid="0ba225ab-7bb9-4793-ba9d-011a33a6f12e">
+			  <File Id="Microsoft.Extensions.FileProviders.Physical.dll" Name="Microsoft.Extensions.FileProviders.Physical.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.FileProviders.Physical.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.FileSystemGlobbing.dll" Guid="962ab1b0-00fe-4417-bbbe-68ba3d28de74">
+			  <File Id="Microsoft.Extensions.FileSystemGlobbing.dll" Name="Microsoft.Extensions.FileSystemGlobbing.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.FileSystemGlobbing.dll" />
+			</Component>
+			<Component Id="System.Text.Json.dll" Guid="adfb79ad-0974-4bb2-9dea-4427190aed21">
+			  <File Id="System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.JetComSmsSync_TargetDir)System.Text.Json.dll" />
+			</Component>
+			<Component Id="System.Text.Encodings.Web.dll" Guid="0c148d8f-2bd7-4e8b-be73-3aaec5269899">
+			  <File Id="System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.JetComSmsSync_TargetDir)System.Text.Encodings.Web.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Guid="c2ffc20b-4367-4867-bebe-be3dd7eacc89">
+			  <File Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Name="Microsoft.Extensions.FileProviders.Abstractions.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.FileProviders.Abstractions.dll" />
 			</Component>
 		</ComponentGroup>
 	</Fragment>

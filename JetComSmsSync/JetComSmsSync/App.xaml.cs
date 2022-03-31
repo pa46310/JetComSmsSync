@@ -1,12 +1,14 @@
 ﻿using JetComSmsSync.Services;
 using JetComSmsSync.Services.Interfaces;
 using JetComSmsSync.Views;
-
+using Microsoft.Extensions.Configuration;
 using Prism.Ioc;
 using Prism.Modularity;
 
 using Serilog;
-
+using System;
+using System.Configuration;
+using System.IO;
 using System.Windows;
 
 namespace JetComSmsSync
@@ -16,13 +18,17 @@ namespace JetComSmsSync
     /// </summary>
     public partial class App
     {
-        public static string SeqUrl => "http://167.114.192.141:5341";
-        //public static string SeqUrl => "https://logs.valueaddedonline.com";
-
         public const string JetComSeqApiKey = "g10Imh0Coi9bjXLvF9XA";
+        public IConfiguration Configuration { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
-            Core.JetComLog.Error("test", "test", "", false);
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            var seqUrl = Configuration["LogServerUrl"];
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.FromLogContext()
@@ -32,10 +38,25 @@ namespace JetComSmsSync
 #else
                 .Enrich.WithProperty("Environment", "Production")
 #endif
-                .WriteTo.Seq(SeqUrl, apiKey: JetComSeqApiKey)
+                .WriteTo.Seq(seqUrl, apiKey: JetComSeqApiKey)
                 .CreateLogger();
+
+            Dispatcher.UnhandledException += Dispatcher_UnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             base.OnStartup(e);
         }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Log.Fatal("Unknown error: {0}", e.ExceptionObject);
+        }
+
+        private void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            Log.Fatal(e.Exception, "Unknown error");
+        }
+
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
@@ -43,6 +64,7 @@ namespace JetComSmsSync
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterInstance(Configuration);
             containerRegistry.RegisterSingleton<IMessageService, MessageService>();
             containerRegistry.RegisterSingleton<ICacheService, CacheService>();
         }
@@ -53,6 +75,7 @@ namespace JetComSmsSync
             moduleCatalog.AddModule<Modules.Tekmetric.TekmetricModule>();
             moduleCatalog.AddModule<Modules.Shop4D.Shop4DModule>();
             moduleCatalog.AddModule<Modules.TireMasterView.TireMasterViewModule>();
+            moduleCatalog.AddModule<Modules.Protractor.ProtractorModule>();
             moduleCatalog.AddModule<JetComSMSSync.Modules.ShopWare.ShopWareModule>();
         }
     }
