@@ -48,6 +48,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Horizontal">
@@ -75,5 +76,8 @@
                 <shopware:ShopWareSyncPage />
             </TabItem>
         </TabControl>
+
+        <md:Snackbar Grid.Row="2"
+                     MessageQueue="{Binding MessageQueue}"/>
     </Grid>
 </mde:MaterialWindow>

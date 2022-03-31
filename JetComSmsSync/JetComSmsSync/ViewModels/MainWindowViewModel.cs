@@ -28,6 +28,8 @@ namespace JetComSmsSync.ViewModels
             set { SetProperty(ref _theme, value); }
         }
 
+        public SnackbarMessageQueue MessageQueue { get; } = MessageService.Instance.MessageQueue;
+
         public MainWindowViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;

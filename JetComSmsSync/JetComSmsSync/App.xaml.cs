@@ -1,4 +1,5 @@
-﻿using JetComSmsSync.Services;
+﻿using JetComSmsSync.Core;
+using JetComSmsSync.Services;
 using JetComSmsSync.Services.Interfaces;
 using JetComSmsSync.Views;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +8,6 @@ using Prism.Modularity;
 
 using Serilog;
 using System;
-using System.Configuration;
 using System.IO;
 using System.Windows;
 
@@ -65,7 +65,7 @@ namespace JetComSmsSync
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance(Configuration);
-            containerRegistry.RegisterSingleton<IMessageService, MessageService>();
+            containerRegistry.RegisterInstance<IMessageService>(MessageService.Instance);
             containerRegistry.RegisterSingleton<ICacheService, CacheService>();
         }
 

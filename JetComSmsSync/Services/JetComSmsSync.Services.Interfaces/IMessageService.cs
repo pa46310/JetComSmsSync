@@ -1,8 +1,7 @@
-﻿
-namespace JetComSmsSync.Services.Interfaces
+﻿namespace JetComSmsSync.Services.Interfaces
 {
     public interface IMessageService
     {
-        string GetMessage();
+        void EnqueInformation(object content);
     }
 }

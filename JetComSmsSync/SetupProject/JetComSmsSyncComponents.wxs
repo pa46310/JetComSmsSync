@@ -135,6 +135,18 @@
 			<Component Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Guid="c2ffc20b-4367-4867-bebe-be3dd7eacc89">
 			  <File Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Name="Microsoft.Extensions.FileProviders.Abstractions.dll" Source="$(var.JetComSmsSync_TargetDir)Microsoft.Extensions.FileProviders.Abstractions.dll" />
 			</Component>
+			<Component Id="JetComSmsSync.Modules.Protractor.dll" Guid="cfbd0091-3ec3-4872-96e4-cd5be1674243">
+			  <File Id="JetComSmsSync.Modules.Protractor.dll" Name="JetComSmsSync.Modules.Protractor.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.Protractor.dll" />
+			</Component>
+			<Component Id="System.Private.ServiceModel.dll" Guid="716f1545-6f0e-4ad9-8727-0d114de49dcc">
+			  <File Id="System.Private.ServiceModel.dll" Name="System.Private.ServiceModel.dll" Source="$(var.JetComSmsSync_TargetDir)System.Private.ServiceModel.dll" />
+			</Component>
+			<Component Id="System.ServiceModel.Http.dll" Guid="35d4d77e-d30d-42e5-a8b1-883cdbf56189">
+			  <File Id="System.ServiceModel.Http.dll" Name="System.ServiceModel.Http.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.Http.dll" />
+			</Component>
+			<Component Id="System.ServiceModel.Primitives.dll" Guid="e1259e26-5750-432c-9dba-9827d1e611c5">
+			  <File Id="System.ServiceModel.Primitives.dll" Name="System.ServiceModel.Primitives.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.Primitives.dll" />
+			</Component>
 		</ComponentGroup>
 	</Fragment>
 <Fragment>
