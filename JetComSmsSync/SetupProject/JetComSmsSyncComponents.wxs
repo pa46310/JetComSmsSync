@@ -96,6 +96,9 @@
 			<Component Id="JetComSmsSync.Modules.Shop4D.dll" Guid="e40f2baf-5661-4043-8d79-80d21d18b5de">
 			  <File Id="JetComSmsSync.Modules.Shop4D.dll" Name="JetComSmsSync.Modules.Shop4D.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.Shop4D.dll" />
 			</Component>
+			<Component Id="JetComSmsSync.Modules.TireMasterView.dll" Guid="03abfd19-6f97-4850-ae3a-589379ebcb7e">
+			  <File Id="JetComSmsSync.Modules.TireMasterView.dll" Name="JetComSmsSync.Modules.TireMasterView.dll" Source="$(var.JetComSmsSync_TargetDir)JetComSmsSync.Modules.TireMasterView.dll" />
+			</Component>
 		</ComponentGroup>
 	</Fragment>
 <Fragment>

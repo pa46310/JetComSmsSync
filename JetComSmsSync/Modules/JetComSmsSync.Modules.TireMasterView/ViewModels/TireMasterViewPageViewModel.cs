@@ -17,13 +17,6 @@ namespace JetComSmsSync.Modules.TireMasterView.ViewModels
     {
         private readonly DatabaseClient _database;
 
-        private int _lookBackDays = 10;
-        public int LookBackDays
-        {
-            get { return _lookBackDays; }
-            set { SetProperty(ref _lookBackDays, value); }
-        }
-
         private int _limit = 100;
         public int Limit
         {
@@ -67,53 +60,79 @@ namespace JetComSmsSync.Modules.TireMasterView.ViewModels
                 Message = $"[{current}/{total}] Getting item counts";
                 var service = new ServiceClient(account);
                 var count = service.GetItemCount(start);
+                using var ctx0 = LogContext.PushProperty("TotalRows", count);
                 // live data
-
                 var startForCompare = start.AddDays(-1);
                 Message = $"[{current}/{total}] Getting items for compare";
+
+                // customer
                 var customerForCompare = _database.GetCustomerForCompare(account.BigId);
+                using var ctx1 = LogContext.PushProperty("LiveCustomers", customerForCompare.Count);
+                ct.ThrowIfCancellationRequested();
+                // vehicle
                 var vehicleForCompare = _database.GetVehicleForCompare(account.BigId);
+                using var ctx2 = LogContext.PushProperty("LiveVehicles", vehicleForCompare.Count);
+                ct.ThrowIfCancellationRequested();
+                // ro
                 var roForCompare = _database.GetRepairOrderForCompare(account.BigId, startForCompare);
+                using var ctx3 = LogContext.PushProperty("LiveRo", roForCompare.Count);
+                ct.ThrowIfCancellationRequested();
+                // line items
                 var lineItemsForCompare = _database.GetLineItemForCompare(account.BigId);
+                using var ctx4 = LogContext.PushProperty("LiveLineItems", lineItemsForCompare.Count);
+                ct.ThrowIfCancellationRequested();
 
                 // local data
                 var offset = 0;
                 var inserted = 0;
                 var limit = Limit;
-                foreach (var range in DateUtils.GetRangeByDay(start, end))
+                do
                 {
-                    do
-                    {
-                        var offsetEnd = Math.Min(count, offset + limit);
-                        Message = $"[{current}/{total}] [{offset}-{offsetEnd}/{count}] Getting local data";
-                        var local = service.GetItems(range.Item1, offset, limit);
+                    var offsetEnd = Math.Min(count, offset + limit);
+                    Message = $"[{current}/{total}] [{offset}-{offsetEnd}/{count}] Getting local data";
+                    var local = service.GetItems(start, offset, limit);
 
-                        Message = $"[{current}/{total}] [{offset}-{offsetEnd}/{count}] Comparing local and live data";
-                        // compare data
-                        var uniqueCustomer = local.Data.Except(customerForCompare, Comparers.Customer).ToList();
-                        customerForCompare.AddRange(uniqueCustomer);
+                    Message = $"[{current}/{total}] [{offset}-{offsetEnd}/{count}] Comparing local and live data";
+                    // compare data
+                    var uniqueCustomer = local.Data.Except(customerForCompare, Comparers.Customer).ToList();
+                    customerForCompare.AddRange(uniqueCustomer);
+                    using var ctx21 = LogContext.PushProperty("UniqueCustomer", uniqueCustomer.Count);
 
-                        var uniqueVehicles = local.Data.Except(vehicleForCompare, Comparers.Vehicle).ToList();
-                        vehicleForCompare.AddRange(uniqueVehicles);
+                    var uniqueVehicles = local.Data.Except(vehicleForCompare, Comparers.Vehicle).ToList();
+                    vehicleForCompare.AddRange(uniqueVehicles);
+                    using var ctx22 = LogContext.PushProperty("UniqueVehicle", uniqueVehicles.Count);
 
-                        var uniqueRo = local.Data.Except(roForCompare, Comparers.RepairOrder).ToList();
-                        roForCompare.AddRange(uniqueRo);
+                    var uniqueRo = local.Data.Except(roForCompare, Comparers.RepairOrder).ToList();
+                    roForCompare.AddRange(uniqueRo);
+                    using var ctx23 = LogContext.PushProperty("UniqueRo", uniqueRo.Count);
 
-                        var uniqueItems = local.Data.Except(lineItemsForCompare, Comparers.LineItem).ToList();
-                        lineItemsForCompare.AddRange(uniqueItems);
+                    var uniqueItems = local.Data.Except(lineItemsForCompare, Comparers.LineItem).ToList();
+                    lineItemsForCompare.AddRange(uniqueItems);
+                    using var ctx24 = LogContext.PushProperty("UniqueLineItems", uniqueItems.Count);
 
-                        // upload unique data
-                        Message = $"[{current}/{total}] [{offset}-{offset + limit}/{count}] Inserting unique data";
-                        inserted = _database.InsertCustomer(uniqueCustomer);
-                        inserted = _database.InsertVehicles(uniqueVehicles);
-                        inserted = _database.InsertRepairOrders(uniqueRo);
-                        inserted = _database.InsertLineItems(uniqueItems);
+                    // upload unique data
+                    Message = $"[{current}/{total}] [{offset}-{offset + limit}/{count}] Inserting unique data";
 
-                        offset += limit;
+                    inserted = _database.InsertCustomer(uniqueCustomer);
+                    ct.ThrowIfCancellationRequested();
+                    using var ctx11 = LogContext.PushProperty("CustomerInserted", inserted);
 
-                    } while (offset < count);
-                }
+                    inserted = _database.InsertVehicles(uniqueVehicles);
+                    ct.ThrowIfCancellationRequested();
+                    using var ctx12 = LogContext.PushProperty("VehicleInserted", inserted);
 
+                    inserted = _database.InsertRepairOrders(uniqueRo);
+                    ct.ThrowIfCancellationRequested();
+                    using var ctx13 = LogContext.PushProperty("RepairOrderInserted", inserted);
+
+                    inserted = _database.InsertLineItems(uniqueItems);
+                    ct.ThrowIfCancellationRequested();
+                    using var ctx14 = LogContext.PushProperty("LineItemInserted", inserted);
+
+                    Message = $"[{current}/{total}] [{offset}-{offset + limit}/{count}] Inserted";
+                    offset = offsetEnd;
+                    ct.ThrowIfCancellationRequested();
+                } while (offset < count);
             }
         }
     }
