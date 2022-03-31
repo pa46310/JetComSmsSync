@@ -22,7 +22,6 @@
                         d:SelectedDate="12/24/1996" 
                         x:Name="dpStartDate"
                         md:HintAssist.Hint="Start Date" md:HintAssist.IsFloating="True"/>
-            <TextBox Text="{Binding Limit}" Width="96" d:Text="100" md:HintAssist.Hint="Limit" md:HintAssist.IsFloating="True"/>
             <Button Content="Send" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding SendCommand}"
                     CommandParameter="{Binding StartDate}"/>
