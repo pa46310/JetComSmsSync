@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
 	<?define JetComSmsSync_TargetDir=$(var.JetComSmsSync.TargetDir)?>
 	<Fragment>
 		<ComponentGroup Id="INSTALLFOLDER_files" Directory="INSTALLFOLDER">
 			<Component Id="appsettings.json" Guid="{685263E8-BD3E-4841-B28D-3031043F57C3}">
-				<File Id="appsettings.json" Name="appsettings.json" Source="$(var.JetComSmsSync_TargetDir)appsettings.json" />
+				<File Id="appsettings.json" Name="appsettings.json" Source="$(var.JetComSmsSync_TargetDir)appsettings.json" >
+					<util:PermissionEx User="Users" GenericWrite="yes" Write="yes"/>
+				</File>
 			</Component>
 			<Component Id="MaterialDesignThemes.Wpf.dll" Guid="86b2b7ce-0fd2-4b32-b24b-406b8dddb1a3">
 				<File Id="MaterialDesignThemes.Wpf.dll" Name="MaterialDesignThemes.Wpf.dll" Source="$(var.JetComSmsSync_TargetDir)MaterialDesignThemes.Wpf.dll" />
@@ -146,6 +148,18 @@
 			</Component>
 			<Component Id="System.ServiceModel.Primitives.dll" Guid="e1259e26-5750-432c-9dba-9827d1e611c5">
 			  <File Id="System.ServiceModel.Primitives.dll" Name="System.ServiceModel.Primitives.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.Primitives.dll" />
+			</Component>
+			<Component Id="System.ServiceModel.dll" Guid="{34AC448F-0053-4D3C-A783-CB830645497F}">
+				<File Id="System.ServiceModel.dll" Name="System.ServiceModel.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.dll" />
+			</Component>
+			<Component Id="System.ServiceModel.Duplex.dll" Guid="{F6D20E62-E207-424C-9DE1-C0E431ADEE59}">
+				<File Id="System.ServiceModel.Duplex.dll" Name="System.ServiceModel.Duplex.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.Duplex.dll" />
+			</Component>
+			<Component Id="System.ServiceModel.NetTcp.dll" Guid="{0E914934-6A06-40D9-8398-B5E0D560D477}">
+				<File Id="System.ServiceModel.NetTcp.dll" Name="System.ServiceModel.NetTcp.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.NetTcp.dll" />
+			</Component>
+			<Component Id="System.ServiceModel.Security.dll" Guid="{2187AB37-F7AD-4106-878B-3CCECB8B8875}">
+				<File Id="System.ServiceModel.Security.dll" Name="System.ServiceModel.Security.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.Security.dll" />
 			</Component>
 		</ComponentGroup>
 	</Fragment>
