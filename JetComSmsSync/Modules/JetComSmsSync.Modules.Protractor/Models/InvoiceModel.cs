@@ -12,6 +12,8 @@
         public string WorkOrderNumber { get; set; }
         public string InvoiceNumber { get; set; }
         public string ContactID { get; set; }
+        public string ServiceItemID { get; set; }
+        public string Technician { get; set; }
         public string ServiceAdvisor { get; set; }
         public string PartsTotal { get; set; }
         public string LaborTotal { get; set; }
