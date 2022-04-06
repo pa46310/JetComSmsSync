@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using JetComSmsSync.Modules.Protractor.Models;
+using Newtonsoft.Json;
+using Serilog;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -22,7 +24,13 @@ namespace JetComSmsSync.Modules.Protractor
         public int InsertContacts(IEnumerable<ContactModel> items)
         {
             using var connection = GetConnection();
-            var output = connection.Execute(@"INSERT INTO [dbo].[Protractor_Contacts]
+            var output = 0;
+            foreach (var item in items)
+            {
+                try
+                {
+
+                    output += connection.Execute(@"INSERT INTO [dbo].[Protractor_Contacts]
            ([ID]
            ,[CreationTime]
            ,[LastModifiedTime]
@@ -67,7 +75,13 @@ namespace JetComSmsSync.Modules.Protractor
            ,@Phone2
            ,@Email
            ,@BigID
-           ,0)", items);
+           ,0)", item);
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error(ex, "Failed to insert contact. {0}", JsonConvert.SerializeObject(item));
+                }
+            }
             return output;
         }
 

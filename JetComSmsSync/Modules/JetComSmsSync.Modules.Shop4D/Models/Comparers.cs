@@ -17,75 +17,72 @@ namespace JetComSmsSync.Modules.Shop4D.Models
     {
         public bool Equals([AllowNull] Contact x, [AllowNull] Contact y)
         {
-            return x.ContactData.Equals(y.ContactData) && x.CustomerId.Equals(y.CustomerId);
+            return string.Equals(x.ContactData, y.ContactData) && string.Equals(x.CustomerId, y.CustomerId);
         }
 
         public int GetHashCode([DisallowNull] Contact item)
         {
-            return item.CustomerId.GetHashCode();
+            return item.CustomerId?.GetHashCode() ?? 0;
         }
     }
-
     public class CustomerComparer : IEqualityComparer<Customer>
     {
         public bool Equals([AllowNull] Customer x, [AllowNull] Customer y)
         {
-            return x.CustomerId.Equals(y.CustomerId);
+            return string.Equals(x.CustomerId, y.CustomerId);
         }
 
         public int GetHashCode([DisallowNull] Customer item)
         {
-            return item.CustomerId.GetHashCode();
+            return item.CustomerId?.GetHashCode() ?? 0;
         }
     }
-
     public class LaborComparer : IEqualityComparer<Labor>
     {
         public bool Equals([AllowNull] Labor x, [AllowNull] Labor y)
         {
-            return x.Description.Equals(y.Description) && x.RoNumber.Equals(y.RoNumber);
+            return string.Equals(x.Description, y.Description) && string.Equals(x.RoNumber, y.RoNumber);
         }
 
         public int GetHashCode([DisallowNull] Labor item)
         {
-            return item.RoNumber.GetHashCode();
+            return item.RoNumber?.GetHashCode() ?? 0;
         }
     }
-
     public class PartComparer : IEqualityComparer<Part>
     {
         public bool Equals([AllowNull] Part x, [AllowNull] Part y)
         {
-            return x.RoNumber.Equals(y.RoNumber) && x.Description.Equals(y.Description);
+            return string.Equals(x.RoNumber, y.RoNumber) && string.Equals(x.Description, y.Description);
         }
 
         public int GetHashCode([DisallowNull] Part item)
         {
-            return item.RoNumber.GetHashCode();
+            return item.RoNumber?.GetHashCode() ?? 0;
         }
     }
     public class RepairOrderComparer : IEqualityComparer<RepairOrderInfo>
     {
         public bool Equals([AllowNull] RepairOrderInfo x, [AllowNull] RepairOrderInfo y)
         {
-            return x.RoNumber.Equals(y.RoNumber);
+            return string.Equals(x.RoNumber, y.RoNumber);
         }
 
         public int GetHashCode([DisallowNull] RepairOrderInfo item)
         {
-            return item.RoNumber.GetHashCode();
+            return item.RoNumber?.GetHashCode() ?? 0;
         }
     }
     public class VehicleComparer : IEqualityComparer<Vehicle>
     {
         public bool Equals([AllowNull] Vehicle x, [AllowNull] Vehicle y)
         {
-            return x.VehicleId.Equals(y.VehicleId) && x.CustomerId.Equals(y.CustomerId);
+            return string.Equals(x.VehicleId, y.VehicleId) && string.Equals(x.CustomerId, y.CustomerId);
         }
 
         public int GetHashCode([DisallowNull] Vehicle item)
         {
-            return item.VehicleId.GetHashCode();
+            return item.VehicleId?.GetHashCode() ?? 0;
         }
     }
 }

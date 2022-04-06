@@ -63,106 +63,113 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
             var total = accounts.Count;
             foreach (var account in accounts)
             {
-                current++;
-                ct.ThrowIfCancellationRequested();
-
-                var prefix = $"[{current}/{total}]";
-
-                Message = $"{prefix} Getting items for compare";
-
-                var contactsForCompare = _database.GetContactForCompare(account.BigId);
-                using var ctx1 = LogContext.PushProperty("LiveContact", contactsForCompare.Count);
-                ct.ThrowIfCancellationRequested();
-
-                var invoiceForCompare = _database.GetInvoiceForCompare(account.BigId);
-                using var ctx2 = LogContext.PushProperty("LiveInvoice", invoiceForCompare.Count);
-                ct.ThrowIfCancellationRequested();
-
-                var serviceItemsForCompare = _database.GetServiceItemsForCompare(account.BigId);
-                using var ctx3 = LogContext.PushProperty("LiveServiceItem", serviceItemsForCompare.Count);
-                ct.ThrowIfCancellationRequested();
-
-                var servicePackagesForCompare = _database.GetServicePackagesForCompare(account.BigId);
-                using var ctx4 = LogContext.PushProperty("LiveServicePackage", servicePackagesForCompare.Count);
-                ct.ThrowIfCancellationRequested();
-
-                var appointmentsForCompare = _database.GetAppointmentsForCompare(account.BigId);
-                using var ctx5 = LogContext.PushProperty("LiveAppointment", appointmentsForCompare.Count);
-                ct.ThrowIfCancellationRequested();
-
-                var dayLimit = 25;
-
-                var start = startDate.Value;
-                var next = start.AddDays(dayLimit);
-                if (next > DateTime.Today)
+                try
                 {
-                    next = DateTime.Today;
-                }
-                do
-                {
-                    var prefix2 = $"[{start.ToString("MM/dd/yyyy")}-{next.ToString("MM/dd/yyyy")}]";
+                    current++;
                     ct.ThrowIfCancellationRequested();
 
-                    Message = $"{prefix} {prefix2} Getting local data";
-                    var local = GetXmlData(account, start, next);
+                    var prefix = $"[{current}/{total}]";
 
-                    if (local is null) { break; }
+                    Message = $"{prefix} Getting items for compare";
 
-                    var inserted = 0;
-                    Message = $"{prefix} {prefix2} Comparing local and live data";
-
-                    var uniqueContacts = local.Contacts.Except(contactsForCompare, Comparers.Contact).ToList();
-                    contactsForCompare.AddRange(uniqueContacts);
-                    using var ctx21 = LogContext.PushProperty("UniqueContact", uniqueContacts.Count);
-
-                    var uniqueInvoices = local.Invoices.Except(invoiceForCompare, Comparers.Invoice).ToList();
-                    invoiceForCompare.AddRange(uniqueInvoices);
-                    using var ctx22 = LogContext.PushProperty("UniqueInvoice", uniqueInvoices.Count);
-
-                    var uniqueServiceItems = local.ServiceItems.Except(serviceItemsForCompare, Comparers.ServiceItem).ToList();
-                    serviceItemsForCompare.AddRange(uniqueServiceItems);
-                    using var ctx23 = LogContext.PushProperty("UniqueServiceItem", uniqueServiceItems.Count);
-
-                    var uniqueServicePackages = local.ServicePackages.Except(servicePackagesForCompare, Comparers.ServicePackage).ToList();
-                    servicePackagesForCompare.AddRange(uniqueServicePackages);
-                    using var ctx24 = LogContext.PushProperty("UniqueServicePackage", uniqueServicePackages.Count);
-
-                    var uniqueAppointments = local.Appointments.Except(appointmentsForCompare, Comparers.Appointment).ToList();
-                    appointmentsForCompare.AddRange(uniqueAppointments);
-                    using var ctx25 = LogContext.PushProperty("UniqueAppointment", uniqueAppointments.Count);
-
-
-                    Message = $"{prefix} {prefix2} Inserting unique data";
-
-                    inserted = _database.InsertContacts(uniqueContacts);
+                    var contactsForCompare = _database.GetContactForCompare(account.BigId);
+                    using var ctx1 = LogContext.PushProperty("LiveContact", contactsForCompare.Count);
                     ct.ThrowIfCancellationRequested();
-                    using var ctx31 = LogContext.PushProperty("ContactInserted", inserted);
 
-                    inserted = _database.InsertInvoices(uniqueInvoices);
+                    var invoiceForCompare = _database.GetInvoiceForCompare(account.BigId);
+                    using var ctx2 = LogContext.PushProperty("LiveInvoice", invoiceForCompare.Count);
                     ct.ThrowIfCancellationRequested();
-                    using var ctx32 = LogContext.PushProperty("InvoiceInserted", inserted);
 
-                    inserted = _database.InsertServiceItems(uniqueServiceItems);
+                    var serviceItemsForCompare = _database.GetServiceItemsForCompare(account.BigId);
+                    using var ctx3 = LogContext.PushProperty("LiveServiceItem", serviceItemsForCompare.Count);
                     ct.ThrowIfCancellationRequested();
-                    using var ctx33 = LogContext.PushProperty("ServiceItemInserted", inserted);
 
-                    inserted = _database.InsertServicePackages(uniqueServicePackages);
+                    var servicePackagesForCompare = _database.GetServicePackagesForCompare(account.BigId);
+                    using var ctx4 = LogContext.PushProperty("LiveServicePackage", servicePackagesForCompare.Count);
                     ct.ThrowIfCancellationRequested();
-                    using var ctx34 = LogContext.PushProperty("ServicePackageInserted", inserted);
 
-                    inserted = _database.InsertAppointments(uniqueAppointments);
+                    var appointmentsForCompare = _database.GetAppointmentsForCompare(account.BigId);
+                    using var ctx5 = LogContext.PushProperty("LiveAppointment", appointmentsForCompare.Count);
                     ct.ThrowIfCancellationRequested();
-                    using var ctx35 = LogContext.PushProperty("AppointmentInserted", inserted);
 
-                    Message = $"{prefix} {prefix2} Inserted";
+                    var dayLimit = 25;
 
-                    start = next;
-                    next = next.AddDays(dayLimit);
+                    var start = startDate.Value;
+                    var next = start.AddDays(dayLimit);
                     if (next > DateTime.Today)
                     {
                         next = DateTime.Today;
                     }
-                } while (start < DateTime.Today);
+                    do
+                    {
+                        var prefix2 = $"[{start.ToString("MM/dd/yyyy")}-{next.ToString("MM/dd/yyyy")}]";
+                        ct.ThrowIfCancellationRequested();
+
+                        Message = $"{prefix} {prefix2} Getting local data";
+                        var local = GetXmlData(account, start, next);
+
+                        if (local is null) { break; }
+
+                        var inserted = 0;
+                        Message = $"{prefix} {prefix2} Comparing local and live data";
+
+                        var uniqueContacts = local.Contacts.Except(contactsForCompare, Comparers.Contact).ToList();
+                        contactsForCompare.AddRange(uniqueContacts);
+                        using var ctx21 = LogContext.PushProperty("UniqueContact", uniqueContacts.Count);
+
+                        var uniqueInvoices = local.Invoices.Except(invoiceForCompare, Comparers.Invoice).ToList();
+                        invoiceForCompare.AddRange(uniqueInvoices);
+                        using var ctx22 = LogContext.PushProperty("UniqueInvoice", uniqueInvoices.Count);
+
+                        var uniqueServiceItems = local.ServiceItems.Except(serviceItemsForCompare, Comparers.ServiceItem).ToList();
+                        serviceItemsForCompare.AddRange(uniqueServiceItems);
+                        using var ctx23 = LogContext.PushProperty("UniqueServiceItem", uniqueServiceItems.Count);
+
+                        var uniqueServicePackages = local.ServicePackages.Except(servicePackagesForCompare, Comparers.ServicePackage).ToList();
+                        servicePackagesForCompare.AddRange(uniqueServicePackages);
+                        using var ctx24 = LogContext.PushProperty("UniqueServicePackage", uniqueServicePackages.Count);
+
+                        var uniqueAppointments = local.Appointments.Except(appointmentsForCompare, Comparers.Appointment).ToList();
+                        appointmentsForCompare.AddRange(uniqueAppointments);
+                        using var ctx25 = LogContext.PushProperty("UniqueAppointment", uniqueAppointments.Count);
+
+
+                        Message = $"{prefix} {prefix2} Inserting unique data";
+
+                        inserted = _database.InsertContacts(uniqueContacts);
+                        ct.ThrowIfCancellationRequested();
+                        using var ctx31 = LogContext.PushProperty("ContactInserted", inserted);
+
+                        inserted = _database.InsertInvoices(uniqueInvoices);
+                        ct.ThrowIfCancellationRequested();
+                        using var ctx32 = LogContext.PushProperty("InvoiceInserted", inserted);
+
+                        inserted = _database.InsertServiceItems(uniqueServiceItems);
+                        ct.ThrowIfCancellationRequested();
+                        using var ctx33 = LogContext.PushProperty("ServiceItemInserted", inserted);
+
+                        inserted = _database.InsertServicePackages(uniqueServicePackages);
+                        ct.ThrowIfCancellationRequested();
+                        using var ctx34 = LogContext.PushProperty("ServicePackageInserted", inserted);
+
+                        inserted = _database.InsertAppointments(uniqueAppointments);
+                        ct.ThrowIfCancellationRequested();
+                        using var ctx35 = LogContext.PushProperty("AppointmentInserted", inserted);
+
+                        Message = $"{prefix} {prefix2} Inserted";
+
+                        start = next;
+                        next = next.AddDays(dayLimit);
+                        if (next > DateTime.Today)
+                        {
+                            next = DateTime.Today;
+                        }
+                    } while (start < DateTime.Today);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to send data for {0}", account.BigId);
+                }
             }
         }
 

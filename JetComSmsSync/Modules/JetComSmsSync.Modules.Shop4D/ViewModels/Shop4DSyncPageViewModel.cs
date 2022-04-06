@@ -209,107 +209,114 @@ namespace JetComSmsSync.Modules.Shop4D.ViewModels
 
             foreach (var account in selected)
             {
-                current++;
-                using var context1 = LogContext.PushProperty("CompanyId", account.CompanyId);
-                using var context2 = LogContext.PushProperty("FullName", account.AccountFullName);
-                _cts.Token.ThrowIfCancellationRequested();
-                var client = new Shop4DClient(account);
-
-                var accountPrefix = $"[{current}/{total}] ";
-                Message = accountPrefix + "Getting data for compare";
-                var uniqueContact = Database.GetContactForCompare(account.BigID);
-                var uniqueCustomer = Database.GetCustomerForCompare(account.BigID);
-                var uniqueLabors = Database.GetLaborForCompare(account.BigID);
-                var uniqueParts = Database.GetPartForCompare(account.BigID);
-                var uniqueRepairOrders = Database.GetRepairOrderForCompare(account.BigID);
-                var uniqueVehicles = Database.GetVehicleForCompare(account.BigID);
-
-                foreach (var range in DateUtils.GetRangeByMonth(start, end, 1))
+                try
                 {
-                    var prefix = $"{accountPrefix}[{range.Item1.ToShortDateString()}-{range.Item1.ToShortDateString()}] ";
+                    current++;
+                    using var context1 = LogContext.PushProperty("CompanyId", account.CompanyId);
+                    using var context2 = LogContext.PushProperty("FullName", account.AccountFullName);
+                    _cts.Token.ThrowIfCancellationRequested();
+                    var client = new Shop4DClient(account);
 
-                    var inserted = 0;
-                    Message = prefix + "Getting repair orders";
-                    Log.Debug("Date range. Start: {0} End: {1}", range.Item1, range.Item2);
-                    var repairOrders = client.GetRepairOrders(range.Item1, range.Item2);
+                    var accountPrefix = $"[{current}/{total}] ";
+                    Message = accountPrefix + "Getting data for compare";
+                    var uniqueContact = Database.GetContactForCompare(account.BigID);
+                    var uniqueCustomer = Database.GetCustomerForCompare(account.BigID);
+                    var uniqueLabors = Database.GetLaborForCompare(account.BigID);
+                    var uniqueParts = Database.GetPartForCompare(account.BigID);
+                    var uniqueRepairOrders = Database.GetRepairOrderForCompare(account.BigID);
+                    var uniqueVehicles = Database.GetVehicleForCompare(account.BigID);
 
-                    try
+                    foreach (var range in DateUtils.GetRangeByMonth(start, end, 1))
                     {
-                        Message = prefix + "Inserting contacts";
-                        var contacts = repairOrders.SelectMany(x => x.Customer.Contact).Except(uniqueContact, Shop4DComparers.Contact).ToList();
-                        uniqueContact.AddRange(contacts);
-                        inserted = Database.InsertContact(contacts);
-                        Log.Debug("{0} inserted", inserted);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Failed to send contacts");
-                    }
+                        var prefix = $"{accountPrefix}[{range.Item1.ToShortDateString()}-{range.Item1.ToShortDateString()}] ";
 
-                    try
-                    {
-                        Message = prefix + "Inserting customers";
-                        var customers = repairOrders.Select(x => x.Customer).Where(x => !string.IsNullOrEmpty(x.CustomerId)).Except(uniqueCustomer, Shop4DComparers.Customer).ToList();
-                        uniqueCustomer.AddRange(customers);
-                        inserted = Database.InsertCustomers(customers);
-                        Log.Debug("{0} inserted", inserted);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Failed to send customers");
-                    }
+                        var inserted = 0;
+                        Message = prefix + "Getting repair orders";
+                        Log.Debug("Date range. Start: {0} End: {1}", range.Item1, range.Item2);
+                        var repairOrders = client.GetRepairOrders(range.Item1, range.Item2);
 
-                    try
-                    {
-                        Message = prefix + "Inserting labors";
-                        var labors = repairOrders.SelectMany(x => x.LineItemDetail.SelectMany(x => x.Labor)).Except(uniqueLabors, Shop4DComparers.Labor).ToList();
-                        uniqueLabors.AddRange(labors);
-                        inserted = Database.InsertLabor(labors);
-                        Log.Debug("{0} inserted", inserted);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Failed to send labors");
-                    }
+                        try
+                        {
+                            Message = prefix + "Inserting contacts";
+                            var contacts = repairOrders.SelectMany(x => x.Customer.Contact).Except(uniqueContact, Shop4DComparers.Contact).ToList();
+                            uniqueContact.AddRange(contacts);
+                            inserted = Database.InsertContact(contacts);
+                            Log.Debug("{0} inserted", inserted);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Failed to send contacts");
+                        }
 
-                    try
-                    {
-                        Message = prefix + "Inserting parts";
-                        var parts = repairOrders.SelectMany(x => x.LineItemDetail.SelectMany(x => x.Parts)).Except(uniqueParts, Shop4DComparers.Part).ToList();
-                        uniqueParts.AddRange(parts);
-                        inserted = Database.InsertParts(parts);
-                        Log.Debug("{0} inserted", inserted);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Failed to send parts");
-                    }
+                        try
+                        {
+                            Message = prefix + "Inserting customers";
+                            var customers = repairOrders.Select(x => x.Customer).Where(x => !string.IsNullOrEmpty(x.CustomerId)).Except(uniqueCustomer, Shop4DComparers.Customer).ToList();
+                            uniqueCustomer.AddRange(customers);
+                            inserted = Database.InsertCustomers(customers);
+                            Log.Debug("{0} inserted", inserted);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Failed to send customers");
+                        }
 
-                    try
-                    {
-                        Message = prefix + "Inserting repair orders";
-                        var ros = repairOrders.Except(uniqueRepairOrders, Shop4DComparers.RepairOrder).ToList();
-                        uniqueRepairOrders.AddRange(ros);
-                        inserted = Database.InsertRepairOrder(ros);
-                        Log.Debug("{0} inserted", inserted);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Failed to send repair orders");
-                    }
+                        try
+                        {
+                            Message = prefix + "Inserting labors";
+                            var labors = repairOrders.SelectMany(x => x.LineItemDetail.SelectMany(x => x.Labor)).Except(uniqueLabors, Shop4DComparers.Labor).ToList();
+                            uniqueLabors.AddRange(labors);
+                            inserted = Database.InsertLabor(labors);
+                            Log.Debug("{0} inserted", inserted);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Failed to send labors");
+                        }
 
-                    try
-                    {
-                        Message = prefix + "Inserting vehicles";
-                        var vehicles = repairOrders.Select(x => x.Vehicle).Where(x => !string.IsNullOrEmpty(x.VehicleId)).Except(uniqueVehicles, Shop4DComparers.Vehicle).ToList();
-                        uniqueVehicles.AddRange(vehicles);
-                        inserted = Database.InsertVehicles(vehicles);
-                        Log.Debug("{0} inserted", inserted);
+                        try
+                        {
+                            Message = prefix + "Inserting parts";
+                            var parts = repairOrders.SelectMany(x => x.LineItemDetail.SelectMany(x => x.Parts)).Except(uniqueParts, Shop4DComparers.Part).ToList();
+                            uniqueParts.AddRange(parts);
+                            inserted = Database.InsertParts(parts);
+                            Log.Debug("{0} inserted", inserted);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Failed to send parts");
+                        }
+
+                        try
+                        {
+                            Message = prefix + "Inserting repair orders";
+                            var ros = repairOrders.Except(uniqueRepairOrders, Shop4DComparers.RepairOrder).ToList();
+                            uniqueRepairOrders.AddRange(ros);
+                            inserted = Database.InsertRepairOrder(ros);
+                            Log.Debug("{0} inserted", inserted);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Failed to send repair orders");
+                        }
+
+                        try
+                        {
+                            Message = prefix + "Inserting vehicles";
+                            var vehicles = repairOrders.Select(x => x.Vehicle).Where(x => !string.IsNullOrEmpty(x.VehicleId)).Except(uniqueVehicles, Shop4DComparers.Vehicle).ToList();
+                            uniqueVehicles.AddRange(vehicles);
+                            inserted = Database.InsertVehicles(vehicles);
+                            Log.Debug("{0} inserted", inserted);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Failed to send vehicles");
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Failed to send vehicles");
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to send for {0}", account.BigID);
                 }
             }
         }

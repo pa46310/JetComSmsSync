@@ -38,7 +38,7 @@
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                     <DataGridCheckBoxColumn.Header>
-                        <CheckBox IsChecked="{Binding  DataContext.IsAllSelected, Mode=TwoWay, ElementName=dg}"/>
+                        <CheckBox IsChecked="{Binding  DataContext.IsAllSelected, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                     </DataGridCheckBoxColumn.Header>
                 </DataGridCheckBoxColumn>
                 <DataGridTextColumn Header="BigId" Binding="{Binding BigId}" IsReadOnly="True"/>

@@ -46,6 +46,10 @@ namespace JetComSmsSync.Modules.Shop4D
             request.AddParameter("rangeEnd", end.ToString("yyyy-MM-dd"));
 
             var response = Client.Post(request);
+            if (response.Content.Equals("[]"))
+            {
+                return new RepairOrderInfo[0];
+            }
             var data = JsonConvert.DeserializeObject<RepairOrderResponse>(response.Content);
             if (data.IsUnAuthorized)
             {

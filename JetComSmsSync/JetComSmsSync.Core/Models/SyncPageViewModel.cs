@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace JetComSmsSync.Core.Models
 {
@@ -259,7 +258,6 @@ namespace JetComSmsSync.Core.Models
                 }
                 IsBusy = false;
                 StartDate = end;
-                UpdateAutoSend();
             }
             catch (Exception ex)
             {
@@ -267,6 +265,8 @@ namespace JetComSmsSync.Core.Models
                 IsBusy = false;
                 Log.Error(ex, "Failed to run auto send timer");
             }
+
+            UpdateAutoSend();
         }
     }
 }
