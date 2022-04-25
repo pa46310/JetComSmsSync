@@ -97,7 +97,7 @@ namespace JetComSmsSync.Core.Models
         }
 
         private DateTime _startDate = DateTime.UtcNow.Date.AddDays(-1);
-        public DateTime StartDate
+        public virtual DateTime StartDate
         {
             get { return _startDate; }
             set { SetProperty(ref _startDate, value); }

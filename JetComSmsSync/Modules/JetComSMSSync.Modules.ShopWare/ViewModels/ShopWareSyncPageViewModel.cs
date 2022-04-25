@@ -21,7 +21,18 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
         public int LookBackDays
         {
             get { return _lookBackDays; }
-            set { SetProperty(ref _lookBackDays, value); }
+            set
+            {
+                if (SetProperty(ref _lookBackDays, value))
+                {
+                    RaisePropertyChanged(nameof(StartDate));
+                }
+            }
+        }
+
+        public override DateTime StartDate
+        {
+            get => DateTime.UtcNow.AddDays(-1 * LookBackDays);
         }
 
         public ShopWareSyncPageViewModel(DatabaseClient database)
@@ -38,6 +49,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
         protected override void Send(DateTime? startDate, IList<AccountModel> selected, CancellationToken ct)
         {
             var current = 0;
+            startDate = StartDate;
             var total = selected.Count;
             var start = DateTime.MinValue;
             var end = DateTime.Now;
