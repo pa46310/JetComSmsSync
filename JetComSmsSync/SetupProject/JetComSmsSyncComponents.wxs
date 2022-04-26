@@ -4,8 +4,8 @@
 	<Fragment>
 		<ComponentGroup Id="INSTALLFOLDER_files" Directory="INSTALLFOLDER">
 			<Component Id="appsettings.json" Guid="{685263E8-BD3E-4841-B28D-3031043F57C3}">
-				<File Id="appsettings.json" Name="appsettings.json" Source="$(var.JetComSmsSync_TargetDir)appsettings.json" >
-					<util:PermissionEx User="Users" GenericWrite="yes" Write="yes"/>
+				<File Id="appsettings.json" Name="appsettings.json" Source="$(var.JetComSmsSync_TargetDir)appsettings.json">
+					<util:PermissionEx User="Users" GenericWrite="yes" Write="yes" />
 				</File>
 			</Component>
 			<Component Id="MaterialDesignThemes.Wpf.dll" Guid="86b2b7ce-0fd2-4b32-b24b-406b8dddb1a3">
@@ -160,6 +160,21 @@
 			</Component>
 			<Component Id="System.ServiceModel.Security.dll" Guid="{2187AB37-F7AD-4106-878B-3CCECB8B8875}">
 				<File Id="System.ServiceModel.Security.dll" Name="System.ServiceModel.Security.dll" Source="$(var.JetComSmsSync_TargetDir)System.ServiceModel.Security.dll" />
+			</Component>
+			<Component Id="WebDriver.dll" Guid="73cf6320-60f9-4b9b-867c-307418d3d2cc">
+			  <File Id="WebDriver.dll" Name="WebDriver.dll" Source="$(var.JetComSmsSync_TargetDir)WebDriver.dll" />
+			</Component>
+			<Component Id="WebDriverManager.dll" Guid="9e8e6ff8-5363-421f-9c19-aca8d61e45b7">
+			  <File Id="WebDriverManager.dll" Name="WebDriverManager.dll" Source="$(var.JetComSmsSync_TargetDir)WebDriverManager.dll" />
+			</Component>
+			<Component Id="ICSharpCode.SharpZipLib.dll" Guid="08931f0a-23a9-4b7c-b5d1-f444b5b3f218">
+			  <File Id="ICSharpCode.SharpZipLib.dll" Name="ICSharpCode.SharpZipLib.dll" Source="$(var.JetComSmsSync_TargetDir)ICSharpCode.SharpZipLib.dll" />
+			</Component>
+			<Component Id="AngleSharp.dll" Guid="539d3bf9-a801-42c8-95da-c7fc19344ac5">
+			  <File Id="AngleSharp.dll" Name="AngleSharp.dll" Source="$(var.JetComSmsSync_TargetDir)AngleSharp.dll" />
+			</Component>
+			<Component Id="SeleniumExtras.WaitHelpers.dll" Guid="e5c88188-7690-464c-b340-c2641ed69491">
+			  <File Id="SeleniumExtras.WaitHelpers.dll" Name="SeleniumExtras.WaitHelpers.dll" Source="$(var.JetComSmsSync_TargetDir)SeleniumExtras.WaitHelpers.dll" />
 			</Component>
 		</ComponentGroup>
 	</Fragment>

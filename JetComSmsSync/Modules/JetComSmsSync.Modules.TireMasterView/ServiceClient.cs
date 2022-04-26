@@ -39,6 +39,10 @@ namespace JetComSmsSync.Modules.TireMasterView
             foreach (var item in response.Data.Data)
             {
                 item.BigId = _account.BigId;
+                // update vehicle id
+                var previousVehicleId = item.VehicleId;
+                var newVehicleId = $"{item.CustomerId}-{previousVehicleId}-{item.LocationId}";
+                item.VehicleId = newVehicleId;
             }
             return response.Data;
         }

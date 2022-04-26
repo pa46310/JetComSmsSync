@@ -99,8 +99,8 @@ ORDER BY VipName");
 		   ,[Model]
 		   ,[Engine]
 		   ,[VehicleId]
-		   ,[LicenseState]
-		   ,[LicensePlate]
+		   ,[LicenceState]
+		   ,[LicencePlate]
 		   ,[LocationId])
 	 VALUES
 		   (@BigId
@@ -111,8 +111,8 @@ ORDER BY VipName");
 		   ,@Model
 		   ,@Engine
 		   ,@VehicleId
-		   ,@LicenseState
-		   ,@LicensePlate
+		   ,@LicenceState
+		   ,@LicencePlate
 		   ,@LocationId)", items);
                 return output;
             }
