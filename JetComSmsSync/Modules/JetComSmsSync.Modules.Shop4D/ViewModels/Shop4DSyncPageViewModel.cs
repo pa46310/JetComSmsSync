@@ -20,7 +20,7 @@ namespace JetComSmsSync.Modules.Shop4D.ViewModels
         private CancellationTokenSource _cts;
         public DateTime? PreviousDate { get; set; }
         private ILogger Log { get; } = Serilog.Log.ForContext<Shop4DSyncPageViewModel>();
-        private Shop4DDatabaseClient Database { get; }
+        private DatabaseClient Database { get; }
         public RecurrenceModel[] Items { get; } = RecurrenceModel.Default;
 
         private RecurrenceModel _selectedRecurrence;
@@ -128,7 +128,7 @@ namespace JetComSmsSync.Modules.Shop4D.ViewModels
             }
         }
 
-        public Shop4DSyncPageViewModel(Shop4DDatabaseClient database, ICacheService cache)
+        public Shop4DSyncPageViewModel(DatabaseClient database, ICacheService cache)
         {
             Database = database;
             _cache = cache;
@@ -215,7 +215,7 @@ namespace JetComSmsSync.Modules.Shop4D.ViewModels
                     using var context1 = LogContext.PushProperty("CompanyId", account.CompanyId);
                     using var context2 = LogContext.PushProperty("FullName", account.AccountFullName);
                     _cts.Token.ThrowIfCancellationRequested();
-                    var client = new Shop4DClient(account);
+                    var client = new ServiceClient(account);
 
                     var accountPrefix = $"[{current}/{total}] ";
                     Message = accountPrefix + "Getting data for compare";

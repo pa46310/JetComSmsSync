@@ -23,7 +23,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
         private CancellationTokenSource _cts;
         public DateTime? PreviousDate { get; set; }
         private ILogger Log { get; } = Serilog.Log.ForContext<TekmetricSyncPageViewModel>();
-        private TekmetricDatabaseClient Database { get; }
+        private DatabaseClient Database { get; }
         private string ApplicationName = "Tekmetric";
 
         public RecurrenceModel[] Items { get; } = RecurrenceModel.Default;
@@ -133,7 +133,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             }
         }
 
-        public TekmetricSyncPageViewModel(TekmetricDatabaseClient database, ICacheService cache)
+        public TekmetricSyncPageViewModel(DatabaseClient database, ICacheService cache)
         {
             Database = database;
             _cache = cache;
@@ -206,7 +206,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                 using var context1 = LogContext.PushProperty("BigID", account.BigID);
                 using var context2 = LogContext.PushProperty("ShopID", account.ShopID);
                 _cts.Token.ThrowIfCancellationRequested();
-                var client = new TekmetricClient(account);
+                var client = new ServiceClient(account);
 
                 var processing = 0;
                 var totalProcessing = 5;
@@ -228,7 +228,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             }
         }
 
-        private void SendJobs(AccountModel account, TekmetricClient client, DateTime? startDate, string message)
+        private void SendJobs(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {
@@ -273,7 +273,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             }
         }
 
-        private void SendRepairOrders(AccountModel account, TekmetricClient client, DateTime? startDate, string message)
+        private void SendRepairOrders(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {
@@ -299,7 +299,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             }
         }
 
-        private void SendAppointments(AccountModel account, TekmetricClient client, DateTime? startDate, string message)
+        private void SendAppointments(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {
@@ -325,7 +325,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             }
         }
 
-        private void SendVehicles(AccountModel account, TekmetricClient client, DateTime? startDate, string message)
+        private void SendVehicles(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {
@@ -351,7 +351,7 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
             }
         }
 
-        private void SendCustomers(AccountModel account, TekmetricClient client, DateTime? startDate, string message)
+        private void SendCustomers(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {

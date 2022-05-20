@@ -10,12 +10,12 @@ using System.Collections.Generic;
 
 namespace JetComSmsSync.Modules.Tekmetric
 {
-    public class TekmetricClient
+    public class ServiceClient
     {
         private readonly AccountModel _account;
 
         public IRestClient Client { get; }
-        public TekmetricClient(AccountModel account)
+        public ServiceClient(AccountModel account)
         {
             _account = account;
             Client = RestClientUtils.CreateRestClient($"https://{account.Environment}.tekmetric.com"); //cba,shop,sandbox

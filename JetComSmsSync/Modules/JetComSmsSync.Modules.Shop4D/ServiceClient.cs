@@ -7,14 +7,14 @@ using System.Linq;
 
 namespace JetComSmsSync.Modules.Shop4D
 {
-    public class Shop4DClient
+    public class ServiceClient
     {
         public IRestClient Client { get; }
 
         private string _authKey;
         private readonly AccountModel _account;
 
-        public Shop4DClient(AccountModel account)
+        public ServiceClient(AccountModel account)
         {
             var client = RestClientUtils.CreateRestClient("https://shop4d.com/common/api/");
             Client = client;

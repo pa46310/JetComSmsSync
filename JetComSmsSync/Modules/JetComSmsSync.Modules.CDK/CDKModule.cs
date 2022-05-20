@@ -16,7 +16,7 @@ namespace JetComSmsSync.Modules.CDK
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<CdkDatabaseClient>();
+            containerRegistry.RegisterSingleton<DatabaseClient>();
             containerRegistry.RegisterForNavigation<CdkSyncPage, CdkSyncPageViewModel>();
         }
     }

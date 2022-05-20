@@ -6,9 +6,11 @@ namespace JetComSMSSync.Modules.ShopWare.Models
     public static class Comparers
     {
         public static CustomerComparer Customer { get; } = new CustomerComparer();
+        public static CustomerUpdateComparer CustomerUpdate { get; } = new CustomerUpdateComparer();
         public static PastRecomendationComparer PastRecomendation { get; } = new PastRecomendationComparer();
         public static PaymentComparer Payment { get; } = new PaymentComparer();
         public static RepairOrderComparer RepairOrder { get; } = new RepairOrderComparer();
+        public static RepairOrderUpdateComparer RepairOrderUpdate { get; } = new RepairOrderUpdateComparer();
         public static ServiceHazmatComparer ServiceHazmat { get; } = new ServiceHazmatComparer();
         public static ServiceInspectionComparer ServiceInspection { get; } = new ServiceInspectionComparer();
         public static ServiceLaborComparer ServiceLabor { get; } = new ServiceLaborComparer();
@@ -23,6 +25,19 @@ namespace JetComSMSSync.Modules.ShopWare.Models
         public bool Equals([AllowNull] CustomerModel x, [AllowNull] CustomerModel y)
         {
             return string.Equals(x.Id, y.Id);
+        }
+
+        public int GetHashCode([DisallowNull] CustomerModel item)
+        {
+            return item.Id.GetHashCode();
+        }
+    }
+
+    public class CustomerUpdateComparer : IEqualityComparer<CustomerModel>
+    {
+        public bool Equals([AllowNull] CustomerModel x, [AllowNull] CustomerModel y)
+        {
+            return string.Equals(x.Id, y.Id) && !string.Equals(x.Updated_At, y.Updated_At);
         }
 
         public int GetHashCode([DisallowNull] CustomerModel item)
@@ -62,6 +77,19 @@ namespace JetComSMSSync.Modules.ShopWare.Models
         public bool Equals([AllowNull] RepairOrderModel x, [AllowNull] RepairOrderModel y)
         {
             return string.Equals(x.Id, y.Id) && string.Equals(x.Vehicle_Id, y.Vehicle_Id);
+        }
+
+        public int GetHashCode([DisallowNull] RepairOrderModel item)
+        {
+            return item.Id.GetHashCode();
+        }
+    }
+
+    public class RepairOrderUpdateComparer : IEqualityComparer<RepairOrderModel>
+    {
+        public bool Equals([AllowNull] RepairOrderModel x, [AllowNull] RepairOrderModel y)
+        {
+            return string.Equals(x.Id, y.Id) && string.Equals(x.Vehicle_Id, y.Vehicle_Id) && !string.Equals(x.Updated_At, y.Updated_At);
         }
 
         public int GetHashCode([DisallowNull] RepairOrderModel item)

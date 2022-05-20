@@ -55,7 +55,7 @@ namespace JetComSmsSync.Modules.Protractor.Models
     {
         public bool Equals([AllowNull] InvoiceModel x, [AllowNull] InvoiceModel y)
         {
-            return Equals(x.ID, y.ID);
+            return Equals(x.ID, y.ID) && Equals(x.ServiceItemID, y.ServiceItemID);
         }
 
         public int GetHashCode([DisallowNull] InvoiceModel item)

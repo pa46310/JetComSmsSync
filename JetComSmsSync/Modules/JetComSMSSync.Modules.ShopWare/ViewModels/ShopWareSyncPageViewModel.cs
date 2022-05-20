@@ -1,10 +1,14 @@
 ﻿using JetComSmsSync.Core.Models;
 using JetComSmsSync.Core.Utils;
+
 using JetComSMSSync.Modules.ShopWare.Adapters;
 using JetComSMSSync.Modules.ShopWare.Models;
+
 using Prism.Mvvm;
+
 using Serilog;
 using Serilog.Context;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,6 +149,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 foreach (var item in client.GetRepairOrders(1, LookBackDays))
                 {
                     // repair order
+                    #region Insertion
                     var repairOrders = item.Results.Select(x => x.ToRepairOrder(account.BigID));
                     var uniqueRepairOrder = repairOrders.Except(compareRepairOrder, Comparers.RepairOrder).ToList();
                     compareRepairOrder.AddRange(uniqueRepairOrder);
@@ -187,6 +192,13 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                     compareInspection.AddRange(uniqueInspections);
                     inserted = _database.InsertServiceInspections(uniqueInspections);
                     ct.ThrowIfCancellationRequested();
+                    #endregion
+
+                    #region Update
+                    var toUpdate = repairOrders.Intersect(compareRepairOrder, Comparers.RepairOrderUpdate).ToList();
+                    inserted += _database.UpdateRepairOrders(toUpdate);
+                    Log.Debug("{0} repair order updated", inserted);
+                    #endregion
 
                     Message = $"{prefix} Sent: {item.Current_Page}/{item.Total_Pages}";
                 }
@@ -263,11 +275,19 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 Message = prefix + " Getting data...";
                 foreach (var customers in client.GetCustomers(1, LookBackDays))
                 {
+                    #region Insertions
                     var unique = customers.Results.Except(uniqueCustomers, Comparers.Customer).ToList();
                     uniqueCustomers.AddRange(unique);
                     inserted += _database.InsertCustomers(unique);
                     Log.Debug("{0} inserted", inserted);
                     ct.ThrowIfCancellationRequested();
+                    #endregion
+
+                    #region Update
+                    var toUpdate = customers.Results.Intersect(uniqueCustomers, Comparers.CustomerUpdate).ToList();
+                    inserted += _database.UpdateCustomers(toUpdate);
+                    Log.Debug("{0} updated", inserted);
+                    #endregion
 
                     Message = $"{prefix} Sent: {customers.Current_Page}/{customers.Total_Pages}";
                 }

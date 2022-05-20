@@ -1,5 +1,8 @@
 ﻿using Dapper;
 using JetComSMSSync.Modules.ShopWare.Models;
+
+using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,9 +14,14 @@ namespace JetComSMSSync.Modules.ShopWare
 {
     public class DatabaseClient
     {
-        private const string _autoRepairConnectionString = "Data Source=192.168.75.2;User ID=rweb;Password=3277r;Initial Catalog=AutoRepairSMS;Connect Timeout=20000;";
-        private const string _reportsConnectionString = "Data Source=192.168.75.1;User ID=rweb;Password=3277r;Initial Catalog=V2Reports;Connect Timeout=20000;";
+        private readonly string _autoRepairConnectionString;
+        private readonly string _reportsConnectionString;
 
+        public DatabaseClient(IConfiguration configuration)
+        {
+            _reportsConnectionString = configuration.GetConnectionString("V2Reports");
+            _autoRepairConnectionString = configuration.GetConnectionString("AutoRepairSMS");
+        }
         public AccountModel[] GetAccounts()
         {
             using var connection = new SqlConnection(_reportsConnectionString);
@@ -24,7 +32,7 @@ namespace JetComSMSSync.Modules.ShopWare
         public List<CustomerModel> GetCustomersForCompare(string bigId, string shopId)
         {
             using var connection = new SqlConnection(_autoRepairConnectionString);
-            var output = connection.Query<CustomerModel>("SELECT Id FROM [ShopWare_Customer] WHERE BigID=@BigID AND shopid=@ShopId", new { BigID = bigId, ShopId = shopId });
+            var output = connection.Query<CustomerModel>("SELECT Id, Updated_At FROM [ShopWare_Customer] WHERE BigID=@BigID AND shopid=@ShopId", new { BigID = bigId, ShopId = shopId });
             return output.ToList();
         }
         public int InsertCustomers(IEnumerable<CustomerModel> items)
@@ -62,6 +70,23 @@ namespace JetComSMSSync.Modules.ShopWare
            , @Updated_At
            , @BigID
            , 0)", items);
+            return output;
+        }
+        public int UpdateCustomers(IEnumerable<CustomerModel> items)
+        {
+            using var connection = new SqlConnection(_autoRepairConnectionString);
+            var output = connection.Execute(@"UPDATE [dbo].[ShopWare_Customer]
+   SET [first_name] = @first_name
+      ,[last_name] = @last_name
+      ,[phone] = @phone
+      ,[address] = @address
+      ,[city] = @city
+      ,[state] = @state
+      ,[zip] = @zip
+      ,[marketing_ok] = @marketing_ok
+      ,[email] = @email
+      ,[updated_at] = @updated_at
+ WHERE id=@id", items);
             return output;
         }
 
@@ -138,7 +163,7 @@ namespace JetComSMSSync.Modules.ShopWare
         public List<RepairOrderModel> GetRepairOrdersForCompare(string bigId)
         {
             using var connection = new SqlConnection(_autoRepairConnectionString);
-            var output = connection.Query<RepairOrderModel>("SELECT Id, Vehicle_Id FROM [ShopWare_RepairOrder] WHERE BigID=@BigID", new { BigID = bigId });
+            var output = connection.Query<RepairOrderModel>("SELECT Id, Vehicle_Id, Updated_At FROM [ShopWare_RepairOrder] WHERE BigID=@BigID", new { BigID = bigId });
             return output.ToList();
         }
         public int InsertRepairOrders(IEnumerable<RepairOrderModel> items)
@@ -210,6 +235,41 @@ namespace JetComSMSSync.Modules.ShopWare
            ,@supply_fee_cents
            ,@part_discount_percentage
            ,@labor_discount_percentage)", items);
+            return output;
+        }
+
+        public int UpdateRepairOrders(IEnumerable<RepairOrderModel> items)
+        {
+            using var connection = new SqlConnection(_autoRepairConnectionString);
+            var output = connection.Execute(@"UPDATE [dbo].[ShopWare_RepairOrder]
+   SET [odometer] = @odometer
+      ,[state] = @state
+      ,[customer_id] = @customer_id
+      ,[technician_id] = @technician_id
+      ,[advisor_id] = @advisor_id
+      ,[vehicle_id] = @vehicle_id
+      ,[preferred_contact_type] = @preferred_contact_type
+      ,[shop_id] = @shop_id
+      ,[started_at] = @started_at
+      ,[closed_at] = @closed_at
+      ,[picked_up_at] = @picked_up_at
+      ,[due_in_at] = @due_in_at
+      ,[due_out_at] = @due_out_at
+      ,[part_tax_rate] = @part_tax_rate
+      ,[labor_tax_rate] = @labor_tax_rate
+      ,[hazmat_tax_rate] = @hazmat_tax_rate
+      ,[sublet_tax_rate] = @sublet_tax_rate
+      ,[updated_at] = @updated_at
+      ,[status_id] = @status_id
+      ,[part_discount_cents] = @part_discount_cents
+      ,[labor_discount_cents] = @labor_discount_cents
+      ,[taxable] = @taxable
+      ,[integrator_tags] = @integrator_tags
+      ,[customer_source] = @customer_source
+      ,[supply_fee_cents] = @supply_fee_cents
+      ,[part_discount_percentage] = @part_discount_percentage
+      ,[labor_discount_percentage] = @labor_discount_percentage
+ WHERE id=@id", items);
             return output;
         }
 

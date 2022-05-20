@@ -21,7 +21,7 @@ namespace JetComSmsSync.Modules.Tekmetric
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<TekmetricDatabaseClient>();
+            containerRegistry.RegisterSingleton<DatabaseClient>();
             containerRegistry.RegisterForNavigation<TekmetricSyncPage, TekmetricSyncPageViewModel>();
         }
     }

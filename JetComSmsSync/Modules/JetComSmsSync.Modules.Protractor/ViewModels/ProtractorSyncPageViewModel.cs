@@ -1,34 +1,54 @@
 ﻿using HtmlAgilityPack;
+
 using JetComSmsSync.Core.Extensions;
 using JetComSmsSync.Core.Models;
 using JetComSmsSync.Core.Utils;
 using JetComSmsSync.Modules.Protractor.Models;
+
+using Microsoft.Extensions.Configuration;
+
 using RestSharp;
+
 using Serilog;
 using Serilog.Context;
+
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace JetComSmsSync.Modules.Protractor.ViewModels
 {
     public class ProtractorSyncPageViewModel : SyncPageViewModel<AccountModel>
     {
         private readonly DatabaseClient _database;
+        private readonly IConfiguration _configuration;
 
         protected override ILogger Log { get; } = Serilog.Log.ForContext<ProtractorSyncPageViewModel>();
         private IRestClient Client { get; }
-        public ProtractorSyncPageViewModel(DatabaseClient database)
+
+        private int _dayChunkSize;
+        public int DayChunkSize
+        {
+            get { return _dayChunkSize; }
+            set { SetProperty(ref _dayChunkSize, value); }
+        }
+
+        public ProtractorSyncPageViewModel(DatabaseClient database, IConfiguration configuration)
         {
             _database = database;
+            _configuration = configuration;
             RefreshCommand.Execute();
-            Client = RestClientUtils.CreateRestClient("https://integration.protractor.com");
+            Client = RestClientUtils.CreateRestClient(configuration.GetSection("Protractor")["URL"]);
+            var dayLimitStr = configuration.GetSection("Protractor")["DayLimit"];
+            if (!int.TryParse(dayLimitStr, out _dayChunkSize))
+            {
+                _dayChunkSize = 25;
+            }
         }
 
         protected override async Task<AccountModel[]> GetAccounts()
@@ -61,6 +81,7 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
         {
             var current = 0;
             var total = accounts.Count;
+            
             foreach (var account in accounts)
             {
                 try
@@ -92,21 +113,19 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
                     using var ctx5 = LogContext.PushProperty("LiveAppointment", appointmentsForCompare.Count);
                     ct.ThrowIfCancellationRequested();
 
-                    var dayLimit = 25;
-
                     var start = startDate.Value;
-                    var next = start.AddDays(dayLimit);
+                    var next = start.AddDays(DayChunkSize);
                     if (next > DateTime.Today)
                     {
                         next = DateTime.Today;
                     }
                     do
                     {
-                        var prefix2 = $"[{start.ToString("MM/dd/yyyy")}-{next.ToString("MM/dd/yyyy")}]";
+                        var prefix2 = $"[{start:MM/dd/yyyy}-{next:MM/dd/yyyy}]";
                         ct.ThrowIfCancellationRequested();
 
                         Message = $"{prefix} {prefix2} Getting local data";
-                        var local = GetXmlData(account, start, next);
+                        var local = GetXmlData(account, start, next, ct);
 
                         if (local is null) { break; }
 
@@ -159,12 +178,16 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
                         Message = $"{prefix} {prefix2} Inserted";
 
                         start = next;
-                        next = next.AddDays(dayLimit);
+                        next = next.AddDays(DayChunkSize);
                         if (next > DateTime.Today)
                         {
                             next = DateTime.Today;
                         }
                     } while (start < DateTime.Today);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
@@ -174,7 +197,7 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
         }
 
 
-        private ProtractorData GetXmlData(AccountModel account, DateTime start, DateTime end)
+        private ProtractorData GetXmlData(AccountModel account, DateTime start, DateTime end, CancellationToken ct)
         {
             var request = new RestRequest("/ExternalCRM/1.0/GetCRMData.ashx")
                 .AddQueryParameter("connectionID", account.ConnectionId)
@@ -199,11 +222,16 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
             var output = new ProtractorData();
             try
             {
-                var document = new HtmlDocument();
-                document.LoadHtml(xml);
+                var document = new XmlDocument();
+                var indexOf = xml.IndexOf("<crmdataset", StringComparison.OrdinalIgnoreCase);
+                var xml1 = xml.Remove(0, indexOf);
+                document.LoadXml(xml1);
 
-                var errornumber = document.DocumentNode.SelectSingleNode("/crmdataset/header/errornumber")?.InnerText;
-                var errorMessage = document.DocumentNode.SelectSingleNode("/crmdataset/header/errormessage")?.InnerText;
+                //var document = new HtmlDocument();
+                //document.LoadHtml(xml);
+
+                var errornumber = document.SelectSingleNode("/CRMDataSet/Header/ErrorNumber")?.InnerText;
+                var errorMessage = document.SelectSingleNode("/CRMDataSet/Header/ErrorMessage")?.InnerText;
 
                 if (!string.IsNullOrEmpty(errorMessage))
                 {
@@ -212,120 +240,123 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
                     {
                         var time = Regex.Match(errorMessage, @"\d\d:\d\d:\d\d");
                         var t = TimeSpan.Parse(time.Value);
-                        Thread.Sleep(t);
-                        return GetXmlData(account, start, end);
+                        ct.WaitHandle.WaitOne(t);
+                        ct.ThrowIfCancellationRequested();
+                        return GetXmlData(account, start, end, ct);
                     }
                     return null;
                 }
 
                 // check for error message
-                var contactNodes = document.DocumentNode.SelectNodes("/crmdataset/contacts/item");
+                var contactNodes = document.SelectNodes("/CRMDataSet/Contacts/Item");
                 if (contactNodes != null)
                 {
-                    foreach (var item in contactNodes)
+                    foreach (XmlNode item in contactNodes)
                     {
                         var i = new ContactModel
                         {
-                            AddressTitle = item.SelectInnerText("./address/title"),
+                            AddressTitle = item.SelectInnerText("./Address/Title"),
                             BigID = account.BigId,
-                            City = item.SelectInnerText("./address/city"),
-                            Company = item.SelectInnerText("./company"),
-                            Country = item.SelectInnerText("./address/country"),
-                            CreationTime = item.SelectInnerText("./header/creationtime"),
-                            Email = item.SelectInnerText("./email"),
-                            FileAs = item.SelectInnerText("./fileas"),
-                            FirstName = item.SelectInnerText("./name/firstname"),
-                            ID = item.SelectInnerText("./header/id"),
-                            LastModifiedTime = item.SelectInnerText("./header/lastmodifiedtime"),
-                            LastName = item.SelectInnerText("./name/lastname"),
-                            MiddleName = item.SelectInnerText("./name/middlename"),
-                            Phone1 = item.SelectInnerText("./phone1"),
-                            Phone2 = item.SelectInnerText("./phone2"),
-                            PostalCode = item.SelectInnerText("./address/postalcode"),
-                            Prefix = item.SelectInnerText("./name/prefix"),
-                            Province = item.SelectInnerText("./address/province"),
-                            Street = item.SelectInnerText("./address/street"),
-                            Suffix = item.SelectInnerText("./name/suffix"),
-                            Title = item.SelectInnerText("./name/title"),
+                            City = item.SelectInnerText("./Address/City"),
+                            Company = item.SelectInnerText("./Company"),
+                            Country = item.SelectInnerText("./Address/Country"),
+                            CreationTime = item.SelectInnerText("./Header/CreationTime"),
+                            Email = item.SelectInnerText("./Email"),
+                            FileAs = item.SelectInnerText("./FileAs"),
+                            FirstName = item.SelectInnerText("./Name/FirstName"),
+                            ID = item.SelectInnerText("./Header/ID"),
+                            LastModifiedTime = item.SelectInnerText("./Header/LastModifiedTime"),
+                            LastName = item.SelectInnerText("./Name/LastName"),
+                            MiddleName = item.SelectInnerText("./Name/MiddleName"),
+                            Phone1 = item.SelectInnerText("./Phone1"),
+                            Phone2 = item.SelectInnerText("./Phone2"),
+                            PostalCode = item.SelectInnerText("./Address/PostalCode"),
+                            Prefix = item.SelectInnerText("./Name/Prefix"),
+                            Province = item.SelectInnerText("./Address/Province"),
+                            Street = item.SelectInnerText("./Address/Street"),
+                            Suffix = item.SelectInnerText("./Name/Suffix"),
+                            Title = item.SelectInnerText("./Name/Title"),
                         };
                         output.Contacts.Add(i);
                     }
                 }
 
-                var serviceItemNodes = document.DocumentNode.SelectNodes("/crmdataset/serviceitems/item");
+                var serviceItemNodes = document.SelectNodes("/CRMDataSet/ServiceItems/Item");
                 if (serviceItemNodes != null)
                 {
-                    foreach (var item in serviceItemNodes)
+                    foreach (XmlNode item in serviceItemNodes)
                     {
                         var i = new ServiceItemModel
                         {
                             BigID = account.BigId,
-                            CreationTime = item.SelectInnerText("./header/creationtime"),
-                            Description = item.SelectInnerText("./description"),
-                            Engine = item.SelectInnerText("./engine"),
-                            ID = item.SelectInnerText("./header/id"),
-                            LastModifiedTime = item.SelectInnerText("./header/lastmodifiedtime"),
-                            Lookup = item.SelectInnerText("./lookup"),
-                            Make = item.SelectInnerText("./make"),
-                            Model = item.SelectInnerText("./model"),
-                            OwnerID = item.SelectInnerText("./ownerid"),
-                            PlateRegistration = item.SelectInnerText("./plateregistration"),
-                            ProductionDate = item.SelectInnerText("./productiondate"),
-                            SubModel = item.SelectInnerText("./submodel"),
-                            Type = item.SelectInnerText("./type"),
-                            Usage = item.SelectInnerText("./usage"),
-                            VIN = item.SelectInnerText("./vin"),
-                            Year = item.SelectInnerText("./year"),
+                            CreationTime = item.SelectInnerText("./Header/CreationTime"),
+                            Description = item.SelectInnerText("./Description"),
+                            Engine = item.SelectInnerText("./Engine"),
+                            ID = item.SelectInnerText("./Header/ID"),
+                            LastModifiedTime = item.SelectInnerText("./Header/LastModifiedTime"),
+                            Lookup = item.SelectInnerText("./Lookup"),
+                            Make = item.SelectInnerText("./Make"),
+                            Model = item.SelectInnerText("./Model"),
+                            OwnerID = item.SelectInnerText("./OwnerID"),
+                            PlateRegistration = item.SelectInnerText("./PlateRegistration"),
+                            ProductionDate = item.SelectInnerText("./ProductionDate"),
+                            SubModel = item.SelectInnerText("./Submodel"),
+                            Type = item.SelectInnerText("./Type"),
+                            Usage = item.SelectInnerText("./Usage"),
+                            VIN = item.SelectInnerText("./VIN"),
+                            Year = item.SelectInnerText("./Year"),
                         };
                         output.ServiceItems.Add(i);
                     }
                 }
 
-                var invoiceNodes = document.DocumentNode.SelectNodes("/crmdataset/invoices/item");
+                var invoiceNodes = document.SelectNodes("/CRMDataSet/Invoices/Item");
                 if (invoiceNodes != null)
                 {
-                    foreach (var item in invoiceNodes)
+                    foreach (XmlNode item in invoiceNodes)
                     {
+                        //var a = item.ChildNodes[16].ChildNodes[1].ChildNodes[7].ChildNodes[0].ChildNodes[10].Name;
+                        //var b = item.SelectSingleNode("./ServicePackages/Item[2]/ID");
                         var i = new InvoiceModel
                         {
                             BigID = account.BigId,
-                            ContactID = item.SelectInnerText("./contactid"),
-                            CreationTime = item.SelectInnerText("./header/creationtime"),
-                            Discount = item.SelectInnerText("./servicepackages[1]/item[1]/servicepackagelines[1]/item[1]/discount"),
-                            GrandTotal = item.SelectInnerText("./summary/grandtotal"),
-                            ID = item.SelectInnerText("./header/id"),
-                            InvoiceNumber = item.SelectInnerText("./invoicenumber"),
-                            InvoiceTime = item.SelectInnerText("./invoicetime"),
-                            LaborTotal = item.SelectInnerText("./summary/labortotal"),
-                            LastModifiedTime = item.SelectInnerText("./header/lastmodifiedtime"),
-                            LocationID = item.SelectInnerText("./locationid"),
-                            NetTotal = item.SelectInnerText("./summary/nettotal"),
-                            PartsTotal = item.SelectInnerText("./summary/partstotal"),
-                            PromisedTime = item.SelectInnerText("./promisedtime"),
-                            ScheduledTime = item.SelectInnerText("./scheduledtime"),
-                            ServiceAdvisor = item.SelectInnerText("./serviceadvisor"),
-                            SubletTotal = item.SelectInnerText("./summary/sublettotal"),
-                            Type = item.SelectInnerText("./type"),
-                            WorkOrderID = item.SelectInnerText("./id"),
-                            WorkOrderNumber = item.SelectInnerText("./workordernumber"),
-                            ServiceItemID = item.SelectInnerText("./servicepackages[1]/item[1]/id"),
-                            Technician = item.SelectInnerText("./technician")
+                            ContactID = item.SelectInnerText("./ContactID"),
+                            CreationTime = item.SelectInnerText("./Header/CreationTime"),
+                            Discount = item.SelectInnerText("./ServicePackages/Item[2]/ServicePackageLines/Item[1]/Discount"),
+                            GrandTotal = item.SelectInnerText("./Summary/GrandTotal"),
+                            ID = item.SelectInnerText("./Header/ID"),
+                            InvoiceNumber = item.SelectInnerText("./InvoiceNumber"),
+                            InvoiceTime = item.SelectInnerText("./InvoiceTime"),
+                            LaborTotal = item.SelectInnerText("./Summary/LaborTotal"),
+                            LastModifiedTime = item.SelectInnerText("./Header/LastModifiedTime"),
+                            LocationID = item.SelectInnerText("./LocationID"),
+                            NetTotal = item.SelectInnerText("./Summary/NetTotal"),
+                            PartsTotal = item.SelectInnerText("./Summary/PartsTotal"),
+                            PromisedTime = item.SelectInnerText("./PromisedTime"),
+                            ScheduledTime = item.SelectInnerText("./ScheduledTime"),
+                            ServiceAdvisor = item.SelectInnerText("./ServiceAdvisor"),
+                            SubletTotal = item.SelectInnerText("./Summary/SubletTotal"),
+                            Type = item.SelectInnerText("./Type"),
+                            WorkOrderID = item.SelectInnerText("./ID"),
+                            WorkOrderNumber = item.SelectInnerText("./WorkOrderNumber"),
+                            ServiceItemID = item.SelectInnerText("./ServiceItemID"),
+                            Technician = item.SelectInnerText("./Technician"),
                         };
                         output.Invoices.Add(i);
 
-                        var servicePackageNodes = item.SelectNodes("./servicepackages/item");
+                        var servicePackageNodes = item.SelectNodes("./ServicePackages/Item");
                         if (servicePackageNodes != null)
                         {
-                            foreach (var sub in servicePackageNodes)
+                            foreach (XmlNode sub in servicePackageNodes)
                             {
                                 var i2 = new ServicePackagesModel
                                 {
                                     BigID = account.BigId,
-                                    Chapter = sub.SelectInnerText("./chapter"),
-                                    ID = sub.SelectInnerText("./header/id"),
-                                    Rank = sub.SelectInnerText("./rank"),
+                                    Chapter = sub.SelectInnerText("./Chapter"),
+                                    ID = sub.SelectInnerText("./Header/ID"),
+                                    Rank = sub.SelectInnerText("./Rank"),
                                     ServicePackagesID = i.ID,
-                                    Title = sub.SelectInnerText("./title"),
+                                    Title = sub.SelectInnerText("./Title"),
                                 };
                                 output.ServicePackages.Add(i2);
                             }
@@ -333,34 +364,34 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
                     }
                 }
 
-                var appointmentNodes = document.DocumentNode.SelectNodes("/crmdataset/appointments/item");
+                var appointmentNodes = document.SelectNodes("/CRMDataSet/Appointments/Item");
                 if (appointmentNodes != null)
                 {
-                    foreach (var item in appointmentNodes)
+                    foreach (XmlNode item in appointmentNodes)
                     {
                         var i = new AppointmentModel
                         {
                             BigID = account.BigId,
-                            ContactID = item.SelectInnerText("./contactid"),
-                            CreationTime = item.SelectInnerText("./header/creationtime"),
-                            DeferredServicePackages = item.SelectInnerText("./deferredservicepackages"),
-                            ID = item.SelectInnerText("./id"),
-                            InUsage = item.SelectInnerText("./inusage"),
-                            InvoiceNumber = item.SelectInnerText("./invoicenumber"),
-                            InvoiceTime = item.SelectInnerText("./invoicetime"),
-                            LastModifiedTime = item.SelectInnerText("./header/lastmodifiedtime"),
-                            LocationID = item.SelectInnerText("./locationid"),
-                            Note = item.SelectInnerText("./note"),
-                            OtherChargeCode = item.SelectInnerText("./otherchargecode"),
-                            PromisedTime = item.SelectInnerText("./promisedtime"),
-                            PurchaseOrderNumber = item.SelectInnerText("./purchaseordernumber"),
-                            ScheduledTime = item.SelectInnerText("./scheduledtime"),
-                            ServiceAdvisor = item.SelectInnerText("./serviceadvisor"),
-                            ServiceItemID = item.SelectInnerText("./serviceitemid"),
-                            ServicePackages = item.SelectInnerText("./servicepackages"),
-                            Technician = item.SelectInnerText("./technician"),
-                            Type = item.SelectInnerText("./type"),
-                            WorkOrderNumber = item.SelectInnerText("./workordernumber")
+                            ContactID = item.SelectInnerText("./ContactID"),
+                            CreationTime = item.SelectInnerText("./Header/CreationTime"),
+                            DeferredServicePackages = item.SelectInnerText("./DeferredServicePackages"),
+                            ID = item.SelectInnerText("./ID"),
+                            InUsage = item.SelectInnerText("./InUsage"),
+                            InvoiceNumber = item.SelectInnerText("./InvoiceNumber"),
+                            InvoiceTime = item.SelectInnerText("./InvoiceTime"),
+                            LastModifiedTime = item.SelectInnerText("./Header/LastModifiedTime"),
+                            LocationID = item.SelectInnerText("./LocationID"),
+                            Note = item.SelectInnerText("./Note"),
+                            OtherChargeCode = item.SelectInnerText("./OtherChargeCode"),
+                            PromisedTime = item.SelectInnerText("./PromisedTime"),
+                            PurchaseOrderNumber = item.SelectInnerText("./PurchaseOrderNumber"),
+                            ScheduledTime = item.SelectInnerText("./ScheduledTime"),
+                            ServiceAdvisor = item.SelectInnerText("./ServiceAdvisor"),
+                            ServiceItemID = item.SelectInnerText("./ServiceItemID"),
+                            ServicePackages = item.SelectInnerText("./ServicePackages"),
+                            Technician = item.SelectInnerText("./Technician"),
+                            Type = item.SelectInnerText("./Type"),
+                            WorkOrderNumber = item.SelectInnerText("./WorkOrderNumber")
                         };
                         output.Appointments.Add(i);
                     }

@@ -4,6 +4,8 @@ using JetComSmsSync.Modules.Tekmetric.Models;
 using JetComSmsSync.Modules.Tekmetric.Responses;
 using JetComSmsSync.Services.Interfaces;
 
+using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,21 +13,23 @@ using System.Linq;
 
 namespace JetComSmsSync.Modules.Tekmetric
 {
-    public class TekmetricDatabaseClient
+    public class DatabaseClient
     {
-        private const string _accountInfoConnectionString = "Data Source=192.168.75.1;User ID=rweb;Password=3277r;Initial Catalog=V2Reports;Connect Timeout=20000;";
-        private const string _autoRepairConnectionString = "Data Source=192.168.75.2;User ID=rweb;Password=3277r;Initial Catalog=AutoRepairSMS;Connect Timeout=20000;";
-        private readonly ICacheService _cache;
+        private readonly string _autoRepairConnectionString;
+        private readonly string _reportsConnectionString;
+        private readonly ICacheService _cache; 
 
-        public TekmetricDatabaseClient(ICacheService cache)
+        public DatabaseClient(IConfiguration configuration, ICacheService cache)
         {
+            _reportsConnectionString = configuration.GetConnectionString("V2Reports");
+            _autoRepairConnectionString = configuration.GetConnectionString("AutoRepairSMS");
             _cache = cache;
         }
 
         public IEnumerable<AccountModel> GetAccounts()
         {
             var insertQuery = "SELECT A.BigID,TA.Shopid,A.AccountFullName,TA.Environment,TA.AccessToken FROM TekmetricAccountdetail TA JOIN Accounts A ON TA.AccountID=A.AccountID";
-            using var connection = new SqlConnection(_accountInfoConnectionString);
+            using var connection = new SqlConnection(_reportsConnectionString);
             var output = connection.Query<AccountModel>(insertQuery);
             return output;
         }

@@ -18,6 +18,8 @@
         <ToolBar>
             <Button Content="{md:PackIcon Kind=Refresh}" Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding RefreshCommand}"/>
+            <TextBox Text="{Binding DayChunkSize}" d:Text="25"
+                     md:HintAssist.Hint="Day Chunk Size" md:HintAssist.IsFloating="True"/>
             <DatePicker SelectedDate="{Binding StartDate}" Width="auto"
                         d:SelectedDate="12/24/1996" 
                         x:Name="dpStartDate"

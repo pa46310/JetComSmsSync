@@ -24,7 +24,7 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
         private CancellationTokenSource _cts;
         public DateTime? PreviousDate { get; set; }
         private ILogger Log { get; } = Serilog.Log.ForContext<CdkSyncPageViewModel>();
-        private CdkDatabaseClient Database { get; }
+        private DatabaseClient Database { get; }
         public RecurrenceModel[] Items { get; } = RecurrenceModel.Default;
 
         private RecurrenceModel _selectedRecurrence;
@@ -132,7 +132,7 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
             }
         }
 
-        public CdkSyncPageViewModel(CdkDatabaseClient database, ICacheService cache)
+        public CdkSyncPageViewModel(DatabaseClient database, ICacheService cache)
         {
             Database = database;
             _cache = cache;
@@ -213,7 +213,7 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
                 using var context1 = LogContext.PushProperty("DealerId", account.DealerId);
                 using var context2 = LogContext.PushProperty("BaseUrl", account.BaseUrl);
                 _cts.Token.ThrowIfCancellationRequested();
-                var client = new CdkClient(account);
+                var client = new ServiceClient(account);
 
                 var processing = 1;
                 var totalProcessing = 3;
@@ -229,7 +229,7 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
             }
         }
 
-        private void SendRepairOrderHistory(AccountModel account, CdkClient client, DateTime? startDate, string message)
+        private void SendRepairOrderHistory(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {
@@ -261,7 +261,7 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
             }
         }
 
-        private void SendCustomers(AccountModel account, CdkClient client, DateTime? startDate, string message)
+        private void SendCustomers(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {
@@ -290,7 +290,7 @@ namespace JetComSmsSync.Modules.CDK.ViewModels
             }
         }
 
-        private void SendHelpEmployees(AccountModel account, CdkClient client, DateTime? startDate, string message)
+        private void SendHelpEmployees(AccountModel account, ServiceClient client, DateTime? startDate, string message)
         {
             try
             {

@@ -2,6 +2,8 @@
 
 using JetComSmsSync.Modules.CDK.Models;
 
+using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,10 +11,16 @@ using System.Linq;
 
 namespace JetComSmsSync.Modules.CDK
 {
-    public class CdkDatabaseClient
+    public class DatabaseClient
     {
-        private const string _autoRepairConnectionString = "Data Source=192.168.75.2;User ID=rweb;Password=3277r;Initial Catalog=AutoRepairSMS;Connect Timeout=20000;";
-        private const string _reportsConnectionString = "Data Source=192.168.75.1;User ID=rweb;Password=3277r;Initial Catalog=V2Reports;Connect Timeout=20000;";
+        private readonly string _autoRepairConnectionString;
+        private readonly string _reportsConnectionString;
+
+        public DatabaseClient(IConfiguration configuration)
+        {
+            _reportsConnectionString = configuration.GetConnectionString("V2Reports");
+            _autoRepairConnectionString = configuration.GetConnectionString("AutoRepairSMS");
+        }
         public AccountModel[] GetAccounts()
         {
             using var connection = new SqlConnection(_reportsConnectionString);

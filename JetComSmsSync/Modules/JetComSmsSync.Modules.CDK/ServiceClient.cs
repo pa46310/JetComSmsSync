@@ -15,13 +15,13 @@ using System.Xml.Serialization;
 
 namespace JetComSmsSync.Modules.CDK
 {
-    public class CdkClient
+    public class ServiceClient
     {
         public IRestClient Client { get; }
 
         private readonly string _dealerId;
 
-        public CdkClient(AccountModel account)
+        public ServiceClient(AccountModel account)
         {
             var client = RestClientUtils.CreateRestClient(account.BaseUrl);
             client.Authenticator = new HttpBasicAuthenticator(account.Username, account.Password);

@@ -1,7 +1,13 @@
 ﻿using Dapper;
+
 using JetComSmsSync.Modules.Protractor.Models;
+
+using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
+
 using Serilog;
+
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -10,7 +16,12 @@ namespace JetComSmsSync.Modules.Protractor
 {
     public class DatabaseClient
     {
-        private const string _autoRepairConnectionString = "Data Source=192.168.75.1;User ID=rweb;Password=3277r;Initial Catalog=AutoRepairSMSTransferInfo;Connect Timeout=20000;";
+        private readonly string _autoRepairConnectionString;
+
+        public DatabaseClient(IConfiguration configuration)
+        {
+            _autoRepairConnectionString = configuration.GetConnectionString("AutoRepairSMSTransferInfo");
+        }
 
         private SqlConnection GetConnection() => new SqlConnection(_autoRepairConnectionString);
 
@@ -88,7 +99,7 @@ namespace JetComSmsSync.Modules.Protractor
         public List<InvoiceModel> GetInvoiceForCompare(string bigId)
         {
             using var connection = GetConnection();
-            var output = connection.Query<InvoiceModel>("SELECT Id FROM Protractor_Invoices WHERE BigId=@BigId", new { BigId = bigId });
+            var output = connection.Query<InvoiceModel>("SELECT Id,ServiceItemID FROM Protractor_Invoices WHERE BigId=@BigId", new { BigId = bigId });
             return output.ToList();
         }
 
@@ -117,6 +128,7 @@ namespace JetComSmsSync.Modules.Protractor
            ,[GrandTotal]
            ,[LocationID]
            ,[BigID]
+           ,[Discount]
            ,[IsDone])
      VALUES
            (@ID
@@ -140,6 +152,7 @@ namespace JetComSmsSync.Modules.Protractor
            ,@GrandTotal
            ,@LocationID
            ,@BigID
+           ,@Discount
            ,0)", items);
             return output;
         }

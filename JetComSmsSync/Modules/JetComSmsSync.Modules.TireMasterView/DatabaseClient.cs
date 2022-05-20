@@ -1,5 +1,8 @@
 ﻿using Dapper;
 using JetComSmsSync.Modules.TireMasterView.Models;
+
+using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,11 +13,17 @@ namespace JetComSmsSync.Modules.TireMasterView
 {
     public class DatabaseClient
     {
-        private const string _autoRepairConnectionString = "Data Source=192.168.75.2;User ID=rweb;Password=3277r;Initial Catalog=AutoRepairSMS;Connect Timeout=20000;";
-        private const string _accountConnectionString = "Data Source=192.168.75.1;User ID=rweb;Password=3277r;Initial Catalog=CSI;Connect Timeout=20000;";
-        public AccountModel[] GetAccounts()
+		private readonly string _autoRepairConnectionString;
+		private readonly string _reportsConnectionString;
+
+		public DatabaseClient(IConfiguration configuration)
+		{
+			_reportsConnectionString = configuration.GetConnectionString("V2Reports");
+			_autoRepairConnectionString = configuration.GetConnectionString("AutoRepairSMS");
+		}
+		public AccountModel[] GetAccounts()
         {
-            using (var connection = new SqlConnection(_accountConnectionString))
+            using (var connection = new SqlConnection(_reportsConnectionString))
             {
                 var output = connection.Query<AccountModel>(@"SELECT a.BigId
 	,VIPID as LocationId
