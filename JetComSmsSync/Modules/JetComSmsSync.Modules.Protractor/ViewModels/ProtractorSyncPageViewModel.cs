@@ -53,149 +53,159 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
 
         protected override async Task<AccountModel[]> GetAccounts()
         {
-            using var service = new ProtractorServiceSoapClient(ProtractorServiceSoapClient.EndpointConfiguration.ProtractorServiceSoap12);
-
-            var output = await service.GetAccountIDDetailAsync();
-
-            var details = output.Any1.GetElementsByTagName("AccountIDDetail");
-            var outputList = new List<AccountModel>(details.Count);
-            foreach (XmlNode detail in details)
-            {
-                var bigId = detail.ChildNodes.Item(0).InnerText;
-                var connectionId = detail.ChildNodes.Item(1).InnerText;
-                var apiKey = detail.ChildNodes.Item(2).InnerText;
-
-                outputList.Add(new AccountModel
-                {
-                    ApiKey = apiKey,
-                    BigId = bigId,
-                    ConnectionId = connectionId,
-                    IsSelected = false,
-                });
-            }
-
+            var outputList = await Task.Run(_database.GetAccounts);
             return outputList.ToArray();
         }
 
         protected override void Send(DateTime? startDate, IList<AccountModel> accounts, CancellationToken ct)
         {
-            var current = 0;
-            var total = accounts.Count;
-            
-            foreach (var account in accounts)
+            var start = startDate.Value;
+            var maxRetry = 3;
+            var next = start.AddDays(DayChunkSize);
+            if (next > DateTime.Today)
             {
-                try
-                {
-                    current++;
-                    ct.ThrowIfCancellationRequested();
-
-                    var prefix = $"[{current}/{total}]";
-
-                    Message = $"{prefix} Getting items for compare";
-
-                    var contactsForCompare = _database.GetContactForCompare(account.BigId);
-                    using var ctx1 = LogContext.PushProperty("LiveContact", contactsForCompare.Count);
-                    ct.ThrowIfCancellationRequested();
-
-                    var invoiceForCompare = _database.GetInvoiceForCompare(account.BigId);
-                    using var ctx2 = LogContext.PushProperty("LiveInvoice", invoiceForCompare.Count);
-                    ct.ThrowIfCancellationRequested();
-
-                    var serviceItemsForCompare = _database.GetServiceItemsForCompare(account.BigId);
-                    using var ctx3 = LogContext.PushProperty("LiveServiceItem", serviceItemsForCompare.Count);
-                    ct.ThrowIfCancellationRequested();
-
-                    var servicePackagesForCompare = _database.GetServicePackagesForCompare(account.BigId);
-                    using var ctx4 = LogContext.PushProperty("LiveServicePackage", servicePackagesForCompare.Count);
-                    ct.ThrowIfCancellationRequested();
-
-                    var appointmentsForCompare = _database.GetAppointmentsForCompare(account.BigId);
-                    using var ctx5 = LogContext.PushProperty("LiveAppointment", appointmentsForCompare.Count);
-                    ct.ThrowIfCancellationRequested();
-
-                    var start = startDate.Value;
-                    var next = start.AddDays(DayChunkSize);
-                    if (next > DateTime.Today)
-                    {
-                        next = DateTime.Today;
-                    }
-                    do
-                    {
-                        var prefix2 = $"[{start:MM/dd/yyyy}-{next:MM/dd/yyyy}]";
-                        ct.ThrowIfCancellationRequested();
-
-                        Message = $"{prefix} {prefix2} Getting local data";
-                        var local = GetXmlData(account, start, next, ct);
-
-                        if (local is null) { break; }
-
-                        var inserted = 0;
-                        Message = $"{prefix} {prefix2} Comparing local and live data";
-
-                        var uniqueContacts = local.Contacts.Except(contactsForCompare, Comparers.Contact).ToList();
-                        contactsForCompare.AddRange(uniqueContacts);
-                        using var ctx21 = LogContext.PushProperty("UniqueContact", uniqueContacts.Count);
-
-                        var uniqueInvoices = local.Invoices.Except(invoiceForCompare, Comparers.Invoice).ToList();
-                        invoiceForCompare.AddRange(uniqueInvoices);
-                        using var ctx22 = LogContext.PushProperty("UniqueInvoice", uniqueInvoices.Count);
-
-                        var uniqueServiceItems = local.ServiceItems.Except(serviceItemsForCompare, Comparers.ServiceItem).ToList();
-                        serviceItemsForCompare.AddRange(uniqueServiceItems);
-                        using var ctx23 = LogContext.PushProperty("UniqueServiceItem", uniqueServiceItems.Count);
-
-                        var uniqueServicePackages = local.ServicePackages.Except(servicePackagesForCompare, Comparers.ServicePackage).ToList();
-                        servicePackagesForCompare.AddRange(uniqueServicePackages);
-                        using var ctx24 = LogContext.PushProperty("UniqueServicePackage", uniqueServicePackages.Count);
-
-                        var uniqueAppointments = local.Appointments.Except(appointmentsForCompare, Comparers.Appointment).ToList();
-                        appointmentsForCompare.AddRange(uniqueAppointments);
-                        using var ctx25 = LogContext.PushProperty("UniqueAppointment", uniqueAppointments.Count);
-
-
-                        Message = $"{prefix} {prefix2} Inserting unique data";
-
-                        inserted = _database.InsertContacts(uniqueContacts);
-                        ct.ThrowIfCancellationRequested();
-                        using var ctx31 = LogContext.PushProperty("ContactInserted", inserted);
-
-                        inserted = _database.InsertInvoices(uniqueInvoices);
-                        ct.ThrowIfCancellationRequested();
-                        using var ctx32 = LogContext.PushProperty("InvoiceInserted", inserted);
-
-                        inserted = _database.InsertServiceItems(uniqueServiceItems);
-                        ct.ThrowIfCancellationRequested();
-                        using var ctx33 = LogContext.PushProperty("ServiceItemInserted", inserted);
-
-                        inserted = _database.InsertServicePackages(uniqueServicePackages);
-                        ct.ThrowIfCancellationRequested();
-                        using var ctx34 = LogContext.PushProperty("ServicePackageInserted", inserted);
-
-                        inserted = _database.InsertAppointments(uniqueAppointments);
-                        ct.ThrowIfCancellationRequested();
-                        using var ctx35 = LogContext.PushProperty("AppointmentInserted", inserted);
-
-                        Message = $"{prefix} {prefix2} Inserted";
-
-                        start = next;
-                        next = next.AddDays(DayChunkSize);
-                        if (next > DateTime.Today)
-                        {
-                            next = DateTime.Today;
-                        }
-                    } while (start < DateTime.Today);
-                }
-                catch (OperationCanceledException)
-                {
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Failed to send data for {0}", account.BigId);
-                }
+                next = DateTime.Today;
             }
+            do
+            {
+                var retry = 0;
+                var retryAccounts = new List<AccountModel>();
+                var tryAccounts = new List<AccountModel>(accounts);
+                do
+                {
+                    var current = 0;
+                    foreach (var account in tryAccounts)
+                    {
+                        var total = tryAccounts.Count;
+                        using var ctx0 = LogContext.PushProperty("BigID", account.BigId);
+                        try
+                        {
+                            current++;
+                            ct.ThrowIfCancellationRequested();
+
+                            SendData(account, start, next, current, total, ct);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            throw;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (retry < maxRetry)
+                            {
+                                Log.Warning(ex, "Failed to send data for account:{0}. Retrying({1}) again...", account.BigId, retry);
+                                retryAccounts.Add(account);
+                            }
+                            else
+                            {
+                                Log.Error(ex, "Failed to send data for account:{0}", account.BigId);
+                            }
+                        }
+                    }
+                    retry++;
+                    tryAccounts.Clear();
+                    if (retry < maxRetry && retryAccounts.Count > 0)
+                    {
+                        tryAccounts.AddRange(retryAccounts);
+                        retryAccounts.Clear();
+                    }
+                } while (tryAccounts.Count > 0);
+
+                start = next;
+                next = next.AddDays(DayChunkSize);
+                if (next > DateTime.Today)
+                {
+                    next = DateTime.Today;
+                }
+            } while (start < DateTime.Today);
         }
 
+        private void SendData(AccountModel account, DateTime start, DateTime next, int current, int total, CancellationToken ct)
+        {
+            if (start.Date == next.Date)
+            {
+                start = next.Date.AddDays(-1);
+            }
+
+
+            var prefix = $"[{start:MM/dd/yyyy}-{next:MM/dd/yyyy}] [{current}/{total}]";
+            ct.ThrowIfCancellationRequested();
+
+            Message = $"{prefix} Getting items for compare";
+
+            var contactsForCompare = _database.GetContactForCompare(account.BigId);
+            using var ctx1 = LogContext.PushProperty("LiveContact", contactsForCompare.Count);
+            ct.ThrowIfCancellationRequested();
+
+            var invoiceForCompare = _database.GetInvoiceForCompare(account.BigId);
+            using var ctx2 = LogContext.PushProperty("LiveInvoice", invoiceForCompare.Count);
+            ct.ThrowIfCancellationRequested();
+
+            var serviceItemsForCompare = _database.GetServiceItemsForCompare(account.BigId);
+            using var ctx3 = LogContext.PushProperty("LiveServiceItem", serviceItemsForCompare.Count);
+            ct.ThrowIfCancellationRequested();
+
+            var servicePackagesForCompare = _database.GetServicePackagesForCompare(account.BigId);
+            using var ctx4 = LogContext.PushProperty("LiveServicePackage", servicePackagesForCompare.Count);
+            ct.ThrowIfCancellationRequested();
+
+            var appointmentsForCompare = _database.GetAppointmentsForCompare(account.BigId);
+            using var ctx5 = LogContext.PushProperty("LiveAppointment", appointmentsForCompare.Count);
+            ct.ThrowIfCancellationRequested();
+
+            Message = $"{prefix} Getting local data";
+            var local = GetXmlData(account, start, next, ct);
+
+            if (local is null) { return; }
+
+            var inserted = 0;
+            Message = $"{prefix} Comparing local and live data";
+
+            var uniqueContacts = local.Contacts.Except(contactsForCompare, Comparers.Contact).ToList();
+            contactsForCompare.AddRange(uniqueContacts);
+            using var ctx21 = LogContext.PushProperty("UniqueContact", uniqueContacts.Count);
+
+            var uniqueInvoices = local.Invoices.Except(invoiceForCompare, Comparers.Invoice).ToList();
+            invoiceForCompare.AddRange(uniqueInvoices);
+            using var ctx22 = LogContext.PushProperty("UniqueInvoice", uniqueInvoices.Count);
+
+            var uniqueServiceItems = local.ServiceItems.Except(serviceItemsForCompare, Comparers.ServiceItem).ToList();
+            serviceItemsForCompare.AddRange(uniqueServiceItems);
+            using var ctx23 = LogContext.PushProperty("UniqueServiceItem", uniqueServiceItems.Count);
+
+            var uniqueServicePackages = local.ServicePackages.Except(servicePackagesForCompare, Comparers.ServicePackage).ToList();
+            servicePackagesForCompare.AddRange(uniqueServicePackages);
+            using var ctx24 = LogContext.PushProperty("UniqueServicePackage", uniqueServicePackages.Count);
+
+            var uniqueAppointments = local.Appointments.Except(appointmentsForCompare, Comparers.Appointment).ToList();
+            appointmentsForCompare.AddRange(uniqueAppointments);
+            using var ctx25 = LogContext.PushProperty("UniqueAppointment", uniqueAppointments.Count);
+
+
+            Message = $"{prefix} Inserting unique data";
+
+            inserted = _database.InsertContacts(uniqueContacts);
+            ct.ThrowIfCancellationRequested();
+            using var ctx31 = LogContext.PushProperty("ContactInserted", inserted);
+
+            inserted = _database.InsertInvoices(uniqueInvoices);
+            ct.ThrowIfCancellationRequested();
+            using var ctx32 = LogContext.PushProperty("InvoiceInserted", inserted);
+
+            inserted = _database.InsertServiceItems(uniqueServiceItems);
+            ct.ThrowIfCancellationRequested();
+            using var ctx33 = LogContext.PushProperty("ServiceItemInserted", inserted);
+
+            inserted = _database.InsertServicePackages(uniqueServicePackages);
+            ct.ThrowIfCancellationRequested();
+            using var ctx34 = LogContext.PushProperty("ServicePackageInserted", inserted);
+
+            inserted = _database.InsertAppointments(uniqueAppointments);
+            ct.ThrowIfCancellationRequested();
+            using var ctx35 = LogContext.PushProperty("AppointmentInserted", inserted);
+
+            Message = $"{prefix} Inserted";
+        }
 
         private ProtractorData GetXmlData(AccountModel account, DateTime start, DateTime end, CancellationToken ct)
         {
@@ -214,39 +224,34 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
                 return null;
             }
 
-            // save to file
-            //var key = $"protractor-{account.ConnectionId}.xml";
-            //File.WriteAllText(key, response.Content);
-            //var xml = File.ReadAllText(key);
-
             var output = new ProtractorData();
-            try
+            var document = new XmlDocument();
+            var indexOf = xml.IndexOf("<crmdataset", StringComparison.OrdinalIgnoreCase);
+            var xml1 = xml.Remove(0, indexOf);
+            document.LoadXml(xml1);
+
+            //var document = new HtmlDocument();
+            //document.LoadHtml(xml);
+
+            var errornumber = document.SelectSingleNode("/CRMDataSet/Header/ErrorNumber")?.InnerText;
+            var errorMessage = document.SelectSingleNode("/CRMDataSet/Header/ErrorMessage")?.InnerText;
+
+            if (!string.IsNullOrEmpty(errorMessage))
             {
-                var document = new XmlDocument();
-                var indexOf = xml.IndexOf("<crmdataset", StringComparison.OrdinalIgnoreCase);
-                var xml1 = xml.Remove(0, indexOf);
-                document.LoadXml(xml1);
-
-                //var document = new HtmlDocument();
-                //document.LoadHtml(xml);
-
-                var errornumber = document.SelectSingleNode("/CRMDataSet/Header/ErrorNumber")?.InnerText;
-                var errorMessage = document.SelectSingleNode("/CRMDataSet/Header/ErrorMessage")?.InnerText;
-
-                if (!string.IsNullOrEmpty(errorMessage))
+                if (string.Equals(errornumber, "InvalidDateRange") || string.Equals(errornumber, "InvalidConnectionID") || string.Equals(errornumber, "InvalidAPIKey"))
                 {
-                    Log.Error("Error: {0}, Number: {1}", errorMessage, errornumber);
-                    if (string.Equals("CallThrottled", errornumber))
-                    {
-                        var time = Regex.Match(errorMessage, @"\d\d:\d\d:\d\d");
-                        var t = TimeSpan.Parse(time.Value);
-                        ct.WaitHandle.WaitOne(t);
-                        ct.ThrowIfCancellationRequested();
-                        return GetXmlData(account, start, end, ct);
-                    }
+                    Log.Warning("Error: {0}, Number: {1}, Skipping...", errorMessage, errornumber);
                     return null;
                 }
+                else
+                {
+                    Log.Error("Error: {0}, Number: {1}", errorMessage, errornumber);
+                    throw new Exception(response.Content);
+                }
+            }
 
+            try
+            {
                 // check for error message
                 var contactNodes = document.SelectNodes("/CRMDataSet/Contacts/Item");
                 if (contactNodes != null)
@@ -400,7 +405,8 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Failed to get xml data");
+                Log.Warning(ex, "Failed to get xml data. Skipping...");
+                return null;
             }
 
             return output;

@@ -17,13 +17,22 @@ namespace JetComSmsSync.Modules.Protractor
     public class DatabaseClient
     {
         private readonly string _autoRepairConnectionString;
+        private readonly string _v2ReportsConnectionString;
 
         public DatabaseClient(IConfiguration configuration)
         {
             _autoRepairConnectionString = configuration.GetConnectionString("AutoRepairSMSTransferInfo");
+            _v2ReportsConnectionString = configuration.GetConnectionString("V2Reports");
         }
 
         private SqlConnection GetConnection() => new SqlConnection(_autoRepairConnectionString);
+
+        public IEnumerable<AccountModel> GetAccounts()
+        {
+            using var connection = new SqlConnection(_v2ReportsConnectionString);
+            var output = connection.Query<AccountModel>("GetAccountIDDetail", commandType: System.Data.CommandType.StoredProcedure);
+            return output;
+        }
 
         public List<ContactModel> GetContactForCompare(string bigId)
         {
