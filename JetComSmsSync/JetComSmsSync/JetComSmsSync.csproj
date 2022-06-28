@@ -7,7 +7,7 @@
 		<ApplicationIcon>app.ico</ApplicationIcon>
 		<Platforms>AnyCPU;x64</Platforms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Configurations>Debug;Release;ShopwareSync</Configurations>
+		<Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync</Configurations>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>TRACE;CDK</DefineConstants>
@@ -54,6 +54,14 @@
 	  </Resource>
 	</ItemGroup>
 	<ItemGroup>
+	  <None Update="appsettings.CDK.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.CdkSync.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
 	  <None Update="appsettings.Debug.json">
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
@@ -62,7 +70,23 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <TransformOnBuild>true</TransformOnBuild>
 	  </None>
+	  <None Update="appsettings.Protractor.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.ProtractorSync.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
 	  <None Update="appsettings.Release.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.Shop4D.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.Shop4dSync.json">
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>
@@ -71,6 +95,22 @@
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>
 	  <None Update="appsettings.ShopwareSync.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.Tekmetric.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.TekmetricSync.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.Tiremaster.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
+	  <None Update="appsettings.TiremasterSync.json">
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>

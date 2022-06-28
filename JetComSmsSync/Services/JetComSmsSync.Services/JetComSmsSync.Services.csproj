@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <Configurations>Debug;Release;ShopwareSync</Configurations>
+	  <Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

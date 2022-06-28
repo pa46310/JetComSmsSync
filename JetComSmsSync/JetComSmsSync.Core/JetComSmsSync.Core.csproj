@@ -5,7 +5,7 @@
 		<AssemblyName>JetComSmsSync.Core</AssemblyName>
 		<Platforms>AnyCPU;x64</Platforms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Configurations>Debug;Release;ShopwareSync</Configurations>
+		<Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync</Configurations>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Include="..\JetComSmsSync\AssemblyInfo-shared.cs" Link="AssemblyInfo-shared.cs" />
