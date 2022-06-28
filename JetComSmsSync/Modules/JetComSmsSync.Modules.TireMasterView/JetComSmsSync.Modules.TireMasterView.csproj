@@ -3,6 +3,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>JetComSmsSync.Modules.TireMasterView</AssemblyName>
+    <Configurations>Debug;Release;ShopwareSync</Configurations>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />

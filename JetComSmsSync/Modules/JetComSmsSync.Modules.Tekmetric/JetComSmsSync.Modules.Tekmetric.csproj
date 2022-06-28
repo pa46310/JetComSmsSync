@@ -5,6 +5,7 @@
     <AssemblyName>JetComSmsSync.Modules.Tekmetric</AssemblyName>
     <Platforms>AnyCPU;x64</Platforms>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <Configurations>Debug;Release;ShopwareSync</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
