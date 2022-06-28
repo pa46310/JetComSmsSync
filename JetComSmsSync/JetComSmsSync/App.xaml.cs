@@ -38,6 +38,7 @@ namespace JetComSmsSync
 #else
                 .Enrich.WithProperty("Environment", "Production")
 #endif
+                .Enrich.WithProperty("Application", nameof(JetComSMSSync))
                 .WriteTo.Seq(seqUrl, apiKey: JetComSeqApiKey)
                 .CreateLogger();
 

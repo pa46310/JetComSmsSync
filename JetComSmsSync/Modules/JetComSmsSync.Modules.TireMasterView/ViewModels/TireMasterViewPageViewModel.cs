@@ -1,10 +1,13 @@
 ﻿using JetComSmsSync.Core.Models;
 using JetComSmsSync.Core.Utils;
 using JetComSmsSync.Modules.TireMasterView.Models;
+
 using Prism.Commands;
 using Prism.Mvvm;
+
 using Serilog;
 using Serilog.Context;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,8 @@ namespace JetComSmsSync.Modules.TireMasterView.ViewModels
     public class TireMasterViewPageViewModel : SyncPageViewModel<AccountModel>
     {
         private readonly DatabaseClient _database;
+
+        protected override ILogger Log => Serilog.Log.ForContext<TireMasterViewPageViewModel>();
 
         private int _limit = 100;
         public int Limit

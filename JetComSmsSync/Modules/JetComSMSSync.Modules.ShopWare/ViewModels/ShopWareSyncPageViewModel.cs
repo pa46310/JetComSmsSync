@@ -1,10 +1,7 @@
 ﻿using JetComSmsSync.Core.Models;
-using JetComSmsSync.Core.Utils;
 
 using JetComSMSSync.Modules.ShopWare.Adapters;
 using JetComSMSSync.Modules.ShopWare.Models;
-
-using Prism.Mvvm;
 
 using Serilog;
 using Serilog.Context;
@@ -21,23 +18,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
     {
         private readonly DatabaseClient _database;
 
-        private int _lookBackDays = 10;
-        public int LookBackDays
-        {
-            get { return _lookBackDays; }
-            set
-            {
-                if (SetProperty(ref _lookBackDays, value))
-                {
-                    RaisePropertyChanged(nameof(StartDate));
-                }
-            }
-        }
-
-        public override DateTime StartDate
-        {
-            get => DateTime.UtcNow.AddDays(-1 * LookBackDays);
-        }
+        protected override ILogger Log => Serilog.Log.ForContext<ShopWareSyncPageViewModel>();
 
         public ShopWareSyncPageViewModel(DatabaseClient database)
         {
@@ -53,19 +34,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
         protected override void Send(DateTime? startDate, IList<AccountModel> selected, CancellationToken ct)
         {
             var current = 0;
-            startDate = StartDate;
             var total = selected.Count;
-            var start = DateTime.MinValue;
-            var end = DateTime.Now;
-            if (startDate.HasValue)
-            {
-                Log.Debug("Sending delta data");
-                start = startDate.Value;
-            }
-            else
-            {
-                Log.Debug("Sending bulk data");
-            }
 
             foreach (var account in selected)
             {
@@ -77,42 +46,46 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 string prefix;
 
                 prefix = $"[{current}/{total}] [Customer]";
-                SendCustomerData(client, account, prefix, ct);
+                SendCustomerData(client, account, prefix, startDate, ct);
                 ct.ThrowIfCancellationRequested();
 
                 prefix = $"[{current}/{total}] [PastRecommendation]";
-                SendPastRecomendationData(client, account, prefix, ct);
+                SendPastRecomendationData(client, account, prefix, startDate, ct);
                 ct.ThrowIfCancellationRequested();
 
                 prefix = $"[{current}/{total}] [Payment]";
-                SendPaymentsData(client, account, prefix, ct);
+                SendPaymentsData(client, account, prefix, startDate, ct);
                 ct.ThrowIfCancellationRequested();
 
                 prefix = $"[{current}/{total}] [RepairOrder]";
-                SendRepairOrderData(client, account, prefix, ct);
+                SendRepairOrderData(client, account, prefix, startDate, ct);
                 ct.ThrowIfCancellationRequested();
 
                 prefix = $"[{current}/{total}] [Vehicle]";
-                SendVehicleData(client, account, prefix, ct);
+                SendVehicleData(client, account, prefix, startDate, ct);
                 ct.ThrowIfCancellationRequested();
             }
         }
 
-        private void SendVehicleData(ServiceClient client, AccountModel account, string prefix, CancellationToken ct)
+        private void SendVehicleData(ServiceClient client, AccountModel account, string prefix, DateTime? start, CancellationToken ct)
         {
             try
             {
                 Message = prefix + " Getting data for compare";
                 var compare = _database.GetVehicleForCompare(account.BigID);
                 ct.ThrowIfCancellationRequested();
-                var inserted = 0;
+                using var context1 = LogContext.PushProperty("Local", compare.Count);
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetVehicles(1, LookBackDays))
+                foreach (var item in client.GetVehicles(start))
                 {
+                    using var contextLocal = LogContext.PushProperty("Local", compare.Count);
                     var unique = item.Results.Except(compare, Comparers.Vehicle).ToList();
                     compare.AddRange(unique);
-                    inserted += _database.InsertVehicle(unique);
+                    using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                    var inserted = _database.InsertVehicle(unique);
+                    using var contextInserted = LogContext.PushProperty("Inserted", inserted);
                     Log.Debug("{0} inserted", inserted);
                     ct.ThrowIfCancellationRequested();
 
@@ -125,7 +98,7 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
             }
         }
 
-        private void SendRepairOrderData(ServiceClient client, AccountModel account, string prefix, CancellationToken ct)
+        private void SendRepairOrderData(ServiceClient client, AccountModel account, string prefix, DateTime? start, CancellationToken ct)
         {
             try
             {
@@ -146,58 +119,134 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
                 ct.ThrowIfCancellationRequested();
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetRepairOrders(1, LookBackDays))
+                foreach (var item in client.GetRepairOrders(start))
                 {
-                    // repair order
-                    #region Insertion
-                    var repairOrders = item.Results.Select(x => x.ToRepairOrder(account.BigID));
-                    var uniqueRepairOrder = repairOrders.Except(compareRepairOrder, Comparers.RepairOrder).ToList();
-                    compareRepairOrder.AddRange(uniqueRepairOrder);
-                    var inserted = _database.InsertRepairOrders(uniqueRepairOrder);
-                    ct.ThrowIfCancellationRequested();
-                    // payments (not required since it is done in another send)
-                    // services
-                    var services = item.Results.SelectMany(x => x.ToServices(account.BigID));
-                    var uniqueServices = services.Except(compareServices, Comparers.Service).ToList();
-                    compareServices.AddRange(uniqueServices);
-                    inserted = _database.InsertServices(uniqueServices);
-                    ct.ThrowIfCancellationRequested();
-                    // labors
-                    var labors = item.Results.SelectMany(x => x.ToLabors(account.BigID));
-                    var uniqueLabors = labors.Except(compareLabors, Comparers.ServiceLabor).ToList();
-                    compareLabors.AddRange(uniqueLabors);
-                    inserted = _database.InsertServiceLabors(uniqueLabors);
-                    ct.ThrowIfCancellationRequested();
-                    // parts
-                    var parts = item.Results.SelectMany(x => x.ToParts(account.BigID));
-                    var uniqueParts = parts.Except(compareParts, Comparers.ServicePart).ToList();
-                    compareParts.AddRange(uniqueParts);
-                    inserted = _database.InsertServiceParts(uniqueParts);
-                    ct.ThrowIfCancellationRequested();
-                    // hazmats
-                    var hazmats = item.Results.SelectMany(x => x.ToHazmats(account.BigID));
-                    var uniqueHazmats = hazmats.Except(compareHazmats, Comparers.ServiceHazmat).ToList();
-                    compareHazmats.AddRange(uniqueHazmats);
-                    inserted = _database.InsertServiceHazmats(uniqueHazmats);
-                    ct.ThrowIfCancellationRequested();
-                    // sublet
-                    var sublet = item.Results.SelectMany(x => x.ToSublets(account.BigID));
-                    var uniqueSublet = sublet.Except(compareSublets, Comparers.ServiceSublet).ToList();
-                    compareSublets.AddRange(uniqueSublet);
-                    inserted = _database.InsertServiceSublets(uniqueSublet);
-                    ct.ThrowIfCancellationRequested();
-                    // inspection
-                    var inspections = item.Results.SelectMany(x => x.ToInspections(account.BigID));
-                    var uniqueInspections = inspections.Except(compareInspection, Comparers.ServiceInspection).ToList();
-                    compareInspection.AddRange(uniqueInspections);
-                    inserted = _database.InsertServiceInspections(uniqueInspections);
-                    ct.ThrowIfCancellationRequested();
+                    #region Repair orders
+                    using (var contextLocal = LogContext.PushProperty("Local", compareRepairOrder.Count))
+                    {
+                        // unique
+                        var items = item.Results.Select(x => x.ToRepairOrder(account.BigID));
+                        var uniqueItems = items.Except(compareRepairOrder, Comparers.RepairOrder).ToList();
+                        compareRepairOrder.AddRange(uniqueItems);
+                        using var contextUnique = LogContext.PushProperty("Unique", uniqueItems.Count);
+
+                        // insert
+                        var inserted = _database.InsertRepairOrders(uniqueItems);
+                        using var contextInserted = LogContext.PushProperty("Inserted", inserted);
+                        Log.Debug("{0} repair order inserted", inserted);
+                        ct.ThrowIfCancellationRequested();
+
+                        // update
+                        var toUpdate = items.Intersect(compareRepairOrder, Comparers.RepairOrderUpdate).ToList();
+                        var updated = _database.UpdateRepairOrders(toUpdate);
+                        using var contextUpdated = LogContext.PushProperty("Updated", updated);
+                        Log.Debug("{0} repair order updated", updated);
+                    }
                     #endregion
 
-                    #region Update
-                    var toUpdate = repairOrders.Intersect(compareRepairOrder, Comparers.RepairOrderUpdate).ToList();
-                    inserted += _database.UpdateRepairOrders(toUpdate);
-                    Log.Debug("{0} repair order updated", inserted);
+                    #region Payments (not required since it is done in another send) 
+
+                    #endregion
+
+                    #region Services
+                    using (var contextLocal = LogContext.PushProperty("Local", compareServices.Count))
+                    {
+                        // unique
+                        var items = item.Results.SelectMany(x => x.ToServices(account.BigID));
+                        var unique = items.Except(compareServices, Comparers.Service).ToList();
+                        compareServices.AddRange(unique);
+                        using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                        // insert
+                        var inserted = _database.InsertServices(unique);
+                        using var contextInserted = LogContext.PushProperty("Inserted", inserted);
+                        Log.Debug("{0} service inserted", inserted);
+                        ct.ThrowIfCancellationRequested();
+                    }
+                    #endregion
+
+                    #region Labors
+                    using (var contextLocal = LogContext.PushProperty("Local", compareLabors.Count))
+                    {
+                        // unique
+                        var items = item.Results.SelectMany(x => x.ToLabors(account.BigID));
+                        var unique = items.Except(compareLabors, Comparers.ServiceLabor).ToList();
+                        compareLabors.AddRange(unique);
+                        using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                        // insert
+                        var inserted = _database.InsertServiceLabors(unique);
+                        using var contextInserted = LogContext.PushProperty("Inserted", inserted);
+                        Log.Debug("{0} labor inserted", inserted);
+                        ct.ThrowIfCancellationRequested();
+                    }
+                    #endregion
+
+                    #region Parts
+                    using (var contextLocal = LogContext.PushProperty("Local", compareParts.Count))
+                    {
+                        // unique
+                        var items = item.Results.SelectMany(x => x.ToParts(account.BigID));
+                        var unique = items.Except(compareParts, Comparers.ServicePart).ToList();
+                        compareParts.AddRange(unique);
+                        using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                        // insert
+                        var inserted = _database.InsertServiceParts(unique);
+                        using var contextInserted = LogContext.PushProperty("Inserted", inserted);
+                        Log.Debug("{0} part inserted", inserted);
+                        ct.ThrowIfCancellationRequested();
+                    }
+                    #endregion
+
+                    #region Hazmats
+                    using (var contextLocal = LogContext.PushProperty("Local", compareHazmats.Count))
+                    {
+                        // unique
+                        var items = item.Results.SelectMany(x => x.ToHazmats(account.BigID));
+                        var unique = items.Except(compareHazmats, Comparers.ServiceHazmat).ToList();
+                        compareHazmats.AddRange(unique);
+                        using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                        // insert
+                        var inserted = _database.InsertServiceHazmats(unique);
+                        using var contextInserted = LogContext.PushProperty("Inserted", inserted);
+                        Log.Debug("{0} hazmat inserted", inserted);
+                        ct.ThrowIfCancellationRequested();
+                    }
+                    #endregion
+
+                    #region Sublet
+                    using (var contextLocal = LogContext.PushProperty("Local", compareSublets.Count))
+                    {
+                        var items = item.Results.SelectMany(x => x.ToSublets(account.BigID));
+                        var unique = items.Except(compareSublets, Comparers.ServiceSublet).ToList();
+                        compareSublets.AddRange(unique);
+                        using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                        // insert
+                        var inserted = _database.InsertServiceSublets(unique);
+                        using var contextInserted = LogContext.PushProperty("Inserted", inserted);
+                        Log.Debug("{0} sublet inserted", inserted);
+                        ct.ThrowIfCancellationRequested();
+                    }
+                    #endregion
+
+                    #region Inspection
+                    using (var contextLocal = LogContext.PushProperty("Local", compareInspection.Count))
+                    {
+                        // unique
+                        var items = item.Results.SelectMany(x => x.ToInspections(account.BigID));
+                        var unique = items.Except(compareInspection, Comparers.ServiceInspection).ToList();
+                        compareInspection.AddRange(unique);
+                        using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                        // insert
+                        var inserted = _database.InsertServiceInspections(unique);
+                        using var contextInserted = LogContext.PushProperty("Inserted", inserted);
+                        Log.Debug("{0} inspection inserted", inserted);
+                        ct.ThrowIfCancellationRequested();
+                    }
                     #endregion
 
                     Message = $"{prefix} Sent: {item.Current_Page}/{item.Total_Pages}";
@@ -209,21 +258,24 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
             }
         }
 
-        private void SendPaymentsData(ServiceClient client, AccountModel account, string prefix, CancellationToken ct)
+        private void SendPaymentsData(ServiceClient client, AccountModel account, string prefix, DateTime? start, CancellationToken ct)
         {
             try
             {
                 Message = prefix + " Getting data for compare";
                 var compare = _database.GetPaymentsForCompare(account.BigID);
                 ct.ThrowIfCancellationRequested();
-                var inserted = 0;
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetPayments(1, LookBackDays))
+                foreach (var item in client.GetPayments(start))
                 {
+                    using var contextLocal = LogContext.PushProperty("Local", compare.Count);
                     var unique = item.Results.Except(compare, Comparers.Payment).ToList();
                     compare.AddRange(unique);
-                    inserted += _database.InsertPayments(unique);
+                    using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                    var inserted = _database.InsertPayments(unique);
+                    using var contextInserted = LogContext.PushProperty("Inserted", inserted);
                     Log.Debug("{0} inserted", inserted);
                     ct.ThrowIfCancellationRequested();
 
@@ -236,21 +288,24 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
             }
         }
 
-        private void SendPastRecomendationData(ServiceClient client, AccountModel account, string prefix, CancellationToken ct)
+        private void SendPastRecomendationData(ServiceClient client, AccountModel account, string prefix, DateTime? start, CancellationToken ct)
         {
             try
             {
                 Message = prefix + " Getting data for compare";
                 var compare = _database.GetPastRecommendationsForCompare(account.BigID);
                 ct.ThrowIfCancellationRequested();
-                var inserted = 0;
 
                 Message = prefix + " Getting data...";
-                foreach (var item in client.GetPastRecomendations(1, LookBackDays))
+                foreach (var item in client.GetPastRecomendations(start))
                 {
+                    using var contextLocal = LogContext.PushProperty("Local", compare.Count);
                     var unique = item.Results.Except(compare, Comparers.PastRecomendation).ToList();
                     compare.AddRange(unique);
-                    inserted += _database.InsertPastRecomendations(unique);
+                    using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                    var inserted = _database.InsertPastRecomendations(unique);
+                    using var contextInserted = LogContext.PushProperty("Inserted", inserted);
                     Log.Debug("{0} inserted", inserted);
                     ct.ThrowIfCancellationRequested();
 
@@ -263,30 +318,33 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
             }
         }
 
-        private void SendCustomerData(ServiceClient client, AccountModel account, string prefix, CancellationToken ct)
+        private void SendCustomerData(ServiceClient client, AccountModel account, string prefix, DateTime? start, CancellationToken ct)
         {
             try
             {
                 Message = prefix + " Getting data for compare";
-                var uniqueCustomers = _database.GetCustomersForCompare(account.BigID, account.ShopID);
+                var compare = _database.GetCustomersForCompare(account.BigID, account.ShopID);
                 ct.ThrowIfCancellationRequested();
-                var inserted = 0;
 
                 Message = prefix + " Getting data...";
-                foreach (var customers in client.GetCustomers(1, LookBackDays))
+                foreach (var customers in client.GetCustomers(start))
                 {
                     #region Insertions
-                    var unique = customers.Results.Except(uniqueCustomers, Comparers.Customer).ToList();
-                    uniqueCustomers.AddRange(unique);
-                    inserted += _database.InsertCustomers(unique);
+                    using var contextLocal = LogContext.PushProperty("Local", compare.Count);
+                    var unique = customers.Results.Except(compare, Comparers.Customer).ToList();
+                    compare.AddRange(unique);
+                    using var contextUnique = LogContext.PushProperty("Unique", unique.Count);
+
+                    var inserted = _database.InsertCustomers(unique);
+                    using var contextInserted = LogContext.PushProperty("Inserted", inserted);
                     Log.Debug("{0} inserted", inserted);
                     ct.ThrowIfCancellationRequested();
                     #endregion
 
                     #region Update
-                    var toUpdate = customers.Results.Intersect(uniqueCustomers, Comparers.CustomerUpdate).ToList();
-                    inserted += _database.UpdateCustomers(toUpdate);
-                    Log.Debug("{0} updated", inserted);
+                    var toUpdate = customers.Results.Intersect(compare, Comparers.CustomerUpdate).ToList();
+                    var updated = _database.UpdateCustomers(toUpdate);
+                    Log.Debug("{0} updated", updated);
                     #endregion
 
                     Message = $"{prefix} Sent: {customers.Current_Page}/{customers.Total_Pages}";

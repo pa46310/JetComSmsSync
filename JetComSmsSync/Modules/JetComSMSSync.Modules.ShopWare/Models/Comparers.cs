@@ -37,7 +37,20 @@ namespace JetComSMSSync.Modules.ShopWare.Models
     {
         public bool Equals([AllowNull] CustomerModel x, [AllowNull] CustomerModel y)
         {
-            return string.Equals(x.Id, y.Id) && !string.Equals(x.Updated_At, y.Updated_At);
+            if (string.Equals(x.Id, y.Id))
+            {
+                if (System.DateTime.TryParse(x.Updated_At, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeUniversal, out var xDate) && System.DateTime.TryParse(y.Updated_At, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeUniversal, out var yDate))
+                {
+                    var equal = !xDate.Equals(yDate);
+                    if (equal)
+                    {
+
+                    }
+                    return equal;
+                }
+            }
+
+            return false;
         }
 
         public int GetHashCode([DisallowNull] CustomerModel item)
@@ -89,7 +102,16 @@ namespace JetComSMSSync.Modules.ShopWare.Models
     {
         public bool Equals([AllowNull] RepairOrderModel x, [AllowNull] RepairOrderModel y)
         {
-            return string.Equals(x.Id, y.Id) && string.Equals(x.Vehicle_Id, y.Vehicle_Id) && !string.Equals(x.Updated_At, y.Updated_At);
+            if (string.Equals(x.Id, y.Id))
+            {
+                if (System.DateTime.TryParse(x.Updated_At, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeUniversal, out var xDate) && System.DateTime.TryParse(y.Updated_At, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeUniversal, out var yDate))
+                {
+                    var equal = !xDate.Equals(yDate);
+                    return equal;
+                }
+            }
+
+            return false;
         }
 
         public int GetHashCode([DisallowNull] RepairOrderModel item)

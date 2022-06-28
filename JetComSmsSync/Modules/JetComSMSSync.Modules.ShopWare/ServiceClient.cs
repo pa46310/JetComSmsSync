@@ -1,8 +1,13 @@
 ﻿using JetComSmsSync.Core.Utils;
+
 using JetComSMSSync.Modules.ShopWare.Models;
 using JetComSMSSync.Modules.ShopWare.Responses;
+
 using RestSharp;
+
 using Serilog;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,8 +34,10 @@ namespace JetComSMSSync.Modules.ShopWare
             var response = Client.Get(request);
         }
 
-        public IEnumerable<PageableResponse<CustomerModel>> GetCustomers(int page = 1, int lookBackDays = 0)
+        public IEnumerable<PageableResponse<CustomerModel>> GetCustomers(DateTime? updatedAfter = null)
         {
+            Log.Debug("Getting customers updated after {0}", updatedAfter);
+            var page = 1;
             do
             {
                 var request = new RestRequest($"/api/v1/tenants/{_account.TenantID}/customers");
@@ -38,6 +45,10 @@ namespace JetComSMSSync.Modules.ShopWare
                 if (page > 1)
                 {
                     request.AddQueryParameter("page", page.ToString());
+                }
+                if (updatedAfter.HasValue)
+                {
+                    request.AddQueryParameter("updated_after", updatedAfter.Value.ToString("yyyy-MM-ddT00:00:00Z"));
                 }
 
                 var response = Client.Get<PageableResponse<CustomerModel>>(request);
@@ -59,15 +70,13 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
-                if (lookBackDays > 0 && page > lookBackDays)
-                {
-                    yield break;
-                }
 
             } while (true);
         }
-        public IEnumerable<PageableResponse<PastRecomendationModel>> GetPastRecomendations(int page = 1, int lookBackDays = 0)
+        public IEnumerable<PageableResponse<PastRecomendationModel>> GetPastRecomendations(DateTime? updatedAfter = null)
         {
+            Log.Debug("Getting past recommendations updated after {0}", updatedAfter);
+            var page = 1;
             do
             {
                 var request = new RestRequest($"/api/v1/tenants/{_account.TenantID}/past_recommendations");
@@ -75,6 +84,10 @@ namespace JetComSMSSync.Modules.ShopWare
                 if (page > 1)
                 {
                     request.AddQueryParameter("page", page.ToString());
+                }
+                if (updatedAfter.HasValue)
+                {
+                    request.AddQueryParameter("updated_after", updatedAfter.Value.ToString("yyyy-MM-ddT00:00:00Z"));
                 }
 
                 var response = Client.Get<PageableResponse<PastRecomendationModel>>(request);
@@ -95,15 +108,12 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
-                if (lookBackDays > 0 && page > lookBackDays)
-                {
-                    yield break;
-                }
-
             } while (true);
         }
-        public IEnumerable<PageableResponse<PaymentModel>> GetPayments(int page = 1, int lookBackDays = 0)
+        public IEnumerable<PageableResponse<PaymentModel>> GetPayments(DateTime? updatedAfter = null)
         {
+            Log.Debug("Getting payments updated after {0}", updatedAfter);
+            var page = 0;
             do
             {
                 var request = new RestRequest($"/api/v1/tenants/{_account.TenantID}/payments");
@@ -111,6 +121,10 @@ namespace JetComSMSSync.Modules.ShopWare
                 if (page > 1)
                 {
                     request.AddQueryParameter("page", page.ToString());
+                }
+                if (updatedAfter.HasValue)
+                {
+                    request.AddQueryParameter("updated_after", updatedAfter.Value.ToString("yyyy-MM-ddT00:00:00Z"));
                 }
 
                 var response = Client.Get<PageableResponse<PaymentModel>>(request);
@@ -132,17 +146,14 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
-                if (lookBackDays > 0 && page > lookBackDays)
-                {
-                    yield break;
-                }
 
             } while (true);
         }
 
-        public IEnumerable<PageableResponse<RepairOrderResponse>> GetRepairOrders(int page = 1, int lookBackDays = 0)
+        public IEnumerable<PageableResponse<RepairOrderResponse>> GetRepairOrders(DateTime? updatedAfter = null)
         {
-            Log.Debug("Getting repair orders");
+            Log.Debug("Getting repair orders updated after {0}", updatedAfter);
+            var page = 1;
             do
             {
 
@@ -152,6 +163,10 @@ namespace JetComSMSSync.Modules.ShopWare
                 if (page > 1)
                 {
                     request.AddQueryParameter("page", page.ToString());
+                }
+                if (updatedAfter.HasValue)
+                {
+                    request.AddQueryParameter("updated_after", updatedAfter.Value.ToString("yyyy-MM-ddT00:00:00Z"));
                 }
 
                 var response = Client.Get<PageableResponse<RepairOrderResponse>>(request);
@@ -170,15 +185,13 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
-                if (lookBackDays > 0 && page > lookBackDays)
-                {
-                    yield break;
-                }
 
             } while (true);
         }
-        public IEnumerable<PageableResponse<VehicleModel>> GetVehicles(int page = 1, int lookBackDays = 0)
+        public IEnumerable<PageableResponse<VehicleModel>> GetVehicles(DateTime? updatedAfter = null)
         {
+            Log.Debug("Getting vehicles updated after {0}", updatedAfter);
+            var page = 1;
             do
             {
                 var request = new RestRequest($"/api/v1/tenants/{_account.TenantID}/vehicles");
@@ -186,6 +199,10 @@ namespace JetComSMSSync.Modules.ShopWare
                 if (page > 1)
                 {
                     request.AddQueryParameter("page", page.ToString());
+                }
+                if (updatedAfter.HasValue)
+                {
+                    request.AddQueryParameter("updated_after", updatedAfter.Value.ToString("yyyy-MM-ddT00:00:00Z"));
                 }
 
                 var response = Client.Get<PageableResponse<VehicleModel>>(request);
@@ -207,10 +224,6 @@ namespace JetComSMSSync.Modules.ShopWare
                 }
 
                 page++;
-                if (lookBackDays > 0 && page > lookBackDays)
-                {
-                    yield break;
-                }
 
             } while (true);
         }

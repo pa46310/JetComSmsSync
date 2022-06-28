@@ -1,7 +1,10 @@
 ﻿using JetComSmsSync.Services.Interfaces;
+
 using Prism.Commands;
 using Prism.Mvvm;
+
 using Serilog;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,18 +166,25 @@ namespace JetComSmsSync.Core.Models
                 using (_cts = new CancellationTokenSource())
                 {
                     var selected = Accounts.Where(x => x.IsSelected).ToList();
-                    if (selected.Count == 0) return;
+                    if (selected.Count == 0)
+                    {
+                        MessageService.Instance.EnqueInformation("No accounts selected. Please select at least one account to send data");
+                        return;
+                    }
 
+                    Log.Debug("Begin send with start as {0}", startDate);
                     await Task.Run(() => Send(startDate, selected, _cts.Token));
+                    Log.Debug("End send with start as {0}", startDate);
                 }
-                CanCancel = false;
-                IsBusy = false;
             }
             catch (Exception ex)
             {
+                Log.LogAndShowError(ex, "Failed to send");
+            }
+            finally
+            {
                 CanCancel = false;
                 IsBusy = false;
-                Log.LogAndShowError(ex, "Failed to send");
             }
         }
 
