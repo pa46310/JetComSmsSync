@@ -65,9 +65,5 @@
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>
-	  <None Update="appsettings.Shopware.json">
-	    <IsTransformFile>true</IsTransformFile>
-	    <DependentUpon>appsettings.json</DependentUpon>
-	  </None>
 	</ItemGroup>
 </Project>

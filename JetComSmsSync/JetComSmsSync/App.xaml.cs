@@ -1,12 +1,17 @@
 ﻿using JetComSmsSync.Core;
 using JetComSmsSync.Services;
 using JetComSmsSync.Services.Interfaces;
+using JetComSmsSync.ViewModels;
 using JetComSmsSync.Views;
+
 using Microsoft.Extensions.Configuration;
+
 using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Regions;
 
 using Serilog;
+
 using System;
 using System.IO;
 using System.Windows;
@@ -46,6 +51,11 @@ namespace JetComSmsSync
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             base.OnStartup(e);
+
+            // set starting page
+            var rm = Container.Resolve<IRegionManager>();
+            var pageName = Configuration["StartingPage"];
+            rm.RequestNavigate(RegionNames.ContentRegion, pageName);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -68,6 +78,7 @@ namespace JetComSmsSync
             containerRegistry.RegisterInstance(Configuration);
             containerRegistry.RegisterInstance<IMessageService>(MessageService.Instance);
             containerRegistry.RegisterSingleton<ICacheService, CacheService>();
+            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

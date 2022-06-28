@@ -7,6 +7,7 @@
 		<ApplicationIcon>app.ico</ApplicationIcon>
 		<Platforms>AnyCPU;x64</Platforms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Configurations>Debug;Release;ShopwareSync</Configurations>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>TRACE;CDK</DefineConstants>
@@ -57,6 +58,10 @@
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>
+	  <None Update="appsettings.FolderProfile.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
 	  <None Update="appsettings.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <TransformOnBuild>true</TransformOnBuild>
@@ -65,7 +70,7 @@
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>
-	  <None Update="appsettings.Shopware.json">
+	  <None Update="appsettings.ShopwareSync.json">
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>

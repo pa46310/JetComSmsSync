@@ -1,26 +1,25 @@
-﻿<mde:MaterialWindow x:Class="JetComSmsSync.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:prism="http://prismlibrary.com/"
-        prism:ViewModelLocator.AutoWireViewModel="True"
-        xmlns:mde="https://spiegelp.github.io/MaterialDesignExtensions/winfx/xaml"                    
-        xmlns:core="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core"
-        Title="{Binding Title}" Height="600" Width="800" 
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal"
-        TextOptions.TextRenderingMode="Auto"
-                    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    mc:Ignorable="d"
-                    xmlns:tekmetric="clr-namespace:JetComSmsSync.Modules.Tekmetric.Views;assembly=JetComSmsSync.Modules.Tekmetric"
-                    xmlns:cdk="clr-namespace:JetComSmsSync.Modules.CDK.Views;assembly=JetComSmsSync.Modules.CDK"
-                    xmlns:shop4d="clr-namespace:JetComSmsSync.Modules.Shop4D.Views;assembly=JetComSmsSync.Modules.Shop4D"
-                    xmlns:shopware="clr-namespace:JetComSMSSync.Modules.ShopWare.Views;assembly=JetComSMSSync.Modules.ShopWare" xmlns:viewmodels="clr-namespace:JetComSmsSync.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
-                    Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-                    md:ThemeAssist.Theme="{Binding Theme}">
+﻿<mde:MaterialWindow 
+    x:Class="JetComSmsSync.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    xmlns:mde="https://spiegelp.github.io/MaterialDesignExtensions/winfx/xaml"
+    Title="{Binding Title}" Height="600" Width="800"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    xmlns:core="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:viewmodels="clr-namespace:JetComSmsSync.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    md:ThemeAssist.Theme="{Binding Theme}">
     <mde:MaterialWindow.TitleTemplate>
         <DataTemplate>
             <Grid>
@@ -40,44 +39,14 @@
         </DataTemplate>
     </mde:MaterialWindow.TitleTemplate>
     <Grid>
-        <Grid.Resources>
-            <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                <Setter Property="BorderBrush" Value="{StaticResource PrimaryHueMidBrush}" />
-            </Style>
-        </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <StackPanel Orientation="Horizontal">
-                <RadioButton Content="Tekmetric" Command="{Binding NavigateCommand}" CommandParameter="TekmetricSyncPage" IsChecked="True"/>
-                <RadioButton Content="CDK" Command="{Binding NavigateCommand}" CommandParameter="CdkSyncPage" />
-                <RadioButton Content="Shop4D" Command="{Binding NavigateCommand}" CommandParameter="Shop4DSyncPage" />
-                <RadioButton Content="ShopWare" Command="{Binding NavigateCommand}" CommandParameter="ShopWareSyncPage" />
-                <RadioButton Content="TireMasterView" Command="{Binding NavigateCommand}" CommandParameter="TireMasterViewPage" />
-                <RadioButton Content="Protractor" Command="{Binding NavigateCommand}" CommandParameter="ProtractorSyncPage" />
-            </StackPanel>
-        </ScrollViewer>        
-        
-        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
-        <TabControl Style="{StaticResource MaterialDesignAppBarTabControl}" Visibility="Collapsed">
-            <TabItem Header="Tekmetric">
-                <tekmetric:TekmetricSyncPage />
-            </TabItem>
-            <TabItem Header="CDK">
-                <cdk:CdkSyncPage />
-            </TabItem>
-            <TabItem Header="Shop4D">
-                <shop4d:Shop4DSyncPage />
-            </TabItem>
-            <TabItem Header="ShopWare" IsSelected="True">
-                <shopware:ShopWareSyncPage />
-            </TabItem>
-        </TabControl>
+        <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
 
-        <md:Snackbar Grid.Row="2"
+
+        <md:Snackbar Grid.Row="1"
                      MessageQueue="{Binding MessageQueue}"/>
     </Grid>
 </mde:MaterialWindow>

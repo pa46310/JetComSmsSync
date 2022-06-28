@@ -4,7 +4,6 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>JetComSmsSync.Modules.CDK</AssemblyName>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <Configurations>Debug;Release;ShopWare</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />

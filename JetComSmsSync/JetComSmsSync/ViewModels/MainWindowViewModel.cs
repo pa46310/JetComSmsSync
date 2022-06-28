@@ -1,16 +1,18 @@
 ﻿using JetComSmsSync.Core;
+
 using MaterialDesignThemes.Wpf;
+
+using Microsoft.Extensions.Configuration;
+
 using Prism.Commands;
 using Prism.Mvvm;
-using Prism.Regions;
 
 namespace JetComSmsSync.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private readonly IRegionManager _regionManager;
 
-        private string _title = "API SMS Sync";
+        private string _title;
         public string Title
         {
             get { return _title; }
@@ -30,20 +32,9 @@ namespace JetComSmsSync.ViewModels
 
         public SnackbarMessageQueue MessageQueue { get; } = MessageService.Instance.MessageQueue;
 
-        public MainWindowViewModel(IRegionManager regionManager)
+        public MainWindowViewModel(IConfiguration configuration)
         {
-            _regionManager = regionManager;
-        }
-
-        private DelegateCommand<string> _navigateCommand;
-        public DelegateCommand<string> NavigateCommand =>
-            _navigateCommand ?? (_navigateCommand = new DelegateCommand<string>(ExecuteNavigateCommand));
-
-        void ExecuteNavigateCommand(string parameter)
-        {
-            if (string.IsNullOrEmpty(parameter)) return;
-
-            _regionManager.RequestNavigate(RegionNames.ContentRegion, parameter);
+            Title = configuration["ApplicationName"];
         }
 
         private DelegateCommand _toggleModeCommand;

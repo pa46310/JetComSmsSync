@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSmsSync.Modules.Shop4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSmsSync.Modules.TireMasterView", "JetComSmsSync\Modules\JetComSmsSync.Modules.TireMasterView\JetComSmsSync.Modules.TireMasterView.csproj", "{69CC4E4C-9621-482E-8E8A-9710DD520BC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetComSmsSync.Modules.Protractor", "JetComSmsSync\Modules\JetComSmsSync.Modules.Protractor\JetComSmsSync.Modules.Protractor.csproj", "{02339B49-B175-4D24-8C1C-777DB4FACF5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSmsSync.Modules.Protractor", "JetComSmsSync\Modules\JetComSmsSync.Modules.Protractor\JetComSmsSync.Modules.Protractor.csproj", "{02339B49-B175-4D24-8C1C-777DB4FACF5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
