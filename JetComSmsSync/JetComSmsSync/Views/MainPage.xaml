@@ -1,17 +1,12 @@
-﻿<UserControl x:Class="JetComSmsSync.Views.MainPage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             x:Class="JetComSmsSync.Views.MainPage"             
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"             
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:core="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core"
-             xmlns:tekmetric="clr-namespace:JetComSmsSync.Modules.Tekmetric.Views;assembly=JetComSmsSync.Modules.Tekmetric"
-             xmlns:cdk="clr-namespace:JetComSmsSync.Modules.CDK.Views;assembly=JetComSmsSync.Modules.CDK"
-             xmlns:shop4d="clr-namespace:JetComSmsSync.Modules.Shop4D.Views;assembly=JetComSmsSync.Modules.Shop4D"
-             xmlns:shopware="clr-namespace:JetComSMSSync.Modules.ShopWare.Views;assembly=JetComSMSSync.Modules.ShopWare" >
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:core="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core" 
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
         <Grid.Resources>
-            <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+            <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
                 <Setter Property="BorderBrush" Value="{StaticResource PrimaryHueMidBrush}" />
             </Style>
         </Grid.Resources>

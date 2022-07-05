@@ -5,7 +5,7 @@
 		<AssemblyName>JetComSmsSync.Core</AssemblyName>
 		<Platforms>AnyCPU;x64</Platforms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync</Configurations>
+		<Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync;loc8nearmeSync</Configurations>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Include="..\JetComSmsSync\AssemblyInfo-shared.cs" Link="AssemblyInfo-shared.cs" />
@@ -17,6 +17,7 @@
 		<PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
 		<PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 		<PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
 		<PackageReference Include="RestSharp" Version="106.15.0" />
 		<PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="106.15.0" />

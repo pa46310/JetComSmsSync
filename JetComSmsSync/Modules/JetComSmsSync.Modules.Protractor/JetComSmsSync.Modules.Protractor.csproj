@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>JetComSmsSync.Modules.Protractor</AssemblyName>
-    <Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync</Configurations>
+    <Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync;loc8nearmeSync</Configurations>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>

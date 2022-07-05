@@ -7,13 +7,12 @@
 		<ApplicationIcon>app.ico</ApplicationIcon>
 		<Platforms>AnyCPU;x64</Platforms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync</Configurations>
+		<Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync;loc8nearmeSync</Configurations>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>TRACE;CDK</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ShopwareSync|AnyCPU'">
-	  <DefineConstants>TRACE;CDK</DefineConstants>
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Models\**" />
@@ -39,12 +38,13 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\JetComSmsSync.Core\JetComSmsSync.Core.csproj" />
-		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.CDK\JetComSmsSync.Modules.CDK.csproj" />
-		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Protractor\JetComSmsSync.Modules.Protractor.csproj" />
-		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Shop4D\JetComSmsSync.Modules.Shop4D.csproj" />
-		<ProjectReference Include="..\Modules\JetComSMSSync.Modules.ShopWare\JetComSMSSync.Modules.ShopWare.csproj" />
-		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Tekmetric\JetComSmsSync.Modules.Tekmetric.csproj" />
-		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.TireMasterView\JetComSmsSync.Modules.TireMasterView.csproj" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.CDK\JetComSmsSync.Modules.CDK.csproj" Condition="'$(Configuration)'=='CDKSYNC' Or '$(Configuration)'=='DEBUG' Or '$(Configuration)'=='RELEASE'" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.loc8nearme\JetComSmsSync.Modules.loc8nearme.csproj" Condition="'$(Configuration)'=='LOC8NEARMESYNC' Or '$(Configuration)'=='DEBUG' Or '$(Configuration)'=='RELEASE'" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Protractor\JetComSmsSync.Modules.Protractor.csproj" Condition="'$(Configuration)'=='PROTRACTORSYNC' Or '$(Configuration)'=='DEBUG' Or '$(Configuration)'=='RELEASE'" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Shop4D\JetComSmsSync.Modules.Shop4D.csproj" Condition="'$(Configuration)'=='SHOP4DSYNC' Or '$(Configuration)'=='DEBUG' Or '$(Configuration)'=='RELEASE'" />
+		<ProjectReference Include="..\Modules\JetComSMSSync.Modules.ShopWare\JetComSMSSync.Modules.ShopWare.csproj" Condition="'$(Configuration)'=='SHOPWARESYNC' Or '$(Configuration)'=='DEBUG' Or '$(Configuration)'=='RELEASE'" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.Tekmetric\JetComSmsSync.Modules.Tekmetric.csproj" Condition="'$(Configuration)'=='TEKMETRICSYNC' Or '$(Configuration)'=='DEBUG' Or '$(Configuration)'=='RELEASE'" />
+		<ProjectReference Include="..\Modules\JetComSmsSync.Modules.TireMasterView\JetComSmsSync.Modules.TireMasterView.csproj" Condition="'$(Configuration)'=='TIREMASTERSYNC' Or '$(Configuration)'=='DEBUG' Or '$(Configuration)'=='RELEASE'" />
 		<ProjectReference Include="..\Services\JetComSmsSync.Services.Interfaces\JetComSmsSync.Services.Interfaces.csproj" />
 		<ProjectReference Include="..\Services\JetComSmsSync.Services\JetComSmsSync.Services.csproj" />
 	</ItemGroup>
@@ -66,9 +66,17 @@
 	    <IsTransformFile>true</IsTransformFile>
 	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>
+	  <None Update="appsettings.FolderProfile.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
+	  </None>
 	  <None Update="appsettings.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    <TransformOnBuild>true</TransformOnBuild>
+	  </None>
+	  <None Update="appsettings.loc8nearmeSync.json">
+	    <IsTransformFile>true</IsTransformFile>
+	    <DependentUpon>appsettings.json</DependentUpon>
 	  </None>
 	  <None Update="appsettings.Protractor.json">
 	    <IsTransformFile>true</IsTransformFile>

@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="JetComSmsSync.Modules.loc8nearme.Views.Loc8nearmeSyncPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"             
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.loc8nearme.ViewModels" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:Loc8nearmeSyncPageViewModel}" d:DesignHeight="420">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ToolBar>
+            <Button Content="{md:PackIcon Kind=Refresh}" Style="{StaticResource MaterialDesignFlatButton}"
+                    Command="{Binding RefreshCommand}"/>
+            <Button Content="Send" Style="{StaticResource MaterialDesignFlatButton}"
+                    Command="{Binding SendCommand}"/>
+            <CheckBox x:Name="cbAutoSend" Content="Auto Send" IsChecked="{Binding IsAutoSend}" />
+            <ComboBox ItemsSource="{Binding Items}" 
+                      md:HintAssist.Hint="Recurrence"
+                      md:HintAssist.IsFloating="True"
+                      Width="96"
+                      SelectedItem="{Binding SelectedRecurrence}"
+                      DisplayMemberPath="DisplayName"/>
+
+            <!--<Button Content="{md:PackIcon Kind=Add}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Add new account"
+                    Command="{Binding SendCommand}"/>
+            <Button Content="{md:PackIcon Kind=Edit}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Edit existing account"
+                    Command="{Binding SendCommand}"/>
+            <Button Content="{md:PackIcon Kind=Trash}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Remove existing account"
+                    Command="{Binding SendCommand}"/>-->
+        </ToolBar>
+
+        <DataGrid x:Name="dg" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Accounts}" SelectionUnit="FullRow" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                    <DataGridCheckBoxColumn.Header>
+                        <CheckBox IsChecked="{Binding  DataContext.IsAllSelected, Mode=TwoWay, ElementName=dg}"/>
+                    </DataGridCheckBoxColumn.Header>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="Business ID" Binding="{Binding BusinessId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Account ID" Binding="{Binding AccountId}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Account Name" Binding="{Binding AccountName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="URL" Binding="{Binding Url}" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

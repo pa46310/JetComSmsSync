@@ -7,6 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Prism.Commands;
 using Prism.Mvvm;
 
+using Serilog;
+
+using System.Diagnostics;
+using System.IO;
+
 namespace JetComSmsSync.ViewModels
 {
     public class MainWindowViewModel : BindableBase
@@ -51,6 +56,37 @@ namespace JetComSmsSync.ViewModels
             {
                 Theme = BaseTheme.Dark;
             }
+        }
+
+        private DelegateCommand _checkForUpdateCommand;
+        public DelegateCommand CheckForUpdateCommand =>
+            _checkForUpdateCommand ?? (_checkForUpdateCommand = new DelegateCommand(ExecuteCheckForUpdateCommand, CanExecuteCheckForUpdateCommand));
+
+        void ExecuteCheckForUpdateCommand()
+        {
+            if (!File.Exists("updater.exe")) return;
+
+            try
+            {
+                new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "updater.exe",
+                    }
+                }
+                .Start();
+            }
+            catch (System.Exception ex)
+            {
+                Log.Error(ex, "Failed to run updater.exe");
+            }
+
+        }
+
+        bool CanExecuteCheckForUpdateCommand()
+        {
+            return File.Exists("updater.exe");
         }
     }
 }

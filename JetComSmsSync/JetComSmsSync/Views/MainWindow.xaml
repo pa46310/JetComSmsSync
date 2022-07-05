@@ -13,6 +13,7 @@
     TextOptions.TextRenderingMode="Auto"
     xmlns:core="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:jetcom="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:viewmodels="clr-namespace:JetComSmsSync.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -29,6 +30,9 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Style="{StaticResource WindowTitleTextBlockStyle}" Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}" Margin="8,0,0,0" />
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Stretch">
+                    <Button Style="{StaticResource WindowButtonStyle}" Command="{Binding DataContext.CheckForUpdateCommand, RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}" ToolTip="Check for updates">
+                        <md:PackIcon Style="{StaticResource WindowButtonIconStyle}" Kind="Update" />
+                    </Button>
                     <Button Style="{StaticResource WindowButtonStyle}" Command="{Binding DataContext.ToggleModeCommand, RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}" ToolTip="Toggle Light/Dark mode">
                         <md:PackIcon Style="{StaticResource WindowButtonIconStyle}" Kind="ThemeLightDark" />
                     </Button>
@@ -42,11 +46,19 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
 
 
         <md:Snackbar Grid.Row="1"
                      MessageQueue="{Binding MessageQueue}"/>
+
+        <md:Snackbar Grid.Row="2" IsActive="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=IsActive}" 
+                     d:IsActive="True">
+            <md:SnackbarMessage Content="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=Content}" d:Content="Loading..."
+                                ActionContent="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=CancelText}" d:ActionContent="CANCEL"
+                                ActionCommand="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=CancelCommand}"/>
+        </md:Snackbar>
     </Grid>
 </mde:MaterialWindow>

@@ -1,7 +1,9 @@
-﻿using JetComSmsSync.Services.Interfaces;
+﻿using JetComSmsSync.Core.Mvvm;
+using JetComSmsSync.Services.Interfaces;
 
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 
 using Serilog;
 
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace JetComSmsSync.Core.Models
 {
-    public abstract class SyncPageViewModel<T> : BindableBase where T : ISelectable
+    public abstract class SyncPageViewModel<T> : ViewModelBase, INavigationAware where T : ISelectable
     {
         private System.Timers.Timer _autoSendTimer;
         private CancellationTokenSource _cts;
@@ -140,13 +142,15 @@ namespace JetComSmsSync.Core.Models
             try
             {
                 IsBusy = true;
-                Message = "Loading accounts...";
+                MessageService.Instance.ShowPersistentMessage("Loading accounts...");
                 Accounts = await GetAccounts();
                 IsBusy = false;
+                MessageService.Instance.HidePersistentMessage();
             }
             catch (Exception ex)
             {
                 IsBusy = false;
+                MessageService.Instance.HidePersistentMessage();
                 Log.LogAndShowError(ex, "Failed to refresh");
             }
         }
@@ -278,5 +282,14 @@ namespace JetComSmsSync.Core.Models
 
             UpdateAutoSend();
         }
+
+        #region INavigationAware
+        public virtual void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            RefreshCommand.Execute();
+        }
+        public virtual bool IsNavigationTarget(NavigationContext navigationContext) => true;
+        public virtual void OnNavigatedFrom(NavigationContext navigationContext) { }
+        #endregion
     }
 }
