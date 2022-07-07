@@ -30,11 +30,51 @@ namespace JetComSmsSync.Modules.loc8nearme
         public async Task<AccountModel[]> GetAccountsAsync()
         {
             using var connection = new SqlConnection(_reportsConnectionString);
-            var accounts = await connection.QueryAsync<AccountModel>(@"SELECT Url, AccId AS AccountId, CONCAT (A.AccountFullName, ', ', a.AccountAddress1, ', ', a.AccountCity, ', ', a.AccountState) AS AccountName
+            var accounts = await connection.QueryAsync<AccountModel>(@"SELECT l.Id, Url, AccId AS AccountId, CONCAT (A.AccountFullName, ', ', a.AccountAddress1, ', ', a.AccountCity, ', ', a.AccountState) AS AccountName
 FROM [AcnmSMLoginInfo] l
 LEFT JOIN [Accounts] a ON a.AccountId = l.AccID
 WHERE SMSite = 'loc8nearme'");
             return accounts.ToArray();
+        }
+
+        public async Task<string> InsertAccountAsync(AccountModel account)
+        {
+            using var connection = new SqlConnection(_reportsConnectionString);
+            // check if exists
+            var count = 0;
+
+            count = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Accounts WHERE AccountId=@AccountId", account);
+            if (count == 0)
+            {
+                // no user exists
+                throw new Exception("No user with given account id exists");
+            }
+            // insert
+            count = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM AcnmSMLoginInfo WHERE AccID=@AccountId", account);
+            if (count > 0)
+            {
+                // account alread  exists
+                throw new Exception("Account already exists");
+            }
+
+            var newId = await connection.ExecuteScalarAsync<string>("INSERT INTO AcnmSMLoginInfo (AccID, SMSite, IsExpired, url) VALUES (@AccountId, 'loc8nearme', 0, @Url); SELECT @@IDENTITY", account);
+            return newId;
+        }
+
+        public async Task<int> UpdateAccountAsync(AccountModel account)
+        {
+            using var connection = new SqlConnection(_reportsConnectionString);
+
+            var affected = await connection.ExecuteAsync("UPDATE AcnmSMLoginInfo SET AccID=@AccountId, url=@Url WHERE ID=@Id", account);
+            return affected;
+        }
+
+        public async Task<int> RemoveAccountAsync(AccountModel account)
+        {
+            using var connection = new SqlConnection(_reportsConnectionString);
+
+            var affected = await connection.ExecuteAsync("DELETE FROM AcnmSMLoginInfo WHERE ID=@Id", account);
+            return affected;
         }
 
         public int InsertComments(IEnumerable<CommentResponse> comments, int accountId, string requestUrl)

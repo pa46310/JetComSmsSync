@@ -6,6 +6,7 @@ namespace JetComSmsSync.Modules.loc8nearme.Models
 {
     public class AccountModel : ISelectable
     {
+        public string Id { get; set; }
         public bool IsSelected { get; set; } = true;
         public string BusinessId
         {

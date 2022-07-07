@@ -290,6 +290,6 @@ namespace JetComSmsSync.Core.Models
         }
         public virtual bool IsNavigationTarget(NavigationContext navigationContext) => true;
         public virtual void OnNavigatedFrom(NavigationContext navigationContext) { }
-        #endregion
+        #endregion        
     }
 }

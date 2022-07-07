@@ -42,23 +42,27 @@
             </Grid>
         </DataTemplate>
     </mde:MaterialWindow.TitleTemplate>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+    <md:DialogHost Identifier="{x:Static core:DialogIdentifiers.CloseOnClickAwayRootDialog}" CloseOnClickAway="True">
+        <md:DialogHost Identifier="{x:Static core:DialogIdentifiers.RootDialog}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
 
 
-        <md:Snackbar Grid.Row="1"
-                     MessageQueue="{Binding MessageQueue}"/>
+                <md:Snackbar Grid.Row="1"
+                         MessageQueue="{Binding MessageQueue}"/>
 
-        <md:Snackbar Grid.Row="2" IsActive="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=IsActive}" 
-                     d:IsActive="True">
-            <md:SnackbarMessage Content="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=Content}" d:Content="Loading..."
-                                ActionContent="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=CancelText}" d:ActionContent="CANCEL"
-                                ActionCommand="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=CancelCommand}"/>
-        </md:Snackbar>
-    </Grid>
+                <md:Snackbar Grid.Row="2" IsActive="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=IsActive}" 
+                         d:IsActive="True">
+                    <md:SnackbarMessage Content="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=Content}" d:Content="Loading..."
+                                    ActionContent="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=CancelText}" d:ActionContent="CANCEL"
+                                    ActionCommand="{Binding Source={x:Static jetcom:MessageService.Instance}, Path=CancelCommand}"/>
+                </md:Snackbar>
+            </Grid>
+        </md:DialogHost>
+    </md:DialogHost>
 </mde:MaterialWindow>

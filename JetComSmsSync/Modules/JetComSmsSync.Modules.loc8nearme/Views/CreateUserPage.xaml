@@ -1,0 +1,46 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"             
+             xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.loc8nearme.ViewModels" 
+             av:DataContext="{av:DesignInstance Type=viewmodels:CreateUserPageViewModel}" 
+             mc:Ignorable="av" x:Class="JetComSmsSync.Modules.loc8nearme.Views.CreateUserPage" av:Background="{StaticResource MaterialDesignBackground}"             
+             prism:ViewModelLocator.AutoWireViewModel="False" av:DesignWidth="394.667" av:DesignHeight="176.765"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Loaded="UserControl_Loaded">
+    <Grid Margin="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="256" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="ID" />
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding BulkChanges, Converter={StaticResource InvertBooleanConverter}}" Focusable="{Binding BulkChanges}" />
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Account ID" />
+        <TextBox x:Name="accountIdText" Grid.Row="1" Grid.Column="1" Text="{Binding AccountID, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Row="2" Grid.Column="0" Content="URL" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="8" HorizontalAlignment="Center">
+            <Button Width="96" Content="Add New" Command="{Binding AddCommand}"/>
+            <Separator Margin="8"/>
+            <Button Width="96" Content="Update" Command="{Binding UpdateCommand}" IsEnabled="{Binding ID, Converter={StaticResource notNullBooleanConverter}}"/>
+            <Separator Margin="8"/>
+            <Button Width="96" Content="Cancel" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+
+        <CheckBox Grid.Row="4" Grid.ColumnSpan="2" Content="Bulk Changes" IsChecked="{Binding BulkChanges}" HorizontalAlignment="Left" ToolTip="Enabling this option will enable the id field, and will not close the dialog after insert or update"/>
+    </Grid>
+</UserControl>

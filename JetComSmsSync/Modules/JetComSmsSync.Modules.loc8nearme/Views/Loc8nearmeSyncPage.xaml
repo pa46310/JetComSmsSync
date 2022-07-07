@@ -7,7 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:viewmodels="clr-namespace:JetComSmsSync.Modules.loc8nearme.ViewModels" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:Background="{StaticResource MaterialDesignBackground}"
              d:DataContext="{d:DesignInstance Type=viewmodels:Loc8nearmeSyncPageViewModel}" d:DesignHeight="420">
     <Grid>
         <Grid.RowDefinitions>
@@ -29,21 +29,23 @@
                       SelectedItem="{Binding SelectedRecurrence}"
                       DisplayMemberPath="DisplayName"/>
 
-            <!--<Button Content="{md:PackIcon Kind=Add}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Add new account"
-                    Command="{Binding SendCommand}"/>
+            <Button Content="{md:PackIcon Kind=Add}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Add new account"
+                    Command="{Binding ManageCommand}" CommandParameter="add"/>
             <Button Content="{md:PackIcon Kind=Edit}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Edit existing account"
-                    Command="{Binding SendCommand}"/>
+                    Command="{Binding ManageCommand}" CommandParameter="edit"/>
             <Button Content="{md:PackIcon Kind=Trash}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Remove existing account"
-                    Command="{Binding SendCommand}"/>-->
+                    Command="{Binding ManageCommand}" CommandParameter="remove"/>
         </ToolBar>
 
-        <DataGrid x:Name="dg" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Accounts}" SelectionUnit="FullRow" SelectionMode="Single">
+        <DataGrid x:Name="dg" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Accounts}" SelectionUnit="FullRow" SelectionMode="Single"
+                  SelectedItem="{Binding SelectedAccount}">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                     <DataGridCheckBoxColumn.Header>
                         <CheckBox IsChecked="{Binding  DataContext.IsAllSelected, Mode=TwoWay, ElementName=dg}"/>
                     </DataGridCheckBoxColumn.Header>
                 </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Business ID" Binding="{Binding BusinessId}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Account ID" Binding="{Binding AccountId}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Account Name" Binding="{Binding AccountName}" IsReadOnly="True"/>

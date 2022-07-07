@@ -2,6 +2,11 @@
 using JetComSmsSync.Core.Models;
 using JetComSmsSync.Modules.loc8nearme.Models;
 using JetComSmsSync.Modules.loc8nearme.Models.Responses;
+using JetComSmsSync.Modules.loc8nearme.Views;
+
+using MaterialDesignThemes.Wpf;
+
+using Prism.Commands;
 
 using Serilog;
 using Serilog.Context;
@@ -83,5 +88,86 @@ namespace JetComSmsSync.Modules.loc8nearme.ViewModels
                 MessageService.Instance.HidePersistentMessage();
             }
         }
+
+        #region Management
+        private AccountModel _selectedAccount;
+        public AccountModel SelectedAccount
+        {
+            get { return _selectedAccount; }
+            set
+            {
+                if (SetProperty(ref _selectedAccount, value))
+                {
+                    ManageCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        private DelegateCommand<string> _manageCommand;
+        public DelegateCommand<string> ManageCommand =>
+            _manageCommand ?? (_manageCommand = new DelegateCommand<string>(ExecuteManageCommand, CanExecuteManageCommand));
+
+        private bool CanExecuteManageCommand(string command)
+        {
+            if (command == "add")
+            {
+                return true;
+            }
+            else if (command == "remove")
+            {
+                return SelectedAccount != null;
+            }
+            else if (command == "edit")
+            {
+                return SelectedAccount != null;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        async void ExecuteManageCommand(string command)
+        {
+            try
+            {
+                if (command == "add")
+                {
+                    var vm = new CreateUserPageViewModel(_database);
+                    var view = new CreateUserPage { DataContext = vm };
+
+                    var result = await DialogHost.Show(view, DialogIdentifiers.RootDialog);
+                    if (result is bool success && success)
+                    {
+                        RefreshCommand.Execute();
+                    }
+                }
+                else if (command == "remove" && SelectedAccount != null && MessageService.Instance.ConfirmMessage($"Do you want to remove {SelectedAccount?.AccountName} ?", "Remove Account"))
+                {
+                    var result = await _database.RemoveAccountAsync(SelectedAccount);
+                    if (result > 0)
+                    {
+                        MessageService.Instance.EnqueInformation("Account deleted successfully");
+                        RefreshCommand.Execute();
+                    }
+                }
+                else if (command == "edit" && SelectedAccount != null)
+                {
+                    var vm = new CreateUserPageViewModel(_database, SelectedAccount);
+                    var view = new CreateUserPage { DataContext = vm };
+
+                    var result = await DialogHost.Show(view, DialogIdentifiers.RootDialog);
+                    if (result is bool success && success)
+                    {
+                        RefreshCommand.Execute();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageService.Instance.ShowError(ex, "Failed to execute");
+            }
+        }
+        #endregion
     }
 }

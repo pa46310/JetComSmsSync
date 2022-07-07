@@ -5,6 +5,8 @@ using MaterialDesignThemes.Wpf;
 using Prism.Commands;
 using Prism.Mvvm;
 
+using Serilog;
+
 using System;
 
 namespace JetComSmsSync.Core
@@ -88,5 +90,17 @@ namespace JetComSmsSync.Core
             OnCancel = null;
         }
         #endregion
+
+        public bool ConfirmMessage(string text, string caption)
+        {
+            var result = System.Windows.MessageBox.Show(text, caption, System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            return result == System.Windows.MessageBoxResult.Yes;
+        }
+
+        public void ShowError(Exception ex, string caption)
+        {
+            Log.Error(ex, caption);
+           _ = System.Windows.MessageBox.Show(ex.Message, caption, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+        }
     }
 }
