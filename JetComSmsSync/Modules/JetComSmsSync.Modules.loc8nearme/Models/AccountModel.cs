@@ -14,7 +14,7 @@ namespace JetComSmsSync.Modules.loc8nearme.Models
             {
                 if (string.IsNullOrEmpty(Url)) return null;
 
-                var match = Regex.Match(Url.ToLowerInvariant(), @"/(\d+)/comment");
+                var match = Regex.Match(Url.ToLowerInvariant(), @"/(\d+)/");
                 if (match.Success && match.Groups.Count > 1)
                 {
                     return match.Groups[1].Value;

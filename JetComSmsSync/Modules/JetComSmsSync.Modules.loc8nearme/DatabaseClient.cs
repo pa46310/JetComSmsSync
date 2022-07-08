@@ -50,7 +50,7 @@ WHERE SMSite = 'loc8nearme'");
                 throw new Exception("No user with given account id exists");
             }
             // insert
-            count = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM AcnmSMLoginInfo WHERE AccID=@AccountId", account);
+            count = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM AcnmSMLoginInfo WHERE AccID=@AccountId and SMSite = 'loc8nearme'", account);
             if (count > 0)
             {
                 // account alread  exists
