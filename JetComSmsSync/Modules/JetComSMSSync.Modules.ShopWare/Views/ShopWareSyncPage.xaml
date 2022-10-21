@@ -49,14 +49,18 @@
                 <DataGridTextColumn Header="Big ID" Binding="{Binding BigID}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Partner ID" Binding="{Binding PartnerID}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Secret Key" Binding="{Binding SecretKey}" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="Action" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding DataContext.ListAllShopCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding .}">
+                                    list shops
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <md:Snackbar Grid.Row="2" IsActive="{Binding IsBusy}" 
-                     d:IsActive="True">
-            <md:SnackbarMessage Content="{Binding Message}" d:Content="Loading..."
-                                ActionContent="CANCEL"
-                                ActionCommand="{Binding CancelCommand}"/>
-        </md:Snackbar>
     </Grid>
 </UserControl>

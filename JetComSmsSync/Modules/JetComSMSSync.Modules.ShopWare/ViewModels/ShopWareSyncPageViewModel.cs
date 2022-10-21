@@ -1,7 +1,13 @@
-﻿using JetComSmsSync.Core.Models;
+﻿using JetComSmsSync.Core;
+using JetComSmsSync.Core.Models;
 
 using JetComSMSSync.Modules.ShopWare.Adapters;
 using JetComSMSSync.Modules.ShopWare.Models;
+
+using MaterialDesignThemes.Wpf;
+
+using Prism.Commands;
+using Prism.Services.Dialogs;
 
 using Serilog;
 using Serilog.Context;
@@ -17,12 +23,14 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
     public class ShopWareSyncPageViewModel : SyncPageViewModel<AccountModel>
     {
         private readonly DatabaseClient _database;
+        private readonly IDialogService _dialog;
 
         protected override ILogger Log => Serilog.Log.ForContext<ShopWareSyncPageViewModel>();
 
-        public ShopWareSyncPageViewModel(DatabaseClient database)
+        public ShopWareSyncPageViewModel(DatabaseClient database, IDialogService dialog)
         {
             _database = database;
+            _dialog = dialog;
             RefreshCommand.Execute();
         }
 
@@ -353,6 +361,39 @@ namespace JetComSMSSync.Modules.ShopWare.ViewModels
             catch (Exception ex)
             {
                 Log.Error(ex, "Failed to send data");
+            }
+        }
+
+        private DelegateCommand<AccountModel> _listAllShopCommand;
+        public DelegateCommand<AccountModel> ListAllShopCommand =>
+            _listAllShopCommand ?? (_listAllShopCommand = new DelegateCommand<AccountModel>(ExecuteListAllShopCommand));
+
+        async void ExecuteListAllShopCommand(AccountModel account)
+        {
+            try
+            {
+                if (account is null) return;
+
+                MessageService.Instance.ShowPersistentMessage("Getting shops...");
+
+                var client = new ServiceClient(account);
+                var pages = await Task.Run(() => client.GetShops().ToList());
+                var shops = pages.SelectMany(x => x.Results).ToArray();
+                MessageService.Instance.HidePersistentMessage();
+
+                var p = new DialogParameters
+                {
+                    { "Items", shops }
+                };
+
+                _dialog.ShowDialog(nameof(Views.ViewShopsPage), p, res =>
+                {
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageService.Instance.HidePersistentMessage();
+                Log.LogAndShowError(ex, "Failed to get shops");
             }
         }
     }

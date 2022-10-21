@@ -75,6 +75,7 @@ namespace JetComSmsSync
             containerRegistry.RegisterInstance<IMessageService>(MessageService.Instance);
             containerRegistry.RegisterSingleton<ICacheService, CacheService>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterDialogWindow<DialogWindow>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

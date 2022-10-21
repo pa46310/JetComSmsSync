@@ -28,12 +28,6 @@ namespace JetComSMSSync.Modules.ShopWare
             Client.Authenticator = new Authenticator(account);
         }
 
-        public void GetShops()
-        {
-            var request = new RestRequest($"/api/v1/tenants/{_account.TenantID}/shops");
-            var response = Client.Get(request);
-        }
-
         public IEnumerable<PageableResponse<CustomerModel>> GetCustomers(DateTime? updatedAfter = null)
         {
             Log.Debug("Getting customers updated after {0}", updatedAfter);
@@ -216,6 +210,37 @@ namespace JetComSMSSync.Modules.ShopWare
                     item.BigID = _account.BigID;
                     item.CustomerId = item.Customer_Ids.FirstOrDefault();
                 }
+                yield return response.Data;
+
+                if (response.Data.Current_Page >= response.Data.Total_Pages)
+                {
+                    break;
+                }
+
+                page++;
+
+            } while (true);
+        }
+
+        public IEnumerable<PageableResponse<ShopResponse>> GetShops()
+        {
+            Log.Debug("Getting shops");
+            var page = 1;
+            do
+            {
+                var request = new RestRequest($"/api/v1/tenants/{_account.TenantID}/shops");
+                request.AddQueryParameter("per_page", _limit);
+                if (page > 1)
+                {
+                    request.AddQueryParameter("page", page.ToString());
+                }
+
+                var response = Client.Get<PageableResponse<ShopResponse>>(request);
+                if (!response.IsSuccessful)
+                {
+                    yield break;
+                }
+                Log.Debug("{0}/{1} page parsed. Total Count: {2}", response.Data.Current_Page, response.Data.Total_Pages, response.Data.Total_Count);
                 yield return response.Data;
 
                 if (response.Data.Current_Page >= response.Data.Total_Pages)

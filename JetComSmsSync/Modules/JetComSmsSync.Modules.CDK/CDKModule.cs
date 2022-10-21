@@ -12,6 +12,8 @@ namespace JetComSmsSync.Modules.CDK
     {
         public void OnInitialized(IContainerProvider containerProvider)
         {
+            _ = containerProvider.Resolve<IRegionManager>()
+                   .RegisterViewWithRegion(RegionNames.ContentRegion, typeof(CdkSyncPage));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

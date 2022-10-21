@@ -1,5 +1,4 @@
-﻿using JetComSmsSync.Core;
-using JetComSmsSync.Core.Models;
+﻿using JetComSmsSync.Core.Models;
 using JetComSmsSync.Modules.CDK.Models;
 using JetComSmsSync.Services.Interfaces;
 
@@ -10,7 +9,6 @@ using Serilog;
 using Serilog.Context;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

@@ -200,7 +200,6 @@ namespace JetComSmsSync.Modules.CDK
             var response = Client.Post(request);
             return ParseHelpEmployee(response);
         }
-
         public HelpEmployeeModel[] GetHelpEmployeeDelta(DateTime date)
         {
             var request = new RestRequest("/pip-extract/help-employee/extract");
@@ -211,7 +210,6 @@ namespace JetComSmsSync.Modules.CDK
             var response = Client.Post(request);
             return ParseHelpEmployee(response);
         }
-
         private HelpEmployeeModel[] ParseHelpEmployee(IRestResponse response)
         {
             var document = new HtmlDocument();
