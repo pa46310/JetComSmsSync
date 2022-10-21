@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{09AC91F0-1EB6-46AD-9041-F297FBC5BAC0}"
 EndProject
@@ -38,8 +38,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSmsSync.Modules.Protr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetComSmsSync.Modules.loc8nearme", "JetComSmsSync\Modules\JetComSmsSync.Modules.loc8nearme\JetComSmsSync.Modules.loc8nearme.csproj", "{256583A7-709D-4104-A93C-B33A43D24746}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_installer", "_installer", "{8073A491-2C84-427E-AB27-51BF41D8040B}"
+EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Protractor", "JetComSmsSync\JetComSmsSync.Installer\Protractor.aiproj", "{DB68D565-8F38-401D-8096-57D92AD93C08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
+		All|x64 = All|x64
+		All|x86 = All|x86
 		CdkSync|Any CPU = CdkSync|Any CPU
 		CdkSync|x64 = CdkSync|x64
 		CdkSync|x86 = CdkSync|x86
@@ -69,6 +76,12 @@ Global
 		TiremasterSync|x86 = TiremasterSync|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.All|x64.ActiveCfg = Debug|x64
+		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.All|x64.Build.0 = Debug|x64
+		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.CdkSync|x64.ActiveCfg = CdkSync|x64
@@ -123,6 +136,12 @@ Global
 		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.TiremasterSync|x64.Build.0 = TiremasterSync|x64
 		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{9CCEA4F1-07A0-4C63-8AA1-A4AD837E6A6C}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.All|x64.ActiveCfg = Debug|x64
+		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.All|x64.Build.0 = Debug|x64
+		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.CdkSync|x64.ActiveCfg = CdkSync|x64
@@ -177,6 +196,12 @@ Global
 		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.TiremasterSync|x64.Build.0 = TiremasterSync|x64
 		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{A6B76FD5-974E-4B2E-B861-E3C5BA6CD551}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.All|x64.ActiveCfg = Debug|x64
+		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.All|x64.Build.0 = Debug|x64
+		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.CdkSync|x64.ActiveCfg = CdkSync|x64
@@ -231,6 +256,12 @@ Global
 		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.TiremasterSync|x64.Build.0 = TiremasterSync|x64
 		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{F3CD1508-7568-488F-A0C4-ACA16BF057FF}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.All|x64.ActiveCfg = Debug|x64
+		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.All|x64.Build.0 = Debug|x64
+		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.CdkSync|x64.ActiveCfg = CdkSync|x64
@@ -285,6 +316,12 @@ Global
 		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.TiremasterSync|x64.Build.0 = TiremasterSync|x64
 		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{C67B262C-C326-4CE1-B5D3-118127BD41A7}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.All|x64.ActiveCfg = Debug|x64
+		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.All|x64.Build.0 = Debug|x64
+		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.CdkSync|x64.ActiveCfg = CdkSync|x64
@@ -339,6 +376,12 @@ Global
 		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.TiremasterSync|x64.Build.0 = TiremasterSync|x64
 		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{83A7A28F-8CB2-4DCD-B571-DC6A1D856C9B}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.All|x64.ActiveCfg = TiremasterSync|Any CPU
+		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.All|x64.Build.0 = TiremasterSync|Any CPU
+		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.CdkSync|x64.ActiveCfg = CdkSync|Any CPU
@@ -393,6 +436,12 @@ Global
 		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.TiremasterSync|x64.Build.0 = TiremasterSync|Any CPU
 		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{2760DB1C-A7A2-49B2-A0E8-088EEE37AA7A}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.All|Any CPU.ActiveCfg = Release|x64
+		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.All|Any CPU.Build.0 = Release|x64
+		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.All|x64.ActiveCfg = Release|x64
+		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.All|x64.Build.0 = Release|x64
+		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.All|x86.ActiveCfg = Debug|x86
+		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.All|x86.Build.0 = Debug|x86
 		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.CdkSync|Any CPU.ActiveCfg = Release|x86
 		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.CdkSync|x64.ActiveCfg = CdkSync|x64
 		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.CdkSync|x64.Build.0 = CdkSync|x64
@@ -438,6 +487,12 @@ Global
 		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.TiremasterSync|x64.Build.0 = CdkSync|x64
 		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.TiremasterSync|x86.ActiveCfg = CdkSync|x86
 		{7309D3FC-B912-48AC-8E00-5772DD8D798C}.TiremasterSync|x86.Build.0 = CdkSync|x86
+		{681CD0BE-7324-47A5-8417-40F0440D264C}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{681CD0BE-7324-47A5-8417-40F0440D264C}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{681CD0BE-7324-47A5-8417-40F0440D264C}.All|x64.ActiveCfg = TiremasterSync|Any CPU
+		{681CD0BE-7324-47A5-8417-40F0440D264C}.All|x64.Build.0 = TiremasterSync|Any CPU
+		{681CD0BE-7324-47A5-8417-40F0440D264C}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{681CD0BE-7324-47A5-8417-40F0440D264C}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.CdkSync|x64.ActiveCfg = CdkSync|Any CPU
@@ -492,6 +547,12 @@ Global
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.TiremasterSync|x64.Build.0 = TiremasterSync|Any CPU
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{681CD0BE-7324-47A5-8417-40F0440D264C}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.All|x64.ActiveCfg = TiremasterSync|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.All|x64.Build.0 = TiremasterSync|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.CdkSync|x64.ActiveCfg = CdkSync|Any CPU
@@ -546,6 +607,12 @@ Global
 		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.TiremasterSync|x64.Build.0 = TiremasterSync|Any CPU
 		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{672AC1CA-4016-4B9B-8804-DBFA7BD7923B}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.All|x64.ActiveCfg = TiremasterSync|Any CPU
+		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.All|x64.Build.0 = TiremasterSync|Any CPU
+		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.CdkSync|x64.ActiveCfg = CdkSync|Any CPU
@@ -600,6 +667,12 @@ Global
 		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.TiremasterSync|x64.Build.0 = TiremasterSync|Any CPU
 		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{69CC4E4C-9621-482E-8E8A-9710DD520BC7}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.All|Any CPU.ActiveCfg = TiremasterSync|Any CPU
+		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.All|Any CPU.Build.0 = TiremasterSync|Any CPU
+		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.All|x64.ActiveCfg = TiremasterSync|Any CPU
+		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.All|x64.Build.0 = TiremasterSync|Any CPU
+		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.All|x86.ActiveCfg = TiremasterSync|Any CPU
+		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.All|x86.Build.0 = TiremasterSync|Any CPU
 		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.CdkSync|Any CPU.ActiveCfg = CdkSync|Any CPU
 		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.CdkSync|Any CPU.Build.0 = CdkSync|Any CPU
 		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.CdkSync|x64.ActiveCfg = CdkSync|Any CPU
@@ -654,6 +727,12 @@ Global
 		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.TiremasterSync|x64.Build.0 = TiremasterSync|Any CPU
 		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.TiremasterSync|x86.ActiveCfg = TiremasterSync|Any CPU
 		{02339B49-B175-4D24-8C1C-777DB4FACF5C}.TiremasterSync|x86.Build.0 = TiremasterSync|Any CPU
+		{256583A7-709D-4104-A93C-B33A43D24746}.All|Any CPU.ActiveCfg = ShopwareSync|Any CPU
+		{256583A7-709D-4104-A93C-B33A43D24746}.All|Any CPU.Build.0 = ShopwareSync|Any CPU
+		{256583A7-709D-4104-A93C-B33A43D24746}.All|x64.ActiveCfg = ShopwareSync|Any CPU
+		{256583A7-709D-4104-A93C-B33A43D24746}.All|x64.Build.0 = ShopwareSync|Any CPU
+		{256583A7-709D-4104-A93C-B33A43D24746}.All|x86.ActiveCfg = ShopwareSync|Any CPU
+		{256583A7-709D-4104-A93C-B33A43D24746}.All|x86.Build.0 = ShopwareSync|Any CPU
 		{256583A7-709D-4104-A93C-B33A43D24746}.CdkSync|Any CPU.ActiveCfg = Debug|Any CPU
 		{256583A7-709D-4104-A93C-B33A43D24746}.CdkSync|Any CPU.Build.0 = Debug|Any CPU
 		{256583A7-709D-4104-A93C-B33A43D24746}.CdkSync|x64.ActiveCfg = Debug|Any CPU
@@ -708,6 +787,66 @@ Global
 		{256583A7-709D-4104-A93C-B33A43D24746}.TiremasterSync|x64.Build.0 = Debug|Any CPU
 		{256583A7-709D-4104-A93C-B33A43D24746}.TiremasterSync|x86.ActiveCfg = Debug|Any CPU
 		{256583A7-709D-4104-A93C-B33A43D24746}.TiremasterSync|x86.Build.0 = Debug|Any CPU
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.All|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.All|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.All|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.All|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.All|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.All|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.CdkSync|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.CdkSync|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.CdkSync|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.CdkSync|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.CdkSync|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.CdkSync|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Debug|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Debug|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Debug|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Debug|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Debug|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.loc8nearmeSync|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.loc8nearmeSync|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.loc8nearmeSync|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.loc8nearmeSync|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.loc8nearmeSync|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.loc8nearmeSync|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ProtractorSync|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ProtractorSync|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ProtractorSync|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ProtractorSync|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ProtractorSync|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ProtractorSync|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Release|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Release|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Release|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Release|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Release|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Shop4dSync|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Shop4dSync|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Shop4dSync|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Shop4dSync|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Shop4dSync|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.Shop4dSync|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ShopwareSync|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ShopwareSync|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ShopwareSync|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ShopwareSync|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ShopwareSync|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.ShopwareSync|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TekmetricSync|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TekmetricSync|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TekmetricSync|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TekmetricSync|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TekmetricSync|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TekmetricSync|x86.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TiremasterSync|Any CPU.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TiremasterSync|Any CPU.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TiremasterSync|x64.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TiremasterSync|x64.Build.0 = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TiremasterSync|x86.ActiveCfg = DefaultBuild
+		{DB68D565-8F38-401D-8096-57D92AD93C08}.TiremasterSync|x86.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -723,6 +862,7 @@ Global
 		{69CC4E4C-9621-482E-8E8A-9710DD520BC7} = {09AC91F0-1EB6-46AD-9041-F297FBC5BAC0}
 		{02339B49-B175-4D24-8C1C-777DB4FACF5C} = {09AC91F0-1EB6-46AD-9041-F297FBC5BAC0}
 		{256583A7-709D-4104-A93C-B33A43D24746} = {09AC91F0-1EB6-46AD-9041-F297FBC5BAC0}
+		{DB68D565-8F38-401D-8096-57D92AD93C08} = {8073A491-2C84-427E-AB27-51BF41D8040B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9FD40336-6A60-4E5A-A084-94F55B3262C6}
