@@ -8,7 +8,7 @@
 	  <Configurations>Debug;Release;ShopwareSync;CdkSync;ProtractorSync;Shop4dSync;TekmetricSync;TiremasterSync;loc8nearmeSync</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
+    <Compile Include="..\..\Executables\Tekmetric\Properties\AssemblyInfo-shared.cs" Link="AssemblyInfo-shared.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\JetComSmsSync.Core\JetComSmsSync.Core.csproj" />

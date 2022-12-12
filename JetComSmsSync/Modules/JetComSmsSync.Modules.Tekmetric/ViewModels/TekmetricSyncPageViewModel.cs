@@ -1,6 +1,7 @@
 ﻿using JetComSmsSync.Core;
 using JetComSmsSync.Core.Models;
 using JetComSmsSync.Modules.Tekmetric.Models;
+using JetComSmsSync.Modules.Tekmetric.Responses;
 using JetComSmsSync.Services.Interfaces;
 
 using Prism.Commands;
@@ -245,24 +246,28 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                 var existingLabors = Database.GetLaborForCompare(account.BigID);
 
                 _cts.Token.ThrowIfCancellationRequested();
+                var jobComparer = new JobComparer();
+                var partComparer = new PartComparer();
+                var laborComparer = new LaborComparer();
+
                 foreach (var job in client.GetJobs(startDate))
                 {
                     Message = $"{message} Updating({job.Number + 1}/{job.TotalPages})...";
                     _cts.Token.ThrowIfCancellationRequested();
                     // Jobs
-                    var uniqueJobs = job.Content.Except(existingJobs, Comparers.Job).ToList();
+                    var uniqueJobs = job.Content.Except(existingJobs, jobComparer).ToList();
                     var result = Database.InsertJobs(uniqueJobs);
                     Log.Debug("Jobs. Unique: {0}, Inserted: {1}", uniqueJobs.Count, result);
                     JetComLog.Error($"{result} jobs inserted", ApplicationName, account.BigID, IsAutoSend);
 
                     // Parts
-                    var uniqueParts = job.Content.SelectMany(x => x.Parts).Except(existingParts, Comparers.Part).ToList();
+                    var uniqueParts = job.Content.SelectMany(x => x.Parts).Except(existingParts, partComparer).ToList();
                     result = Database.InsertParts(uniqueParts);
                     Log.Debug("Parts. Unique: {0}, Inserted: {1}", uniqueParts.Count, result);
                     JetComLog.Error($"{result} parts inserted", ApplicationName, account.BigID, IsAutoSend);
 
                     // Labors
-                    var uniqueLabors = job.Content.SelectMany(x => x.Labor).Except(existingLabors, Comparers.Labor).ToList();
+                    var uniqueLabors = job.Content.SelectMany(x => x.Labor).Except(existingLabors, laborComparer).ToList();
                     result = Database.InsertLabors(uniqueLabors);
                     JetComLog.Error($"{result} labors inserted", ApplicationName, account.BigID, IsAutoSend);
                 }
@@ -282,12 +287,14 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                 var existingRepairOrders = Database.GetRepairOrderForCompare(account.BigID);
 
                 _cts.Token.ThrowIfCancellationRequested();
+                var comparer = new RepairOrderComparer();
+
                 foreach (var repairOrder in client.GetRepairOrders(startDate))
                 {
                     _cts.Token.ThrowIfCancellationRequested();
                     Message = $"{message} Updating({repairOrder.Number + 1}/{repairOrder.TotalPages})...";
                     // Repair Orders
-                    var uniqueRepairOrders = repairOrder.Content.Except(existingRepairOrders, Comparers.RepairOrder).ToList();
+                    var uniqueRepairOrders = repairOrder.Content.Except(existingRepairOrders, comparer).ToList();
                     var result = Database.InsertRepairOrder(uniqueRepairOrders);
                     Log.Debug("Repair orders. Unique: {0}, Inserted: {1}", uniqueRepairOrders.Count, result);
                     JetComLog.Error($"{result} repair orders inserted", ApplicationName, account.BigID, IsAutoSend);
@@ -308,12 +315,13 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                 var existingAppointments = Database.GetAppointmentForCompare(account.BigID);
 
                 _cts.Token.ThrowIfCancellationRequested();
+                var comparer = new AppointmentComparer();
                 foreach (var appointment in client.GetAppointments(startDate))
                 {
                     _cts.Token.ThrowIfCancellationRequested();
                     // Appointments
                     Message = $"{message} Updating({appointment.Number + 1}/{appointment.TotalPages})...";
-                    var uniqueAppointment = appointment.Content.Except(existingAppointments, Comparers.Appointment).ToList();
+                    var uniqueAppointment = appointment.Content.Except(existingAppointments, comparer).ToList();
                     var result = Database.InsertAppointments(uniqueAppointment);
                     Log.Debug("Appointments. Unique: {0}, Inserted: {1}", uniqueAppointment.Count, result);
                     JetComLog.Error($"{result} appointments inserted", ApplicationName, account.BigID, IsAutoSend);
@@ -334,12 +342,13 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
                 var existingVehicles = Database.GetVehicleForCompare(account.BigID);
 
                 _cts.Token.ThrowIfCancellationRequested();
+                var comparer = new VehicleComparer();
                 foreach (var vehicle in client.GetVehicles(startDate))
                 {
                     _cts.Token.ThrowIfCancellationRequested();
                     // Vehicles
                     Message = $"{message} Updating({vehicle.Number + 1}/{vehicle.TotalPages})...";
-                    var uniqueVehicles = vehicle.Content.Except(existingVehicles, Comparers.Vehicle).ToList();
+                    var uniqueVehicles = vehicle.Content.Except(existingVehicles, comparer).ToList();
                     var result = Database.InsertVehicles(uniqueVehicles);
                     Log.Debug("Vehicles. Unique: {0}, Inserted: {1}", uniqueVehicles.Count, result);
                     JetComLog.Error($"{result} vehicle inserted", ApplicationName, account.BigID, IsAutoSend);
@@ -373,28 +382,34 @@ namespace JetComSmsSync.Modules.Tekmetric.ViewModels
 
                 var result = 0;
                 _cts.Token.ThrowIfCancellationRequested();
+
+                var customerComparer = new CustomerComparer();
+                var phoneComparer = new PhoneComparer();
+                var customerTypeComparer = new CustomerTypeComparer();
+                var addressComparer = new AddressComparer();
+
                 foreach (var customer in client.GetCustomers(startDate))
                 {
                     _cts.Token.ThrowIfCancellationRequested();
                     Message = $"{message} Updating({customer.Number + 1}/{customer.TotalPages})...";
                     // Customers
-                    var uniqueCustomers = customer.Content.Except(existingCustomers, Comparers.Customer).ToList();
+                    var uniqueCustomers = customer.Content.Except(existingCustomers, customerComparer).ToList();
                     result = Database.InsertCustomer(uniqueCustomers);
                     Log.Debug("Customers. Unique: {0}, Inserted: {1}", uniqueCustomers.Count, result);
                     JetComLog.Error($"{result} customers inserted", ApplicationName, account.BigID, IsAutoSend);
                     // Phone Numbers
-                    var uniquePhones = customer.Content.SelectMany(x => x.Phone).Except(existingPhones, Comparers.Phone).ToList();
+                    var uniquePhones = customer.Content.SelectMany(x => x.Phone).Except(existingPhones, phoneComparer).ToList();
                     result = Database.InsertPhoneNumber(uniquePhones);
                     Log.Debug("Phones. Unique: {0}, Inserted: {1}", uniquePhones.Count, result);
                     JetComLog.Error($"{result} phones inserted", ApplicationName, account.BigID, IsAutoSend);
                     // Customer Types
                     var uniqueCustomerTypes = customer.Content.Select(x => x.CustomerType)
-                        .Except(existingCustomerTypes, Comparers.CustomerType).ToList();
+                        .Except(existingCustomerTypes, customerTypeComparer).ToList();
                     result = Database.InsertCustomerTypes(uniqueCustomerTypes);
                     Log.Debug("Customer Types. Unique: {0}, Inserted: {1}", uniqueCustomerTypes.Count, result);
                     JetComLog.Error($"{result} customer types inserted", ApplicationName, account.BigID, IsAutoSend);
                     // Addresses
-                    var uniqueAddress = customer.Content.Select(x => x.Address).Except(existingAddresses, Comparers.Address).ToList();
+                    var uniqueAddress = customer.Content.Select(x => x.Address).Except(existingAddresses, addressComparer).ToList();
                     result = Database.InsertAddress(uniqueAddress);
                     Log.Debug("Addresses. Unique: {0}, Inserted: {1}", uniqueAddress.Count, result);
                     JetComLog.Error($"{result} addresses inserted", ApplicationName, account.BigID, IsAutoSend);

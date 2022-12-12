@@ -45,7 +45,7 @@ namespace JetComSmsSync.Modules.Tekmetric
             }
 
             using var connection = new SqlConnection(_autoRepairConnectionString);
-            var output = connection.Query<ContentCustomer>("SELECT customeruniqueid as [Id] FROM [Tekmetric_Customer] WHERE bigid=@BigID", new { BigID = bigId });
+            var output = connection.Query<ContentCustomer>("SELECT customeruniqueid as [Id], FirstName, LastName, Email, Notes, OkForMarketing, Birthday FROM [Tekmetric_Customer] WHERE bigid=@BigID", new { BigID = bigId });
             _cache.Append(key, output.Select(x => new ContentComparer { Id = x.Id }));
             return output;
         }
@@ -151,7 +151,7 @@ namespace JetComSmsSync.Modules.Tekmetric
                 return items;
             }
             using var connection = new SqlConnection(_autoRepairConnectionString);
-            var output = connection.Query<Address>("SELECT id FROM [Tekmetric_Address] WHERE bigid=@BigId", new { BigId = bigId });
+            var output = connection.Query<Address>("SELECT Id, Address1, Address2, City, State, Zip FROM [Tekmetric_Address] WHERE bigid=@BigId", new { BigId = bigId });
             _cache.Append(key, output.Select(x => new ContentComparer { Id = x.Id }));
             return output;
         }
@@ -379,7 +379,7 @@ namespace JetComSmsSync.Modules.Tekmetric
                 return items;
             }
             using var connection = new SqlConnection(_autoRepairConnectionString);
-            var output = connection.Query<ContentRepairOrder>("SELECT id FROM [Tekmetric_Repairorder] WHERE bigid=@BigId", new { BigId = bigId });
+            var output = connection.Query<ContentRepairOrder>("SELECT Id, MilesIn, MilesOut, KeyTag, CompletedDate, PostedDate, LaborSales, PartsSales, SubletSales, DiscountTototal, FeeTotal, Taxes, AmountPaid, TotalSales, CreatedDate, UpdatedDate FROM [Tekmetric_Repairorder] WHERE bigid=@BigId", new { BigId = bigId });
             _cache.Append(key, items.Select(x => new ContentComparer { Id = x.Id }));
             return output;
         }

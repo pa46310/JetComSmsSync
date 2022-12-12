@@ -10,7 +10,7 @@ namespace JetComSmsSync.Core
 {
     public static class JetComLog
     {
-        public static IRestClient Client { get; }
+        public static RestClient Client { get; }
         static JetComLog()
         {
             Client = RestClientUtils.CreateRestClient("http://jetcomapi.valueaddedonline.com");

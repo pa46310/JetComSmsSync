@@ -1,5 +1,5 @@
 ﻿<mde:MaterialWindow 
-    x:Class="JetComSmsSync.Views.MainWindow"
+    x:Class="JetComSmsSync.Core.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
@@ -16,7 +16,7 @@
     xmlns:jetcom="clr-namespace:JetComSmsSync.Core;assembly=JetComSmsSync.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:viewmodels="clr-namespace:JetComSmsSync.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:viewmodels="clr-namespace:JetComSmsSync.Core.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}"

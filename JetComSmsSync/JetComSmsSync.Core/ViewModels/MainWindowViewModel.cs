@@ -11,8 +11,9 @@ using Serilog;
 
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
-namespace JetComSmsSync.ViewModels
+namespace JetComSmsSync.Core.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
@@ -39,7 +40,8 @@ namespace JetComSmsSync.ViewModels
 
         public MainWindowViewModel(IConfiguration configuration)
         {
-            Title = configuration["ApplicationName"];
+            var version = Assembly.GetEntryAssembly()?.GetName().Version;
+            Title = $"{configuration["ApplicationName"]} - v{version}";
         }
 
         private DelegateCommand _toggleModeCommand;

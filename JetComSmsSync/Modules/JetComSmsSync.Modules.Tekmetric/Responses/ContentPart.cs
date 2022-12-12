@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace JetComSmsSync.Modules.Tekmetric.Responses
 {
@@ -24,5 +25,21 @@ namespace JetComSmsSync.Modules.Tekmetric.Responses
         //public List<object> DotNumbers { get; set; }
         public int JobId { get; set; }
         public string BigID { get; set; }
+    }
+    public class PartComparer : IEqualityComparer<ContentPart>
+    {
+        public bool Equals([AllowNull] ContentPart x, [AllowNull] ContentPart y)
+        {
+            if (x is null && y is null) return true;
+
+            if (x is null || y is null) return false;
+
+            return x.Id == y.Id;
+        }
+
+        public int GetHashCode([DisallowNull] ContentPart obj)
+        {
+            return obj.Id.GetHashCode();
+        }
     }
 }

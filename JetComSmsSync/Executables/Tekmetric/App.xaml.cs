@@ -1,5 +1,6 @@
 ﻿using JetComSmsSync.Core;
 using JetComSmsSync.Core.Views;
+using JetComSmsSync.Modules.Tekmetric;
 using JetComSmsSync.Services;
 using JetComSmsSync.Services.Interfaces;
 
@@ -13,8 +14,9 @@ using Serilog;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Threading;
 
-namespace JetComSmsSync
+namespace Tekmetric
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -57,7 +59,7 @@ namespace JetComSmsSync
             Log.Fatal("Unknown error: {0}", e.ExceptionObject);
         }
 
-        private void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void Dispatcher_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Log.Fatal(e.Exception, "Unknown error");
         }
@@ -78,33 +80,7 @@ namespace JetComSmsSync
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
-#if CDKSYNC || DEBUG || RELEASE
-            moduleCatalog.AddModule<CDKModule>();
-#endif
-
-#if TEKMETRICSYNC || DEBUG || RELEASE
-            moduleCatalog.AddModule<Modules.Tekmetric.TekmetricModule>();
-#endif
-
-#if SHOP4DSYNC || DEBUG || RELEASE
-            moduleCatalog.AddModule<Modules.Shop4D.Shop4DModule>();
-#endif
-
-#if TIREMASTERSYNC || DEBUG || RELEASE
-            moduleCatalog.AddModule<Modules.TireMasterView.TireMasterViewModule>();
-#endif
-
-#if PROTRACTORSYNC || DEBUG || RELEASE
-            moduleCatalog.AddModule<Modules.Protractor.ProtractorModule>();
-#endif
-
-#if SHOPWARESYNC || DEBUG || RELEASE
-            moduleCatalog.AddModule<JetComSMSSync.Modules.ShopWare.ShopWareModule>();
-#endif
-
-#if LOC8NEARMESYNC || DEBUG || RELEASE
-            moduleCatalog.AddModule<Modules.loc8nearme.loc8nearmeModule>();
-#endif
+            moduleCatalog.AddModule<TekmetricModule>();
         }
     }
 }

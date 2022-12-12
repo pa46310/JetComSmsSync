@@ -12,16 +12,10 @@ namespace JetComSmsSync.Core.Utils
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static IRestClient CreateRestClient(string url)
+        public static RestClient CreateRestClient(string url)
         {
             var output = new RestClient(url)
-            {
-                CookieContainer = new System.Net.CookieContainer(),
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                Timeout = int.MaxValue,
-                ReadWriteTimeout = int.MaxValue,
-            }
-            .UseNewtonsoftJson();
+                .UseNewtonsoftJson();
 
             return output;
         }

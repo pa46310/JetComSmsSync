@@ -16,7 +16,7 @@ namespace JetComSmsSync.Modules.Tekmetric
         {
             _regionManager = containerProvider.Resolve<IRegionManager>();
 
-            _regionManager.RegisterViewWithRegion(RegionNames.TabRegion, typeof(TekmetricSyncPage));
+            _regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(TekmetricSyncPage));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

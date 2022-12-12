@@ -2,7 +2,7 @@
 
 using System.Windows;
 
-namespace JetComSmsSync.Views
+namespace JetComSmsSync.Core.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

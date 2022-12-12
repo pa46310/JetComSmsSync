@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace JetComSmsSync.Modules.Tekmetric.Responses
 {
@@ -49,7 +50,35 @@ namespace JetComSmsSync.Modules.Tekmetric.Responses
             BigID = bigId;
         }
     }
+    public class RepairOrderComparer : IEqualityComparer<ContentRepairOrder>
+    {
+        public bool Equals([AllowNull] ContentRepairOrder x, [AllowNull] ContentRepairOrder y)
+        {
+            if (x is null && y is null) return true;
 
+            if (x is null || y is null) return false;
 
+            return x.Id == y.Id &&
+                string.Equals(x.MilesIn, y.MilesIn) &&
+                string.Equals(x.MilesOut, y.MilesOut) &&
+                string.Equals(x.Keytag, y.Keytag) &&
+                string.Equals(x.CompletedDate, y.CompletedDate) &&
+                string.Equals(x.PostedDate, y.PostedDate) &&
+                x.LaborSales == y.LaborSales &&
+                x.PartsSales == y.PartsSales &&
+                x.SubletSales == y.SubletSales &&
+                x.DiscountTotal == y.DiscountTotal &&
+                x.FeeTotal == y.FeeTotal &&
+                x.Taxes == y.Taxes &&
+                x.AmountPaid == y.AmountPaid &&
+                x.TotalSales == y.TotalSales &&
+                string.Equals(x.CreatedDate, y.CreatedDate) &&
+                string.Equals(x.UpdatedDate, y.UpdatedDate);
+        }
 
+        public int GetHashCode([DisallowNull] ContentRepairOrder obj)
+        {
+            return obj.Id.GetHashCode();
+        }
+    }
 }

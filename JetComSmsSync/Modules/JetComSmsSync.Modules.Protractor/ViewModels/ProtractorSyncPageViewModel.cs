@@ -29,7 +29,7 @@ namespace JetComSmsSync.Modules.Protractor.ViewModels
         private readonly IConfiguration _configuration;
 
         protected override ILogger Log { get; } = Serilog.Log.ForContext<ProtractorSyncPageViewModel>();
-        private IRestClient Client { get; }
+        private RestClient Client { get; }
 
         private int _dayChunkSize;
         public int DayChunkSize

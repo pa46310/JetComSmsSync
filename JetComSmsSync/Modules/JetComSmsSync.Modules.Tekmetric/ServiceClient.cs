@@ -14,7 +14,7 @@ namespace JetComSmsSync.Modules.Tekmetric
     {
         private readonly AccountModel _account;
 
-        public IRestClient Client { get; }
+        public RestClient Client { get; }
         public ServiceClient(AccountModel account)
         {
             _account = account;
@@ -42,17 +42,17 @@ namespace JetComSmsSync.Modules.Tekmetric
                 }
 
                 var response = Client.Get<PageResponse<ContentCustomer>>(request);
-                if (response.Data.Content != null && response.Data.Content.Count > 0)
+                if (response.Content != null && response.Content.Count > 0)
                 {
-                    foreach (var content in response.Data.Content)
+                    foreach (var content in response.Content)
                     {
                         content.UpdateParameters(_account.BigID);
                     }
                 }
 
-                yield return response.Data;
+                yield return response;
 
-                if (response.Data.Last) break;
+                if (response.Last) break;
 
                 page++;
             } while (true);
@@ -78,17 +78,17 @@ namespace JetComSmsSync.Modules.Tekmetric
                 }
 
                 var response = Client.Get<PageResponse<ContentVehicle>>(request);
-                if (response.Data.Content != null && response.Data.Content.Count > 0)
+                if (response.Content != null && response.Content.Count > 0)
                 {
-                    foreach (var content in response.Data.Content)
+                    foreach (var content in response.Content)
                     {
                         content.UpdateParameters(_account.BigID);
                     }
                 }
 
-                yield return response.Data;
+                yield return response;
 
-                if (response.Data.Last) break;
+                if (response.Last) break;
 
                 page++;
             } while (true);
@@ -114,17 +114,17 @@ namespace JetComSmsSync.Modules.Tekmetric
                 }
 
                 var response = Client.Get<PageResponse<ContentRepairOrder>>(request);
-                if (response.Data.Content != null && response.Data.Content.Count > 0)
+                if (response.Content != null && response.Content.Count > 0)
                 {
-                    foreach (var content in response.Data.Content)
+                    foreach (var content in response.Content)
                     {
                         content.UpdateParameters(_account.BigID);
                     }
                 }
 
-                yield return response.Data;
+                yield return response;
 
-                if (response.Data.Last) break;
+                if (response.Last) break;
 
                 page++;
             } while (true);
@@ -150,17 +150,17 @@ namespace JetComSmsSync.Modules.Tekmetric
                 }
 
                 var response = Client.Get<PageResponse<ContentJob>>(request);
-                if (response.Data.Content != null && response.Data.Content.Count > 0)
+                if (response.Content != null && response.Content.Count > 0)
                 {
-                    foreach (var content in response.Data.Content)
+                    foreach (var content in response.Content)
                     {
                         content.UpdateParameters(_account.BigID);
                     }
                 }
 
-                yield return response.Data;
+                yield return response;
 
-                if (response.Data.Last) break;
+                if (response.Last) break;
 
                 page++;
             } while (true);
@@ -186,17 +186,17 @@ namespace JetComSmsSync.Modules.Tekmetric
                 }
 
                 var response = Client.Get<PageResponse<ContentAppointment>>(request);
-                if (response.Data.Content != null && response.Data.Content.Count > 0)
+                if (response.Content != null && response.Content.Count > 0)
                 {
-                    foreach (var content in response.Data.Content)
+                    foreach (var content in response.Content)
                     {
                         content.UpdateParameters(_account.BigID);
                     }
                 }
 
-                yield return response.Data;
+                yield return response;
 
-                if (response.Data.Last) break;
+                if (response.Last) break;
 
                 page++;
             } while (true);
